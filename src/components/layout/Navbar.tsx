@@ -1,40 +1,47 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Search } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   {
-    label: "Pharma",
-    href: "/pharma",
+    label: "Industry",
+    href: "#",
     children: [
-      { label: "Solid Orals", href: "/pharma#solid-orals" },
-      { label: "Liquid Orals", href: "/pharma#liquid-orals" },
-      { label: "Topicals", href: "/pharma#topicals" },
-    ],
-  },
-  {
-    label: "Cosmetics",
-    href: "/cosmetics",
-    children: [
-      { label: "Emollients", href: "/cosmetics#emollients" },
-      { label: "Actives", href: "/cosmetics#actives" },
-      { label: "Emulsifiers", href: "/cosmetics#emulsifiers" },
-    ],
-  },
-  {
-    label: "Food",
-    href: "/food",
-    children: [
-      { label: "Stabilizers", href: "/food#stabilizers" },
-      { label: "Sweeteners", href: "/food#sweeteners" },
-      { label: "Functional Actives", href: "/food#actives" },
+      {
+        label: "Pharmaceuticals",
+        href: "/pharma",
+        sub: [
+          { label: "Solid Orals", href: "/pharma#solid-orals" },
+          { label: "Liquid Orals", href: "/pharma#liquid-orals" },
+          { label: "Topicals", href: "/pharma#topicals" },
+        ],
+      },
+      {
+        label: "Cosmetics & Personal Care",
+        href: "/cosmetics",
+        sub: [
+          { label: "Emollients", href: "/cosmetics#emollients" },
+          { label: "Actives", href: "/cosmetics#actives" },
+          { label: "Emulsifiers", href: "/cosmetics#emulsifiers" },
+        ],
+      },
+      {
+        label: "Food & Nutraceuticals",
+        href: "/food",
+        sub: [
+          { label: "Stabilizers", href: "/food#stabilizers" },
+          { label: "Sweeteners", href: "/food#sweeteners" },
+          { label: "Functional Actives", href: "/food#actives" },
+        ],
+      },
     ],
   },
   { label: "Products", href: "/products" },
+  { label: "Principals", href: "/principals" },
   { label: "News", href: "/news" },
   { label: "Contact", href: "/contact" },
 ];
@@ -43,7 +50,12 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileIndustryOpen, setMobileIndustryOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -54,7 +66,25 @@ const Navbar = () => {
   useEffect(() => {
     setMobileOpen(false);
     setActiveDropdown(null);
+    setSearchOpen(false);
+    setSearchQuery("");
+    setMobileIndustryOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   const isHome = location.pathname === "/";
   const navBg = scrolled || !isHome;
@@ -74,16 +104,16 @@ const Navbar = () => {
         <div className="container-scope flex h-full items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-display text-xl font-bold text-primary-foreground">
-              Scope<span className="text-accent">.</span>
-            </span>
-            <span className="hidden font-body text-xs text-primary-foreground/70 sm:block">
-              Ingredients
-            </span>
+            <img
+              src={logoImg}
+              alt="Scope Ingredients"
+              className="h-10 w-auto object-contain"
+              style={{ maxHeight: scrolled ? 36 : 44 }}
+            />
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
               <div
                 key={link.label}
@@ -91,19 +121,31 @@ const Navbar = () => {
                 onMouseEnter={() => link.children && setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <Link
-                  to={link.href}
-                  className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
-                    location.pathname === link.href
-                      ? "text-accent"
-                      : "text-primary-foreground/80 hover:text-accent"
-                  }`}
-                >
-                  {link.label}
-                  {link.children && <ChevronDown className="h-3 w-3" />}
-                </Link>
+                {link.href === "#" ? (
+                  <button
+                    className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
+                      ["/pharma", "/cosmetics", "/food"].includes(location.pathname)
+                        ? "text-accent"
+                        : "text-primary-foreground/80 hover:text-accent"
+                    }`}
+                  >
+                    {link.label}
+                    {link.children && <ChevronDown className="h-3 w-3" />}
+                  </button>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
+                      location.pathname === link.href
+                        ? "text-accent"
+                        : "text-primary-foreground/80 hover:text-accent"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
 
-                {/* Dropdown */}
+                {/* Industry Mega-menu */}
                 <AnimatePresence>
                   {link.children && activeDropdown === link.label && (
                     <motion.div
@@ -111,17 +153,30 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute left-0 top-full mt-1 w-48 rounded-xl bg-card p-2 shadow-xl"
+                      className="absolute left-1/2 top-full mt-1 -translate-x-1/2 rounded-xl bg-card p-4 shadow-xl"
+                      style={{ width: 520 }}
                     >
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.label}
-                          to={child.href}
-                          className="block rounded-lg px-3 py-2 font-body text-sm text-foreground transition-colors hover:bg-accent-pale hover:text-accent"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
+                      <div className="grid grid-cols-3 gap-3">
+                        {link.children.map((child) => (
+                          <div key={child.label} className="space-y-1">
+                            <Link
+                              to={child.href}
+                              className="block rounded-lg px-3 py-2 font-display text-sm font-semibold text-foreground transition-colors hover:bg-accent-pale hover:text-accent"
+                            >
+                              {child.label}
+                            </Link>
+                            {"sub" in child && child.sub?.map((sub) => (
+                              <Link
+                                key={sub.label}
+                                to={sub.href}
+                                className="block rounded-md px-3 py-1.5 font-body text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -129,8 +184,16 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden items-center gap-4 lg:flex">
+          {/* Desktop right: search + CTA */}
+          <div className="hidden items-center gap-3 lg:flex">
+            {/* Search toggle */}
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="rounded-full p-2 text-primary-foreground/70 transition-colors hover:bg-primary-light hover:text-accent"
+              aria-label="Search"
+            >
+              <Search className="h-4 w-4" />
+            </button>
             <a
               href="tel:+914440400400"
               className="flex items-center gap-1.5 font-body text-sm text-primary-foreground/70"
@@ -146,15 +209,56 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="rounded-lg p-2 text-primary-foreground lg:hidden"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Mobile: search + hamburger */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              className="rounded-lg p-2 text-primary-foreground"
+              onClick={() => setSearchOpen(!searchOpen)}
+              aria-label="Search"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+            <button
+              className="rounded-lg p-2 text-primary-foreground"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
+
+        {/* Search bar dropdown */}
+        <AnimatePresence>
+          {searchOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="overflow-hidden border-t border-primary-muted/20 bg-primary/98 backdrop-blur-md"
+            >
+              <form onSubmit={handleSearch} className="container-scope flex items-center gap-3 py-3">
+                <Search className="h-5 w-5 shrink-0 text-primary-foreground/50" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search products, ingredients, principals..."
+                  className="flex-1 bg-transparent font-body text-sm text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                  className="rounded-full p-1 text-primary-foreground/50 hover:text-primary-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
       {/* Mobile drawer */}
@@ -170,13 +274,46 @@ const Navbar = () => {
             <div className="flex h-full flex-col overflow-y-auto px-6 pb-32">
               {navLinks.map((link) => (
                 <div key={link.label} className="border-b border-primary-muted/30">
-                  <Link
-                    to={link.href}
-                    className="block py-4 font-display text-lg font-medium text-primary-foreground"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
+                  {link.children ? (
+                    <div>
+                      <button
+                        onClick={() => setMobileIndustryOpen(!mobileIndustryOpen)}
+                        className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-primary-foreground"
+                      >
+                        {link.label}
+                        <ChevronDown className={`h-5 w-5 transition-transform ${mobileIndustryOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      <AnimatePresence>
+                        {mobileIndustryOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden pb-4 pl-4"
+                          >
+                            {link.children.map((child) => (
+                              <Link
+                                key={child.label}
+                                to={child.href}
+                                className="block py-2 font-body text-base text-primary-foreground/80 hover:text-accent"
+                                onClick={() => setMobileOpen(false)}
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="block py-4 font-display text-lg font-medium text-primary-foreground"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </div>
               ))}
               <div className="mt-8">

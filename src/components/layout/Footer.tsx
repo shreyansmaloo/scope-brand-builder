@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin, Twitter } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -17,8 +18,8 @@ const Footer = () => {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Col 1 */}
           <div>
-            <Link to="/" className="font-display text-2xl font-bold">
-              Scope<span className="text-accent">.</span>
+            <Link to="/" className="inline-block">
+              <img src={logoImg} alt="Scope Ingredients" className="h-10 w-auto brightness-0 invert" />
             </Link>
             <p className="mt-4 font-body text-sm leading-relaxed text-primary-foreground/60">
               India's most comprehensive excipient partner since 1959. Pharma, Cosmetics & Food ingredients.

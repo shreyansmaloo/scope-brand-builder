@@ -33,6 +33,81 @@ const slides = [
   },
 ];
 
+/* Floating 3D-style geometric shapes */
+const FloatingShapes = () => (
+  <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    {/* Large rotating hexagon */}
+    <motion.div
+      className="absolute -right-20 top-1/4"
+      animate={{ rotate: 360, y: [0, -20, 0] }}
+      transition={{ rotate: { duration: 40, repeat: Infinity, ease: "linear" }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
+    >
+      <svg width="300" height="300" viewBox="0 0 300 300" fill="none" className="opacity-[0.08]">
+        <polygon points="150,10 280,80 280,220 150,290 20,220 20,80" stroke="white" strokeWidth="1.5" />
+        <polygon points="150,40 250,95 250,205 150,260 50,205 50,95" stroke="white" strokeWidth="0.8" />
+        <polygon points="150,70 220,110 220,190 150,230 80,190 80,110" stroke="white" strokeWidth="0.5" />
+      </svg>
+    </motion.div>
+
+    {/* Floating molecular dots cluster */}
+    {[
+      { x: "15%", y: "20%", size: 6, delay: 0 },
+      { x: "80%", y: "65%", size: 4, delay: 1.5 },
+      { x: "70%", y: "25%", size: 5, delay: 0.8 },
+      { x: "25%", y: "70%", size: 3, delay: 2 },
+      { x: "60%", y: "80%", size: 4, delay: 1 },
+      { x: "85%", y: "40%", size: 5, delay: 0.5 },
+    ].map((dot, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-accent"
+        style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size }}
+        animate={{ y: [0, -15, 0], opacity: [0.3, 0.7, 0.3] }}
+        transition={{ duration: 4 + i * 0.5, repeat: Infinity, delay: dot.delay, ease: "easeInOut" }}
+      />
+    ))}
+
+    {/* Glowing ring */}
+    <motion.div
+      className="absolute right-[10%] top-[15%]"
+      animate={{ scale: [1, 1.1, 1], opacity: [0.05, 0.12, 0.05] }}
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <div className="h-64 w-64 rounded-full border border-accent/20" />
+    </motion.div>
+
+    {/* Abstract gradient blob */}
+    <motion.div
+      className="absolute -left-32 bottom-1/4 h-80 w-80 rounded-full opacity-[0.07]"
+      style={{ background: "radial-gradient(circle, hsl(25, 83%, 51%), transparent 70%)", filter: "blur(60px)" }}
+      animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    />
+
+    {/* Connected line mesh */}
+    <svg className="absolute right-0 bottom-0 h-1/2 w-1/3 opacity-[0.04]" viewBox="0 0 400 400">
+      <motion.g
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 6, repeat: Infinity }}
+      >
+        <line x1="50" y1="50" x2="200" y2="120" stroke="white" strokeWidth="0.5" />
+        <line x1="200" y1="120" x2="350" y2="80" stroke="white" strokeWidth="0.5" />
+        <line x1="200" y1="120" x2="150" y2="280" stroke="white" strokeWidth="0.5" />
+        <line x1="150" y1="280" x2="320" y2="350" stroke="white" strokeWidth="0.5" />
+        <line x1="350" y1="80" x2="320" y2="350" stroke="white" strokeWidth="0.5" />
+        <line x1="50" y1="50" x2="80" y2="300" stroke="white" strokeWidth="0.5" />
+        <line x1="80" y1="300" x2="150" y2="280" stroke="white" strokeWidth="0.5" />
+        <circle cx="50" cy="50" r="3" fill="white" />
+        <circle cx="200" cy="120" r="3" fill="white" />
+        <circle cx="350" cy="80" r="3" fill="white" />
+        <circle cx="150" cy="280" r="3" fill="white" />
+        <circle cx="320" cy="350" r="3" fill="white" />
+        <circle cx="80" cy="300" r="3" fill="white" />
+      </motion.g>
+    </svg>
+  </div>
+);
+
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
 
@@ -51,34 +126,29 @@ const HeroSection = () => {
           key={i}
           className="absolute inset-0"
           initial={false}
-          animate={{ opacity: i === current ? 1 : 0 }}
-          transition={{ duration: 1 }}
+          animate={{ opacity: i === current ? 1 : 0, scale: i === current ? 1.05 : 1 }}
+          transition={{ duration: 1.2 }}
         >
           <img
             src={s.image}
             alt=""
             className="h-full w-full object-cover"
-            style={{ filter: "brightness(0.35)" }}
+            style={{ filter: "brightness(0.3)" }}
           />
         </motion.div>
       ))}
 
-      {/* Gradient overlay */}
+      {/* Gradient overlay — dark navy with warm accent gradient */}
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, rgba(13,33,55,0.85) 50%, transparent)",
+          background:
+            "linear-gradient(135deg, rgba(13,33,55,0.88) 40%, rgba(13,33,55,0.5) 70%, rgba(232,114,26,0.08) 100%)",
         }}
       />
 
-      {/* Decorative hex mesh */}
-      <svg className="absolute right-0 top-0 h-full w-1/2 opacity-[0.06]" viewBox="0 0 600 800">
-        <pattern id="hexes" width="50" height="86.6" patternUnits="userSpaceOnUse">
-          <polygon points="25,0 50,14.4 50,43.3 25,57.7 0,43.3 0,14.4" fill="none" stroke="white" strokeWidth="0.5" />
-          <polygon points="25,28.9 50,43.3 50,72.2 25,86.6 0,72.2 0,43.3" fill="none" stroke="white" strokeWidth="0.5" />
-        </pattern>
-        <rect width="600" height="800" fill="url(#hexes)" />
-      </svg>
+      {/* 3D geometric shapes */}
+      <FloatingShapes />
 
       {/* Content */}
       <div className="container-scope relative z-10 pt-20">
