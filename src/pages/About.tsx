@@ -1,6 +1,7 @@
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Target, Eye, Gem, Award, Globe, Truck, GraduationCap, FileText, Users, Handshake, ShieldCheck, Linkedin } from "lucide-react";
+import { Target, Eye, Gem, Award, Globe, Truck, GraduationCap, FileText, Users, Handshake, ShieldCheck, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
 
 const timeline = [
   { year: "1959", title: "Founded as Kawarlal Excipients", desc: "Mr. Vijaylal Kawarlal establishes the company in Chennai" },
@@ -40,6 +41,15 @@ const team = [
 ];
 
 const About = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollTimeline = (dir: "left" | "right") => {
+    if (scrollRef.current) {
+      const amount = 320;
+      scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+    }
+  };
+
   return (
     <main>
       {/* Hero */}
@@ -61,13 +71,38 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="section-padding bg-background">
+      {/* Horizontal Timeline */}
+      <section className="section-padding bg-background overflow-hidden">
         <div className="container-scope">
-          <h2 className="text-center font-display text-h2 font-bold text-foreground">Our Journey</h2>
-          <div className="relative mt-16">
-            <div className="absolute left-1/2 hidden h-full w-0.5 -translate-x-1/2 bg-accent/20 lg:block" />
-            <div className="space-y-12">
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-h2 font-bold text-foreground">Our Journey</h2>
+            <div className="hidden gap-2 sm:flex">
+              <button
+                onClick={() => scrollTimeline("left")}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-accent hover:text-accent-foreground hover:border-accent"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => scrollTimeline("right")}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-accent hover:text-accent-foreground hover:border-accent"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative mt-12">
+            {/* Timeline line */}
+            <div className="absolute left-0 right-0 top-8 h-0.5 bg-accent/20" />
+
+            <div
+              ref={scrollRef}
+              className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide"
+              style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+            >
               {timeline.map((item, i) => (
                 <motion.div
                   key={item.year}
@@ -75,19 +110,24 @@ const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className={`relative flex flex-col lg:flex-row ${i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-8`}
+                  className="relative flex-shrink-0"
+                  style={{ width: 280, scrollSnapAlign: "start" }}
                 >
-                  <div className={`flex-1 ${i % 2 === 0 ? "lg:text-right" : "lg:text-left"}`}>
-                    <div className="card-scope p-6">
-                      <span className="font-display text-2xl font-bold text-accent">{item.year}</span>
-                      <h3 className="mt-2 font-display text-lg font-semibold text-foreground">{item.title}</h3>
-                      <p className="mt-1 font-body text-sm text-text-secondary">{item.desc}</p>
+                  {/* Dot on timeline */}
+                  <div className="relative z-10 mb-6 flex items-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent shadow-lg shadow-accent/20">
+                      <span className="font-display text-sm font-bold text-accent-foreground">{item.year}</span>
                     </div>
+                    {i < timeline.length - 1 && (
+                      <div className="ml-2 h-0.5 flex-1 bg-accent/20" />
+                    )}
                   </div>
-                  <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent">
-                    <div className="h-3 w-3 rounded-full bg-accent-foreground" />
+
+                  {/* Card */}
+                  <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-[0_4px_24px_rgba(13,33,55,0.06)]">
+                    <h3 className="font-display text-base font-semibold text-foreground">{item.title}</h3>
+                    <p className="mt-2 font-body text-sm leading-relaxed text-text-secondary">{item.desc}</p>
                   </div>
-                  <div className="hidden flex-1 lg:block" />
                 </motion.div>
               ))}
             </div>
