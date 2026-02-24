@@ -107,7 +107,7 @@ const Navbar = () => {
             <img
               src={logoImg}
               alt="Scope Ingredients"
-              className="h-10 w-auto object-contain"
+              className="h-10 w-auto object-contain brightness-0 invert"
               style={{ maxHeight: scrolled ? 36 : 44 }}
             />
           </Link>
@@ -153,27 +153,35 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute left-1/2 top-full mt-1 -translate-x-1/2 rounded-xl bg-card p-4 shadow-xl"
-                      style={{ width: 520 }}
+                      className="fixed left-0 right-0 top-full mt-0 border-t border-border/10 bg-card shadow-2xl"
                     >
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="container-scope grid grid-cols-3 gap-8 py-8">
                         {link.children.map((child) => (
-                          <div key={child.label} className="space-y-1">
+                          <div key={child.label} className="space-y-2">
                             <Link
                               to={child.href}
-                              className="block rounded-lg px-3 py-2 font-display text-sm font-semibold text-foreground transition-colors hover:bg-accent-pale hover:text-accent"
+                              className="flex items-center gap-2 rounded-lg px-3 py-2.5 font-display text-sm font-bold text-foreground transition-colors hover:bg-accent-pale hover:text-accent"
                             >
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                                {child.label === "Pharmaceuticals" ? "💊" : child.label === "Cosmetics & Personal Care" ? "✨" : "🌿"}
+                              </span>
                               {child.label}
                             </Link>
                             {"sub" in child && child.sub?.map((sub) => (
                               <Link
                                 key={sub.label}
                                 to={sub.href}
-                                className="block rounded-md px-3 py-1.5 font-body text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                                className="block rounded-md px-3 py-1.5 pl-14 font-body text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                               >
                                 {sub.label}
                               </Link>
                             ))}
+                            <Link
+                              to={child.href}
+                              className="block px-3 pl-14 font-body text-xs font-medium text-accent hover:underline"
+                            >
+                              View all →
+                            </Link>
                           </div>
                         ))}
                       </div>
