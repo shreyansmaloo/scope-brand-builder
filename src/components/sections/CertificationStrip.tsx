@@ -2,9 +2,12 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Award, Star } from "lucide-react";
 
 const certs = [
-  { icon: ShieldCheck, title: "ISO 9001:2015", desc: "Quality Management System Certified" },
-  { icon: Award, title: "Dun & Bradstreet", desc: "Business Credibility Verified" },
+  { icon: ShieldCheck, title: "ISO 9001:2008", desc: "Quality Management System Certified" },
+  { icon: Award, title: "Dun & Bradstreet", desc: "Business Credibility Verified & Rated" },
   { icon: Star, title: "CRISIL Rated", desc: "Financial Strength Assessed" },
+  { icon: ShieldCheck, title: "cGMP Compliant", desc: "Current Good Manufacturing Practices" },
+  { icon: Award, title: "HACCP", desc: "Hazard Analysis & Critical Control Points" },
+  { icon: ShieldCheck, title: "Kosher Certified", desc: "Kosher Standards Compliance" },
 ];
 
 const CertificationStrip = () => {
@@ -14,7 +17,7 @@ const CertificationStrip = () => {
         <h2 className="font-display text-h2 font-bold text-foreground">
           Quality You Can Trust
         </h2>
-        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
           {certs.map((cert, i) => (
             <motion.div
               key={cert.title}

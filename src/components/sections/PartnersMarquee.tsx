@@ -1,6 +1,21 @@
 import { Link } from "react-router-dom";
 import { partners } from "@/data/partners";
 
+// Map partner IDs to actual logo filenames (without extension)
+const logoMap: Record<string, string> = {
+  "standard-chem": "standard",
+  "soho-aneco": "soho",
+  "natures-crops": "nature-s-crops",
+  "alula": "elula",
+  "baltmilk": "balt",
+  "china-foodstuff": "china",
+  "algahealth": "alga",
+  "coffeefruit": "coffee",
+  "gn-long": "gn",
+};
+
+const getLogoPath = (id: string) => `/logos/${logoMap[id] || id}.png`;
+
 const PartnersMarquee = () => {
   const row1 = partners.slice(0, Math.ceil(partners.length / 2));
   const row2 = partners.slice(Math.ceil(partners.length / 2));
@@ -18,11 +33,10 @@ const PartnersMarquee = () => {
             className="flex h-20 w-44 shrink-0 items-center justify-center rounded-xl border border-primary-muted/20 bg-white px-4 transition-all hover:border-accent/40 hover:shadow-lg"
           >
             <img
-              src={`/logos/${p.id}.png`}
+              src={getLogoPath(p.id)}
               alt={p.name}
               className="h-10 max-w-[120px] object-contain transition-all"
               onError={(e) => {
-                // Fallback to text if image fails
                 const target = e.currentTarget;
                 target.style.display = "none";
                 const span = document.createElement("span");

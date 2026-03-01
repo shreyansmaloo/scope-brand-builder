@@ -20,6 +20,7 @@ import News from "./pages/News";
 import Principals from "./pages/Principals";
 import NotFound from "./pages/NotFound";
 import PrincipalDetail from "./pages/PrincipalDetail";
+import Careers from "./pages/Careers";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/news" element={<News />} />
           <Route path="/principals" element={<Principals />} />
           <Route path="/principals/:id" element={<PrincipalDetail />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
