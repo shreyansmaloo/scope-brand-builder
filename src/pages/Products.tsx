@@ -1,27 +1,52 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, X, SlidersHorizontal, ChevronDown, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import { products, categories, industries } from "@/data/products";
+import { partners } from "@/data/partners";
 
 type SortOption = "default" | "az" | "za";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
+  const initialPrincipal = searchParams.get("principal") || null;
+  
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
-  const [selectedPrincipal, setSelectedPrincipal] = useState<string | null>(null);
+  const [selectedPrincipal, setSelectedPrincipal] = useState<string | null>(initialPrincipal);
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
   const [selectedDosageForm, setSelectedDosageForm] = useState<string | null>(null);
+  const [optionsSearch, setOptionsSearch] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>("industry");
   const [sort, setSort] = useState<SortOption>("default");
 
+  // Sync search and principal when URL changes
+  useEffect(() => {
+    const p = searchParams.get("principal");
+    if (p) setSelectedPrincipal(p);
+    
+    const s = searchParams.get("search");
+    if (s !== null) setSearch(s);
+  }, [searchParams]);
+
+  const selectedPartner = useMemo(() => {
+    if (!selectedPrincipal) return null;
+    return partners.find((p) => p.name === selectedPrincipal) || null;
+  }, [selectedPrincipal]);
+
   const principals = useMemo(() => [...new Set(products.map((p) => p.principal))].sort(), []);
   const forms = useMemo(() => [...new Set(products.filter((p) => p.form).map((p) => p.form!))].sort(), []);
   const dosageForms = useMemo(() => [...new Set(products.filter((p) => p.dosageForm).map((p) => p.dosageForm!))].sort(), []);
+
+  // Filter option lists based on optionsSearch
+  const filteredIndustries = useMemo(() => industries.filter(i => i.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
+  const filteredCategories = useMemo(() => categories.filter(c => c.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
+  const filteredPrincipals = useMemo(() => principals.filter(p => p.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, principals]);
+  const filteredForms = useMemo(() => forms.filter(f => f.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, forms]);
+  const filteredDosageForms = useMemo(() => dosageForms.filter(d => d.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, dosageForms]);
 
   const filtered = useMemo(() => {
     let result = products.filter((p) => {
@@ -51,6 +76,7 @@ const Products = () => {
 
   const clearFilters = () => {
     setSearch("");
+    setOptionsSearch("");
     setSelectedCategory(null);
     setSelectedIndustry(null);
     setSelectedPrincipal(null);
@@ -84,9 +110,9 @@ const Products = () => {
         <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${expandedSection === sectionKey ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
-        {expandedSection === sectionKey && (
+        {(expandedSection === sectionKey || optionsSearch) && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
+            initial={optionsSearch ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
@@ -119,12 +145,22 @@ const Products = () => {
         <input
           type="text"
           placeholder="Filter options..."
-          className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 font-body text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+          value={optionsSearch}
+          onChange={(e) => setOptionsSearch(e.target.value)}
+          className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-8 font-body text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
         />
+        {optionsSearch && (
+          <button 
+            onClick={() => setOptionsSearch("")}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:text-foreground"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        )}
       </div>
 
       <FilterSection title="Industry" sectionKey="industry" count={selectedIndustry ? 1 : 0}>
-        {industries.map((ind) => (
+        {filteredIndustries.map((ind) => (
           <FilterButton
             key={ind}
             label={ind.charAt(0).toUpperCase() + ind.slice(1)}
@@ -132,10 +168,11 @@ const Products = () => {
             onClick={() => setSelectedIndustry(selectedIndustry === ind ? null : ind)}
           />
         ))}
+        {filteredIndustries.length === 0 && <p className="p-2 text-[10px] text-muted-foreground italic text-center">No options match</p>}
       </FilterSection>
 
       <FilterSection title="Category" sectionKey="category" count={selectedCategory ? 1 : 0}>
-        {categories.map((cat) => (
+        {filteredCategories.map((cat) => (
           <FilterButton
             key={cat}
             label={cat}
@@ -143,10 +180,11 @@ const Products = () => {
             onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
           />
         ))}
+        {filteredCategories.length === 0 && <p className="p-2 text-[10px] text-muted-foreground italic text-center">No options match</p>}
       </FilterSection>
 
       <FilterSection title="Principal" sectionKey="principal" count={selectedPrincipal ? 1 : 0}>
-        {principals.map((p) => (
+        {filteredPrincipals.map((p) => (
           <FilterButton
             key={p}
             label={p}
@@ -154,10 +192,11 @@ const Products = () => {
             onClick={() => setSelectedPrincipal(selectedPrincipal === p ? null : p)}
           />
         ))}
+        {filteredPrincipals.length === 0 && <p className="p-2 text-[10px] text-muted-foreground italic text-center">No options match</p>}
       </FilterSection>
 
       <FilterSection title="Form" sectionKey="form" count={selectedForm ? 1 : 0}>
-        {forms.map((f) => (
+        {filteredForms.map((f) => (
           <FilterButton
             key={f}
             label={f}
@@ -165,10 +204,11 @@ const Products = () => {
             onClick={() => setSelectedForm(selectedForm === f ? null : f)}
           />
         ))}
+        {filteredForms.length === 0 && <p className="p-2 text-[10px] text-muted-foreground italic text-center">No options match</p>}
       </FilterSection>
 
       <FilterSection title="Dosage Form" sectionKey="dosageForm" count={selectedDosageForm ? 1 : 0}>
-        {dosageForms.map((d) => (
+        {filteredDosageForms.map((d) => (
           <FilterButton
             key={d}
             label={d}
@@ -176,6 +216,7 @@ const Products = () => {
             onClick={() => setSelectedDosageForm(selectedDosageForm === d ? null : d)}
           />
         ))}
+        {filteredDosageForms.length === 0 && <p className="p-2 text-[10px] text-muted-foreground italic text-center">No options match</p>}
       </FilterSection>
 
       {activeFilterCount > 0 && (
@@ -194,23 +235,31 @@ const Products = () => {
           <p className="font-body text-sm text-primary-foreground/50">
             <Link to="/" className="hover:text-accent">Home</Link> &gt; Products
           </p>
-          <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">Product Catalog</h1>
-          <p className="mt-2 font-body text-primary-foreground/60">Search by product name, generic name (INCI), principal, or application.</p>
-          <div className="relative mt-6 max-w-2xl">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="e.g. Carbomer, Hypromellose, Mannitol, HPMC..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-full border-0 bg-card py-3.5 pl-12 pr-4 font-body text-foreground shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-            {search && (
-              <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:text-foreground">
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+          <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
+            {selectedPartner ? `${selectedPartner.name} Products` : "Product Catalog"}
+          </h1>
+          <p className="mt-2 font-body text-primary-foreground/60 max-w-3xl">
+            {selectedPartner?.about 
+              ? selectedPartner.about 
+              : "Search by product name, generic name (INCI), principal, or application."}
+          </p>
+          {!selectedPartner && (
+            <div className="relative mt-6 max-w-2xl">
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="e.g. Carbomer, Hypromellose, Mannitol, HPMC..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded-full border-0 bg-card py-3.5 pl-12 pr-4 font-body text-foreground shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+              {search && (
+                <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:text-foreground">
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

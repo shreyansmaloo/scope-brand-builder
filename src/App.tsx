@@ -7,6 +7,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import WhatsAppButton from "./components/layout/WhatsAppButton";
 import MobileBottomBar from "./components/layout/MobileBottomBar";
+import ScrollToTop from "./components/layout/ScrollToTop";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Pharma from "./pages/Pharma";
@@ -18,6 +19,7 @@ import RequestSample from "./pages/RequestSample";
 import News from "./pages/News";
 import Principals from "./pages/Principals";
 import NotFound from "./pages/NotFound";
+import PrincipalDetail from "./pages/PrincipalDetail";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
@@ -39,6 +42,7 @@ const App = () => (
           <Route path="/request-sample" element={<RequestSample />} />
           <Route path="/news" element={<News />} />
           <Route path="/principals" element={<Principals />} />
+          <Route path="/principals/:id" element={<PrincipalDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

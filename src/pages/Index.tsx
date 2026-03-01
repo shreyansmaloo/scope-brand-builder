@@ -4,6 +4,7 @@ import BrandStatement from "@/components/sections/BrandStatement";
 import IndustryCards from "@/components/sections/IndustryCards";
 import PartnersMarquee from "@/components/sections/PartnersMarquee";
 import WhyChooseScope from "@/components/sections/WhyChooseScope";
+import ExcipientSearch from "@/components/sections/ExcipientSearch";
 import CertificationStrip from "@/components/sections/CertificationStrip";
 import SampleCTABand from "@/components/sections/SampleCTABand";
 import NewsPreview from "@/components/sections/NewsPreview";
@@ -17,6 +18,7 @@ const Index = () => {
       <IndustryCards />
       <PartnersMarquee />
       <WhyChooseScope />
+      <ExcipientSearch />
       <CertificationStrip />
       <SampleCTABand />
       <NewsPreview />

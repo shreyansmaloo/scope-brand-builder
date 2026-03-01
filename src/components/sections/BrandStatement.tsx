@@ -52,24 +52,26 @@ const BrandStatement = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="flex-1 space-y-3"
+            className="flex-1 grid grid-cols-2 gap-3 lg:grid-cols-1"
           >
             {dosageForms.map((form) => (
               <motion.div key={form.title} variants={item}>
                 <Link
                   to={form.href}
-                  className="group flex items-center gap-5 rounded-2xl border border-border/50 bg-card p-5 transition-all hover:border-accent/30 hover:shadow-[0_8px_30px_rgba(13,33,55,0.1)]"
+                  className="group flex flex-col items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 transition-all hover:border-accent/30 hover:shadow-[0_8px_30px_rgba(13,33,55,0.1)] sm:flex-row sm:gap-5 sm:p-5"
                 >
-                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${form.color}`}>
-                    <form.icon className="h-6 w-6" />
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl sm:h-12 sm:w-12 ${form.color}`}>
+                    <form.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-display text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
+                  <div className="flex-1 text-center sm:text-left overflow-hidden">
+                    <h3 className="font-display text-xs font-semibold text-foreground group-hover:text-accent transition-colors sm:text-sm">
                       {form.title}
                     </h3>
-                    <p className="mt-0.5 font-body text-xs text-muted-foreground">{form.desc}</p>
+                    <p className="mt-0.5 font-body text-[10px] text-muted-foreground line-clamp-1 sm:text-xs">
+                      {form.desc}
+                    </p>
                   </div>
-                  <span className="font-body text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100">→</span>
+                  <span className="hidden font-body text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100 sm:block">→</span>
                 </Link>
               </motion.div>
             ))}

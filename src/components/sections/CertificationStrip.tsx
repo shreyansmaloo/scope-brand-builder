@@ -14,7 +14,7 @@ const CertificationStrip = () => {
         <h2 className="font-display text-h2 font-bold text-foreground">
           Quality You Can Trust
         </h2>
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
+        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
           {certs.map((cert, i) => (
             <motion.div
               key={cert.title}
@@ -22,12 +22,12 @@ const CertificationStrip = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="flex items-center gap-4 rounded-2xl border-2 border-accent/20 bg-card px-8 py-6 shadow-sm"
+              className="flex items-center gap-4 rounded-2xl border-2 border-accent/20 bg-card px-6 py-5 shadow-sm transition-all hover:border-accent/40 md:px-8 md:py-6"
             >
               <cert.icon className="h-10 w-10 shrink-0 text-accent" />
               <div className="text-left">
-                <h3 className="font-display text-base font-bold text-foreground">{cert.title}</h3>
-                <p className="font-body text-sm text-muted-foreground">{cert.desc}</p>
+                <h3 className="font-display text-base font-bold text-foreground leading-tight">{cert.title}</h3>
+                <p className="mt-1 font-body text-xs text-muted-foreground leading-snug">{cert.desc}</p>
               </div>
             </motion.div>
           ))}

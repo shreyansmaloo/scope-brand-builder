@@ -19,7 +19,7 @@ const Footer = () => {
           {/* Col 1 */}
           <div>
             <Link to="/" className="inline-block">
-              <img src={logoImg} alt="Scope Ingredients" className="h-10 w-auto brightness-0 invert" />
+              <img src={logoImg} alt="Scope Ingredients" className="h-16 w-auto" />
             </Link>
             <p className="mt-4 font-body text-sm leading-relaxed text-primary-foreground/60">
               India's most comprehensive excipient partner since 1959. Pharma, Cosmetics & Food ingredients.
@@ -96,12 +96,12 @@ const Footer = () => {
             <ul className="mt-4 space-y-4">
               <li className="flex gap-3 font-body text-sm text-primary-foreground/60">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                No. 19, Marshalls Road, Egmore, Chennai – 600 008, Tamil Nadu
+                No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008
               </li>
               <li>
                 <a href="tel:+914440400400" className="flex items-center gap-3 font-body text-sm text-primary-foreground/60 hover:text-accent">
                   <Phone className="h-4 w-4 shrink-0 text-accent" />
-                  +91 44 4040 0400
+                  +91 44 40 400 400
                 </a>
               </li>
               <li>

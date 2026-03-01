@@ -58,15 +58,28 @@ const Cosmetics = () => {
           <h2 className="font-display text-h2 font-bold text-foreground">Cosmetic Principals</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {cosPartners.map((p) => (
-              <div key={p.id} className="card-scope flex items-center gap-4 p-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal text-teal-foreground font-display text-sm font-bold">
-                  {p.name.substring(0, 2).toUpperCase()}
+              <Link to={`/principals/${p.id}`} key={p.id} className="card-scope flex items-center gap-4 p-4 hover:border-accent/30 transition-colors group">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-card border border-border">
+                  <img 
+                    src={`/logos/${p.id}.png`} 
+                    alt={p.name}
+                    className="h-full w-full object-contain p-2"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = "none";
+                      const div = document.createElement("div");
+                      div.className = "flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-teal text-teal-foreground font-display text-sm font-bold";
+                      div.textContent = p.name.substring(0, 2).toUpperCase();
+                      target.parentElement?.appendChild(div);
+                      target.parentElement?.classList.remove("bg-card", "border", "border-border");
+                    }}
+                  />
                 </div>
                 <div>
-                  <h4 className="font-display text-sm font-semibold text-foreground">{p.name}</h4>
+                  <h4 className="font-display text-sm font-semibold text-foreground group-hover:text-teal transition-colors">{p.name}</h4>
                   <p className="font-body text-xs text-muted-foreground">{p.country}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

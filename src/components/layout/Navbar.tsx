@@ -4,6 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, ChevronDown, Search } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
+const searchPlaceholders = [
+  "Search products, ingredients, principals...",
+  "Searching for some principle...",
+  "Searching for some medicine...",
+  "Searching for excipients...",
+  "Searching for cosmetics...",
+];
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -53,6 +61,7 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileIndustryOpen, setMobileIndustryOpen] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,7 +69,20 @@ const Navbar = () => {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    
+    // Add escape key listener
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setMobileOpen(false); // Also close mobile drawer on escape
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   useEffect(() => {
@@ -75,6 +97,14 @@ const Navbar = () => {
     if (searchOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
+    }, 2500);
+    return () => clearInterval(interval);
   }, [searchOpen]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -98,22 +128,24 @@ const Navbar = () => {
             : "bg-transparent"
         }`}
         initial={false}
-        animate={{ height: scrolled ? 56 : 80 }}
+        animate={{ height: scrolled ? 56 : 100 }}
         transition={{ duration: 0.3 }}
       >
         <div className="container-scope flex h-full items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src={logoImg}
-              alt="Scope Ingredients"
-              className="h-10 w-auto object-contain brightness-0 invert"
-              style={{ maxHeight: scrolled ? 36 : 44 }}
-            />
-          </Link>
+          {/* Left: Logo */}
+          <div className="flex flex-1 items-center justify-start">
+            <Link to="/" className="flex flex-col items-center">
+              <img
+                src={logoImg}
+                alt="Scope Ingredients"
+                className="w-auto object-contain transition-all duration-300"
+                style={{ height: scrolled ? 36 : 56 }}
+              />
+            </Link>
+          </div>
 
-          {/* Desktop nav */}
-          <div className="hidden items-center gap-0.5 lg:flex">
+          {/* Center: Desktop nav */}
+          <div className="hidden shrink-0 items-center justify-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
               <div
                 key={link.label}
@@ -192,33 +224,27 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop right: search + CTA */}
-          <div className="hidden items-center gap-3 lg:flex">
+          {/* Right: Actions */}
+          <div className="hidden flex-1 items-center justify-end gap-3 lg:flex">
             {/* Search toggle */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="rounded-full p-2 text-primary-foreground/70 transition-colors hover:bg-primary-light hover:text-accent"
+              className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-primary-foreground/70 transition-colors hover:bg-primary-light hover:text-accent"
               aria-label="Search"
             >
               <Search className="h-4 w-4" />
+              <span className="hidden xl:inline">Search</span>
             </button>
-            <a
-              href="tel:+914440400400"
-              className="flex items-center gap-1.5 font-body text-sm text-primary-foreground/70"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              +91 44 4040 0400
-            </a>
             <Link
               to="/request-sample"
               className="rounded-full bg-accent px-5 py-2 font-display text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-light hover:shadow-lg"
             >
-              Request a Sample
+              Request Sample
             </Link>
           </div>
 
           {/* Mobile: search + hamburger */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex flex-1 items-center justify-end gap-2 lg:hidden">
             <button
               className="rounded-lg p-2 text-primary-foreground"
               onClick={() => setSearchOpen(!searchOpen)}
@@ -236,110 +262,151 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Search bar dropdown */}
+        {/* Search Modal Overlay */}
         <AnimatePresence>
           {searchOpen && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="overflow-hidden border-t border-primary-muted/20 bg-primary/98 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-primary/80 p-4 backdrop-blur-sm"
+              onClick={() => setSearchOpen(false)}
             >
-              <form onSubmit={handleSearch} className="container-scope flex items-center gap-3 py-3">
-                <Search className="h-5 w-5 shrink-0 text-primary-foreground/50" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search products, ingredients, principals..."
-                  className="flex-1 bg-transparent font-body text-sm text-primary-foreground placeholder:text-primary-foreground/40 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
-                  className="rounded-full p-1 text-primary-foreground/50 hover:text-primary-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </form>
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+                className="w-full max-w-2xl overflow-hidden rounded-2xl border border-primary-muted/20 bg-primary shadow-2xl"
+              >
+                <form onSubmit={handleSearch} className="relative flex items-center">
+                  <Search className="absolute left-6 h-6 w-6 text-primary-foreground/50" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={searchPlaceholders[placeholderIndex]}
+                    className="h-20 w-full bg-transparent pl-16 pr-20 font-display text-xl text-primary-foreground placeholder:text-primary-foreground/40 placeholder:transition-opacity placeholder:duration-500 focus:outline-none"
+                  />
+                  <div className="absolute right-4 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { setSearchQuery(""); setSearchOpen(false); }}
+                      className="rounded-full p-2 text-primary-foreground/50 transition-colors hover:bg-primary-light hover:text-primary-foreground"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+                </form>
+                {/* Optional suggestions area could go below here */}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer rendering */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[60] bg-primary pt-20 lg:hidden"
-          >
-            <div className="flex h-full flex-col overflow-y-auto px-6 pb-32">
-              {navLinks.map((link) => (
-                <div key={link.label} className="border-b border-primary-muted/30">
-                  {link.children ? (
-                    <div>
-                      <button
-                        onClick={() => setMobileIndustryOpen(!mobileIndustryOpen)}
-                        className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-primary-foreground"
-                      >
-                        {link.label}
-                        <ChevronDown className={`h-5 w-5 transition-transform ${mobileIndustryOpen ? "rotate-180" : ""}`} />
-                      </button>
-                      <AnimatePresence>
-                        {mobileIndustryOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden pb-4 pl-4"
-                          >
-                            {link.children.map((child) => (
-                              <Link
-                                key={child.label}
-                                to={child.href}
-                                className="block py-2 font-body text-base text-primary-foreground/80 hover:text-accent"
-                                onClick={() => setMobileOpen(false)}
-                              >
-                                {child.label}
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      to={link.href}
-                      className="block py-4 font-display text-lg font-medium text-primary-foreground"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  )}
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm lg:hidden"
+              onClick={() => setMobileOpen(false)}
+            />
+
+            {/* Sliding Drawer element */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 z-[70] w-4/5 max-w-sm border-r border-primary-muted/20 bg-primary pt-6 shadow-2xl lg:hidden"
+            >
+              <div className="flex h-full flex-col overflow-y-auto px-6 pb-8">
+                {/* Header with Close Button */}
+                <div className="mb-6 flex items-center justify-between pb-4 border-b border-primary-muted/20">
+                  <span className="font-display text-lg font-bold text-primary-foreground tracking-wider">MENU</span>
+                  <button
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-full bg-primary-light p-2 text-primary-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    aria-label="Close menu"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
-              ))}
-              <div className="mt-8">
-                <Link
-                  to="/request-sample"
-                  className="block w-full rounded-full bg-accent py-3 text-center font-display text-sm font-semibold text-accent-foreground"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Request a Sample
-                </Link>
+
+                {/* Navigation Links */}
+                <div className="flex-1 space-y-1">
+                  {navLinks.map((link) => (
+                    <div key={link.label} className="border-b border-primary-muted/10 last:border-0">
+                      {link.children ? (
+                        <div>
+                          <button
+                            onClick={() => setMobileIndustryOpen(!mobileIndustryOpen)}
+                            className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-primary-foreground transition-colors hover:text-accent"
+                          >
+                            {link.label}
+                            <ChevronDown className={`h-5 w-5 transition-transform ${mobileIndustryOpen ? "rotate-180 text-accent" : ""}`} />
+                          </button>
+                          <AnimatePresence>
+                            {mobileIndustryOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden pb-4 pl-4"
+                              >
+                                {link.children.map((child) => (
+                                  <Link
+                                    key={child.label}
+                                    to={child.href}
+                                    className="block py-2.5 font-body text-base text-primary-foreground/70 transition-colors hover:text-accent"
+                                    onClick={() => setMobileOpen(false)}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          className="block py-4 font-display text-lg font-medium text-primary-foreground transition-colors hover:text-accent"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer Actions */}
+                <div className="mt-8 space-y-6 pt-6 border-t border-primary-muted/20">
+                  <Link
+                    to="/request-sample"
+                    className="block w-full rounded-full bg-accent py-3.5 text-center font-display text-sm font-semibold text-accent-foreground transition-transform active:scale-95"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Request a Sample
+                  </Link>
+                  <a href="tel:+914440400400" className="flex items-center justify-center gap-2 font-body text-sm text-primary-foreground/60 transition-colors hover:text-accent">
+                    <Phone className="h-4 w-4" /> +91 44 4040 0400
+                  </a>
+                </div>
               </div>
-              <div className="mt-6 flex items-center justify-center gap-4 text-primary-foreground/60">
-                <a href="tel:+914440400400" className="flex items-center gap-2 font-body text-sm">
-                  <Phone className="h-4 w-4" /> +91 44 4040 0400
-                </a>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
