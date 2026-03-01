@@ -11,7 +11,7 @@ interface SEOProps {
 export default function SEO({ 
   title, 
   description, 
-  name = "Scope Brand Builder", 
+  name = "Scope India", 
   type = "website",
   canonical
 }: SEOProps) {
