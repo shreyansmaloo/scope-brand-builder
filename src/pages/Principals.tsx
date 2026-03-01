@@ -1,3 +1,5 @@
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -145,8 +147,19 @@ const Principals = () => {
     </div>
   );
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Principals", url: "https://www.scope-india.com/principals" }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title="Global Principal Representation India | Scope India"
+        description="View our network of global ingredient manufacturers. We provide trusted principal representation in India for pharmaceutical, cosmetic, and food ingredients."
+        canonical="https://www.scope-india.com/principals"
+      />
+      <StructuredData data={breadcrumbSchema} />
       {/* Hero */}
       <section className="bg-primary pt-32 pb-12">
         <div className="container-scope">

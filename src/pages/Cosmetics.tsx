@@ -1,5 +1,13 @@
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema, generateFAQSchema } from "@/components/seo/StructuredData";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ArrowRight, Droplets, Sparkles, FlaskConical, Shield, Sun, Palette, Waves, Beaker } from "lucide-react";
 import { getPartnersByVertical } from "@/data/partners";
 import heroCosmetics from "@/assets/hero-cosmetics.jpg";
@@ -18,10 +26,31 @@ const categories = [
 const Cosmetics = () => {
   const cosPartners = getPartnersByVertical("cosmetics");
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Cosmetics", url: "https://www.scope-india.com/cosmetics" }
+  ]);
+
+  const faqs = [
+    { question: "What cosmetic ingredients and personal care actives do you supply?", answer: "We supply high-performance cosmetic ingredients including rheology modifiers, UV absorbers, natural oils, sustainable silicone alternatives, and botanical extracts suitable for skincare, haircare, and color cosmetics." },
+    { question: "Do you offer sustainable or green cosmetic ingredients?", answer: "Yes, we partner with specialized principals to offer sustainable silicone alternatives, green surfactants, and natural botanical extracts compliant with modern clean beauty standards." },
+    { question: "How do you support cosmetic formulation development?", answer: "Our team works closely with cosmetic formulators to provide innovative ingredient solutions, application data, and sample kits to accelerate product development cycles and ensure superior sensory profiles." }
+  ];
+  const faqSchema = generateFAQSchema(faqs);
+
   return (
     <main>
+      <SEO 
+        title="Cosmetic Ingredient Suppliers India | Scope India"
+        description="Premium cosmetic, personal care, and derma ingredient suppliers in India. We offer high-performance actives and specialty ingredients for formulations."
+        canonical="https://www.scope-india.com/cosmetics"
+      />
+      <StructuredData data={{
+        "@context": "https://schema.org",
+        "@graph": [breadcrumbSchema, faqSchema]
+      }} />
       <section className="relative bg-primary pt-32 pb-20">
-        <img src={heroCosmetics} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
+        <img src={heroCosmetics} alt="Cosmetics formulation and raw materials" className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div className="container-scope relative">
           <p className="font-body text-sm text-primary-foreground/50">
             <Link to="/" className="hover:text-accent">Home</Link> &gt; Cosmetics
@@ -62,8 +91,9 @@ const Cosmetics = () => {
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-card border border-border">
                   <img 
                     src={`/logos/${p.id}.png`} 
-                    alt={p.name}
+                    alt={`${p.name} company logo`}
                     className="h-full w-full object-contain p-2"
+                    loading="lazy"
                     onError={(e) => {
                       const target = e.currentTarget;
                       target.style.display = "none";
@@ -82,6 +112,25 @@ const Cosmetics = () => {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="section-padding bg-background">
+        <div className="container-scope max-w-4xl">
+           <h2 className="font-display text-h2 font-bold text-foreground text-center">Frequently Asked Questions</h2>
+           <Accordion type="single" collapsible className="mt-12 w-full space-y-6">
+             {faqs.map((faq, i) => (
+               <AccordionItem key={i} value={`item-${i}`} className="rounded-2xl border border-border bg-card px-6 transition-all hover:shadow-md overflow-hidden">
+                 <AccordionTrigger className="text-left font-display text-lg font-bold text-foreground hover:no-underline">
+                   {faq.question}
+                 </AccordionTrigger>
+                 <AccordionContent className="font-body text-text-secondary leading-relaxed text-base pt-2 pb-6">
+                   {faq.answer}
+                 </AccordionContent>
+               </AccordionItem>
+             ))}
+           </Accordion>
         </div>
       </section>
 

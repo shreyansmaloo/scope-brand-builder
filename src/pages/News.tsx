@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { articles } from "@/data/news";
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 
 const tagColors: Record<string, string> = {
   Event: "bg-accent text-accent-foreground",
@@ -17,8 +19,19 @@ const News = () => {
 
   const filtered = filter === "All" ? articles : articles.filter((a) => a.category === filter);
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "News & Events", url: "https://www.scope-india.com/news" }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title="News & Events | Scope Ingredients"
+        description="Stay updated with the latest news, events, and press releases from Scope Ingredients in the pharmaceutical, cosmetic, and food industries."
+        canonical="https://www.scope-india.com/news"
+      />
+      <StructuredData data={breadcrumbSchema} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
           <p className="font-body text-sm text-primary-foreground/50">

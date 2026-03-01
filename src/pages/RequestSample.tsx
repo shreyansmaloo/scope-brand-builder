@@ -6,6 +6,8 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { products } from "@/data/products";
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 
 const schema = z.object({
   items: z.array(z.object({
@@ -60,8 +62,19 @@ const RequestSample = () => {
     }
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Request Sample", url: "https://www.scope-india.com/request-sample" }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title="Request Ingredient Samples | Scope Ingredients India"
+        description="Request free samples of pharmaceutical, cosmetic, and food ingredients for your R&D and formulation needs. Quick dispatch across India."
+        canonical="https://www.scope-india.com/request-sample"
+      />
+      <StructuredData data={breadcrumbSchema} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
           <p className="font-body text-sm text-primary-foreground/50">

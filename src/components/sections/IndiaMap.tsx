@@ -21,8 +21,8 @@ const markers: Marker[] = [
     "id": "mumbai-br",
     "name": "Mumbai",
     "type": "warehouse",
-    "x": 18.2,
-    "y": 67.8
+    "x": 17.2,
+    "y": 62.8
   },
   {
     "id": "delhi-br",
@@ -35,50 +35,61 @@ const markers: Marker[] = [
     "id": "hyderabad-br",
     "name": "Hyderabad",
     "type": "warehouse",
-    "x": 38.6,
-    "y": 68.8
+    "x": 35.6,
+    "y": 65.8
   },
   {
     "id": "ahmedabad-br",
     "name": "Ahmedabad",
     "type": "warehouse",
     "x": 15.2,
-    "y": 52.6
+    "y": 48.6
   },
   {
-    "id": "kolkata-br",
-    "name": "Kolkata",
+    "id": "chandigarh-br",
+    "name": "Chandigarh",
     "type": "warehouse",
-    "x": 60.2,
-    "y": 57.8
+    "x": 28.5,
+    "y": 22.0
+  },
+  {
+    "id": "kolkata-sp",
+    "name": "Kolkata",
+    "type": "branch",
+    "x": 68.2,
+    "y": 48.8
+  },
+  {
+    "id": "bangalore-sp",
+    "name": "Bangalore",
+    "type": "branch",
+    "x": 32.0,
+    "y": 80.5
+  },
+  {
+    "id": "indore-sp",
+    "name": "Indore",
+    "type": "branch",
+    "x": 28.0,
+    "y": 50.0
   }
 ];
 
 const legend = [
   {
     "type": "head",
-    "label": "Office Headquarters",
+    "label": "Headquarters & Warehouse",
     "color": "bg-[#22c55e]"
   },
   {
     "type": "warehouse",
-    "label": "Warehouse",
+    "label": "Branch Offices & Warehouses",
     "color": "bg-[#9333ea]"
   },
   {
     "type": "branch",
-    "label": "Branch Offices",
+    "label": "Sales Points",
     "color": "bg-[#3b82f6]"
-  },
-  {
-    "type": "factory",
-    "label": "Factory Point",
-    "color": "bg-[#db2777]"
-  },
-  {
-    "type": "other",
-    "label": "Logistics Hub",
-    "color": "bg-[#f97316]"
   }
 ];
 

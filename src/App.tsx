@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import WhatsAppButton from "./components/layout/WhatsAppButton";
@@ -25,34 +26,36 @@ import Careers from "./pages/Careers";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/pharma" element={<Pharma />} />
-          <Route path="/cosmetics" element={<Cosmetics />} />
-          <Route path="/food" element={<Food />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/request-sample" element={<RequestSample />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/principals" element={<Principals />} />
-          <Route path="/principals/:id" element={<PrincipalDetail />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-        <WhatsAppButton />
-        <MobileBottomBar />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/pharma" element={<Pharma />} />
+            <Route path="/cosmetics" element={<Cosmetics />} />
+            <Route path="/food" element={<Food />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/request-sample" element={<RequestSample />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/principals" element={<Principals />} />
+            <Route path="/principals/:id" element={<PrincipalDetail />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+          <WhatsAppButton />
+          <MobileBottomBar />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

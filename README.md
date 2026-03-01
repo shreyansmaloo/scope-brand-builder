@@ -1,4 +1,4 @@
-# Scope Brand Builder
+# Scope India
 
 This is a Vite + React + TypeScript application.
 

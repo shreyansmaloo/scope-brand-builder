@@ -4,6 +4,8 @@ import { products } from "@/data/products";
 import { motion } from "framer-motion";
 import { ArrowRight, Globe, ArrowLeft, Hexagon } from "lucide-react";
 import NotFound from "./NotFound";
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 
 const PrincipalDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,8 +17,20 @@ const PrincipalDetail = () => {
 
   const partnerProducts = products.filter((product) => product.principal === partner.name);
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Principals", url: "https://www.scope-india.com/principals" },
+    { name: partner.name, url: `https://www.scope-india.com/principals/${partner.id}` }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title={`${partner.name} | Principal Representation India | Scope Ingredients`}
+        description={`Scope Ingredients is the trusted authorized distributor for ${partner.name} in India. Explore their range of ${partner.specialty}.`}
+        canonical={`https://www.scope-india.com/principals/${partner.id}`}
+      />
+      <StructuredData data={breadcrumbSchema} />
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 bg-card border-b border-border/50">
         <div className="container-scope">

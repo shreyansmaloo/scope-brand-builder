@@ -5,6 +5,9 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema, generateLocalBusinessSchema } from "@/components/seo/StructuredData";
+import IndiaMap from "@/components/sections/IndiaMap";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -18,10 +21,8 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-import IndiaMap from "@/components/sections/IndiaMap";
-
 const branches = [
-  { city: "Chennai (HQ)", state: "Tamil Nadu", address: "No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008", phone: "+91 44 40 400 400" },
+  { city: "Chennai (HQ & Warehouse)", state: "Tamil Nadu", address: "No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008", phone: "+91 44 40 400 400" },
   { city: "Mumbai", state: "Maharashtra", address: "No. 22/86, Scope House, Yeshwant Nagar CHSL., Goregaon (West), Mumbai 400062", phone: "+91 22 2871 1323" },
   { city: "Delhi", state: "Delhi", address: "Gali No-7, E-Block, Azad Place, Burari Road, Swaroop Nagar, Delhi 110042", phone: "+91 44 40 400 400" },
   { city: "Hyderabad", state: "Telangana", address: "48, Madhuvan, Paigah Colony, S.P. Road, Secunderabad 500003", phone: "+91 40 2790 1000" },
@@ -40,8 +41,20 @@ const Contact = () => {
     setSubmitted(true);
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Contact", url: "https://www.scope-india.com/contact" }
+  ]);
+  const localBusinessSchema = generateLocalBusinessSchema();
+
   return (
     <main>
+      <SEO 
+        title="Contact Scope Ingredients | Ingredient Suppliers India"
+        description="Get in touch with Scope Ingredients for pharmaceutical, cosmetic, and food raw materials in India. We offer pan-India distribution and support."
+        canonical="https://www.scope-india.com/contact"
+      />
+      <StructuredData data={[breadcrumbSchema, localBusinessSchema]} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
           <p className="font-body text-sm text-primary-foreground/50">

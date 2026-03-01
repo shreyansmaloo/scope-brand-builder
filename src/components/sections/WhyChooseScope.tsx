@@ -30,8 +30,9 @@ const WhyChooseScope = () => {
             >
               <img
                 src={whyChooseImg}
-                alt="Quality control laboratory"
+                alt="Quality control laboratory and analytical testing facility"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </motion.div>
 
@@ -71,11 +72,10 @@ const WhyChooseScope = () => {
           <div>
             <span className="section-tag">✦ Why Choose Us</span>
             <h2 className="mt-6 font-display text-h1 font-bold text-foreground">
-              65 Years of Excipient Expertise
+              Global Principal Representation India
             </h2>
             <p className="mt-4 font-body text-text-secondary leading-relaxed">
-              Scope Ingredients has built a reputation as India's most reliable excipient partner through
-              decades of consistent quality, deep industry expertise, and strong principal relationships.
+              With 65 Years of Excipient Expertise, Scope Ingredients has built a reputation as India's most reliable pharmaceutical raw material supplier and excipient distributor, leveraging deep industry expertise and robust principal representation.
             </p>
 
             <motion.ul

@@ -48,8 +48,9 @@ const IndustryCards = () => {
               >
                 <img
                   src={ind.image}
-                  alt={ind.title}
+                  alt={`${ind.title} industry at Scope India`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent transition-all group-hover:from-primary/95" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">

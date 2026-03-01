@@ -1,3 +1,5 @@
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -74,10 +76,13 @@ function FlaskIcon(props: any) {
 }
 
 const team = [
-  { name: "Vijaylal Kawarlal Jain", title: "Chairman & Founder", linkedin: "#" },
+  { name: "Shri Vijaylal Kawarlal Vaid", title: "Founder & Visionary", linkedin: "#" },
   { name: "Ramesh V Jain", title: "Director", linkedin: "#" },
   { name: "Sachin V Jain", title: "Director", linkedin: "#" },
   { name: "Ashish V Jain", title: "Director", linkedin: "#" },
+  { name: "Ritesh Jain", title: "Executive Director - Personal Care", linkedin: "#" },
+  { name: "Rohit Jain", title: "Executive Director - Personal Care", linkedin: "#" },
+  { name: "Hriday Jain", title: "Executive Director - Food", linkedin: "#" },
 ];
 
 const About = () => {
@@ -90,8 +95,19 @@ const About = () => {
     }
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "About Us", url: "https://www.scope-india.com/about" }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title="About Scope India | Excipient Distributors India"
+        description="Learn about Scope India, India's leading pharmaceutical and cosmetic ingredient supplier. Six decades of excipient excellence & global principal representation."
+        canonical="https://www.scope-india.com/about"
+      />
+      <StructuredData data={breadcrumbSchema} />
       {/* Hero */}
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
@@ -153,10 +169,10 @@ const About = () => {
                 </p>
                 <div className="mt-8 flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary ring-4 ring-accent/20">
-                    <span className="font-display text-lg font-bold text-primary-foreground">VKJ</span>
+                    <span className="font-display text-lg font-bold text-primary-foreground">VKV</span>
                   </div>
                   <div>
-                    <p className="font-display text-base font-semibold text-foreground">Vijaylal Kawarlal Jain</p>
+                    <p className="font-display text-base font-semibold text-foreground">Shri Vijaylal Kawarlal Vaid</p>
                     <p className="font-body text-sm text-accent">Chairman & Founder</p>
                   </div>
                 </div>
@@ -217,12 +233,12 @@ const About = () => {
 
           <div className="relative mt-12">
             {/* Continuous line */}
-            <div className="absolute left-0 right-0 top-[52px] h-[2px] bg-gradient-to-r from-accent/40 via-teal/40 to-accent/40" />
+            <div className="absolute left-0 right-0 top-[84px] h-[2px] bg-gradient-to-r from-accent/40 via-teal/40 to-accent/40" />
 
             <div
               ref={scrollRef}
-              className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
-              style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+              className="flex gap-6 overflow-x-auto pb-8 pt-8 px-4 -mx-4 scrollbar-hide"
+              style={{ WebkitOverflowScrolling: "touch" }}
             >
               {timeline.map((item, i) => (
                 <motion.div
@@ -232,7 +248,7 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                   className="relative flex-shrink-0 group"
-                  style={{ width: 300, scrollSnapAlign: "start" }}
+                  style={{ width: 300 }}
                 >
                   {/* Icon circle on the line */}
                   <div className="relative z-10 mb-8 flex flex-col items-center">
@@ -256,40 +272,127 @@ const About = () => {
         </div>
       </section>
 
-      {/* Leadership */}
-      <section className="section-padding bg-background">
+      {/* Certifications & Compliance */}
+      <section className="section-padding bg-background/50">
         <div className="container-scope">
-          <div className="text-center">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+               <span className="section-tag">Quality & Trust</span>
+               <h2 className="mt-4 font-display text-h2 font-bold text-foreground">Global Standards of Compliance</h2>
+               <p className="mt-4 font-body text-base text-muted-foreground leading-relaxed">
+                 Trust and Transparency are the cornerstones of Scope India. We adhere to the highest global standards for quality management and corporate governance, ensuring our partners receive consistent and safe pharmaceutical and cosmetic ingredients.
+               </p>
+               <ul className="mt-6 space-y-3">
+                 <li className="flex items-center gap-3">
+                   <ShieldCheck className="h-5 w-5 text-accent" />
+                   <span className="font-body text-sm font-semibold text-foreground">ISO 9001:2015 Certified Quality Management</span>
+                 </li>
+                 <li className="flex items-center gap-3">
+                   <ShieldCheck className="h-5 w-5 text-teal" />
+                   <span className="font-body text-sm font-semibold text-foreground">Dun & Bradstreet (D&B) Rated Financial Stability</span>
+                 </li>
+                 <li className="flex items-center gap-3">
+                   <ShieldCheck className="h-5 w-5 text-accent" />
+                   <span className="font-body text-sm font-semibold text-foreground">CRISIL Rated for Corporate Governance</span>
+                 </li>
+                 <li className="flex items-center gap-3">
+                   <ShieldCheck className="h-5 w-5 text-teal" />
+                   <span className="font-body text-sm font-semibold text-foreground">CDSCO Compliant Supply Chain & Warehousing</span>
+                 </li>
+               </ul>
+            </motion.div>
+            <motion.div 
+              className="grid grid-cols-2 gap-4"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+               <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm hover:shadow-md transition-all">
+                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 mb-4">
+                   <Award className="h-8 w-8 text-accent" />
+                 </div>
+                 <h3 className="font-display font-bold text-foreground">ISO 9001</h3>
+                 <p className="font-body text-xs text-muted-foreground mt-1">Certified QMS</p>
+               </div>
+               <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm hover:shadow-md transition-all">
+                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal/10 mb-4">
+                   <Building2 className="h-8 w-8 text-teal" />
+                 </div>
+                 <h3 className="font-display font-bold text-foreground">D&B Rated</h3>
+                 <p className="font-body text-xs text-muted-foreground mt-1">D-U-N-S Registered</p>
+               </div>
+               <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm hover:shadow-md transition-all">
+                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 mb-4">
+                   <Target className="h-8 w-8 text-accent" />
+                 </div>
+                 <h3 className="font-display font-bold text-foreground">CRISIL</h3>
+                 <p className="font-body text-xs text-muted-foreground mt-1">Performance Rated</p>
+               </div>
+               <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm hover:shadow-md transition-all">
+                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal/10 mb-4">
+                   <Globe className="h-8 w-8 text-teal" />
+                 </div>
+                 <h3 className="font-display font-bold text-foreground">Global</h3>
+                 <p className="font-body text-xs text-muted-foreground mt-1">Regulatory Standards</p>
+               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership */}
+      <section className="section-padding bg-zinc-50 dark:bg-zinc-900/40 relative overflow-hidden">
+        {/* Subtle background element */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 h-96 w-96 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 h-96 w-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+        
+        <div className="container-scope relative z-10">
+          <div className="flex flex-col items-start">
             <span className="section-tag">Our People</span>
-            <h2 className="mt-4 font-display text-h2 font-bold text-foreground">Leadership Team</h2>
-            <p className="mx-auto mt-3 max-w-xl font-body text-sm text-muted-foreground">
-              A collective pharma experience of over 160 years, driving Scope's vision for excellence.
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Leadership Team</h2>
+            <p className="mt-3 max-w-2xl text-base text-muted-foreground">
+              A collective pharma experience of over 160 years, driving Scope's vision for excellence and innovation.
             </p>
           </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+          <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full max-w-6xl mx-auto">
             {team.map((member, i) => (
               <motion.div
                 key={member.name}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-1"
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+                className="group relative flex flex-col overflow-hidden rounded-3xl bg-card border border-border/40 shadow-sm transition-all hover:shadow-md hover:-translate-y-1.5"
               >
-                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-primary ring-4 ring-accent/10 transition-all group-hover:ring-accent/30">
-                  <span className="font-display text-2xl font-bold text-primary-foreground">
-                    {member.name.split(" ").map(n => n[0]).join("")}
-                  </span>
+                <div className="h-20 w-full shrink-0 bg-gradient-to-br from-primary/10 to-transparent transition-colors group-hover:from-accent/10" />
+                
+                <div className="relative -mt-10 flex flex-1 flex-col items-center px-5 pb-6">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-sm ring-4 ring-card transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3 shrink-0">
+                    <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
+                      <span className="font-display text-2xl font-bold">
+                        {member.name.split(" ").filter(n => n.length > 0 && n.toLowerCase() !== "shri").map((n, idx) => idx < 2 ? n[0] : "").join("")}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <h4 className="mt-4 font-display text-base font-bold text-foreground text-center leading-tight">{member.name}</h4>
+                  <p className="mt-1.5 font-body text-[10px] font-semibold text-accent tracking-widest uppercase text-center">{member.title}</p>
+                  
+                  <div className="mt-auto w-full pt-5 flex justify-center border-t border-border/50">
+                    <a
+                      href={member.linkedin}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-primary transition-all hover:bg-[#0A66C2] hover:text-white mt-1"
+                      aria-label={`${member.name} LinkedIn`}
+                    >
+                      <Linkedin className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
                 </div>
-                <h3 className="mt-5 font-display text-base font-semibold text-foreground">{member.name}</h3>
-                <p className="mt-1 font-body text-sm text-accent">{member.title}</p>
-                <a
-                  href={member.linkedin}
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary/5 px-3 py-1.5 font-body text-xs text-primary transition-colors hover:bg-accent/10 hover:text-accent"
-                  aria-label={`${member.name} LinkedIn`}
-                >
-                  <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-                </a>
               </motion.div>
             ))}
           </div>
@@ -297,29 +400,42 @@ const About = () => {
       </section>
 
       {/* Expertise Grid */}
-      <section className="section-padding bg-card">
+      <section className="section-padding relative bg-zinc-50 dark:bg-zinc-950/50">
         <div className="container-scope">
-          <div className="text-center">
+          <div className="flex flex-col items-start">
             <span className="section-tag">What We Do</span>
-            <h2 className="mt-4 font-display text-h2 font-bold text-foreground">Our Expertise</h2>
-            <p className="mx-auto mt-3 max-w-2xl font-body text-sm text-muted-foreground">
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Our Core Expertise</h2>
+            <p className="mt-3 max-w-2xl font-body text-base text-muted-foreground">
               Active in the marketing of specialty excipients for all kinds of drug delivery systems, representing the best global manufacturers in their respective areas.
             </p>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          
+          <div className="mt-12 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {expertise.map((item, i) => (
               <motion.div
                 key={item.label}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="rounded-2xl border border-border/50 bg-background p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                transition={{ delay: i * 0.05, duration: 0.3 }}
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-border/50 p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/30"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                  <item.icon className="h-5 w-5 text-accent" />
+                <div className="absolute right-0 top-0 -mr-6 -mt-6 h-24 w-24 rounded-bl-full bg-accent/5 transition-transform duration-700 ease-out group-hover:scale-[2] group-hover:bg-accent/10" />
+                
+                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-[14px] bg-primary/5 text-primary transition-colors duration-300 group-hover:bg-accent group-hover:text-white mb-6">
+                  <item.icon className="h-6 w-6" />
                 </div>
-                <span className="mt-3 block font-body text-sm font-medium text-foreground leading-snug">{item.label}</span>
+                
+                <div className="relative z-10">
+                  <h3 className="font-display text-lg font-bold text-foreground leading-snug pr-2 transition-colors group-hover:text-accent">
+                    {item.label}
+                  </h3>
+                  {/* Fake link arrow just for UI feel */}
+                  <div className="mt-4 flex h-6 items-center justify-start opacity-0 -translate-x-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-accent">
+                    <span className="text-xs font-semibold tracking-wide uppercase">Discover</span>
+                    <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>

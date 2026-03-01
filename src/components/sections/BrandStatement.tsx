@@ -32,7 +32,7 @@ const BrandStatement = () => {
           <div className="lg:w-2/5 lg:sticky lg:top-28">
             <span className="section-tag">✦ Explore by Form</span>
             <h2 className="mt-6 font-display text-h2 font-bold text-foreground">
-              Solutions for Every Dosage Form
+              Pharmaceutical & Cosmetic Ingredients by Dosage Form
             </h2>
             <p className="mt-4 font-body text-base leading-relaxed text-text-secondary">
               From solid oral tablets to injectable parenterals — find the right excipient

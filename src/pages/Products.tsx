@@ -1,3 +1,5 @@
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
@@ -227,8 +229,19 @@ const Products = () => {
     </div>
   );
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://www.scope-india.com" },
+    { name: "Products", url: "https://www.scope-india.com/products" }
+  ]);
+
   return (
     <main>
+      <SEO 
+        title={`${selectedPartner ? selectedPartner.name + " " : ""}Products & Ingredients Catalog | Scope India`}
+        description="Search our full catalog of pharmaceutical, cosmetic, and food ingredients from top global principals in India. Filter by application, dosage form, or industry."
+        canonical="https://www.scope-india.com/products"
+      />
+      <StructuredData data={breadcrumbSchema} />
       {/* Hero */}
       <section className="bg-primary pt-32 pb-12">
         <div className="container-scope">
