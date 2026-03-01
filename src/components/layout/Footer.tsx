@@ -33,15 +33,11 @@ const Footer = () => {
               </a>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <span className="rounded-lg border border-primary-muted/40 px-3 py-1 font-body text-xs text-primary-foreground/50">
-                ISO 9001
-              </span>
-              <span className="rounded-lg border border-primary-muted/40 px-3 py-1 font-body text-xs text-primary-foreground/50">
-                D&B Rated
-              </span>
-              <span className="rounded-lg border border-primary-muted/40 px-3 py-1 font-body text-xs text-primary-foreground/50">
-                CRISIL
-              </span>
+              {["ISO 9001", "D&B Rated", "CRISIL", "cGMP", "HACCP", "Kosher"].map(badge => (
+                <span key={badge} className="rounded-lg border border-primary-muted/40 px-3 py-1 font-body text-xs text-primary-foreground/50">
+                  {badge}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -51,7 +47,7 @@ const Footer = () => {
               Quick Links
             </h4>
             <ul className="mt-4 space-y-3">
-              {["Home", "About", "Products", "News", "Contact"].map((item) => (
+              {["Home", "About", "Products", "News", "Careers", "Contact"].map((item) => (
                 <li key={item}>
                   <Link
                     to={item === "Home" ? "/" : `/${item.toLowerCase()}`}

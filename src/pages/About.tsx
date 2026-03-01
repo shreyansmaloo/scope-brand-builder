@@ -1,21 +1,21 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Target, Eye, Gem, Award, Globe, Truck, GraduationCap, FileText, Users, Handshake, ShieldCheck, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
+import { Target, Eye, Gem, Award, Globe, Truck, GraduationCap, FileText, Users, Handshake, ShieldCheck, Linkedin, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const timeline = [
-  { year: "1959", title: "Founded as Kawarlal Excipients", desc: "Mr. Vijaylal Kawarlal establishes the company in Chennai" },
+  { year: "1959", title: "Founded as Kawarlal Excipients", desc: "Mr. Vijaylal Kawarlal establishes the company in Chennai as a single-window excipient solution provider" },
   { year: "1980s", title: "Cosmetics Expansion", desc: "Entry into personal care and cosmetic ingredients market" },
-  { year: "1990s", title: "Quality Certifications", desc: "ISO certification & Dun & Bradstreet rating achieved" },
-  { year: "2000s", title: "Pan-India Presence", desc: "Operations expand across 5 metro cities" },
-  { year: "2010s", title: "400+ Products", desc: "Portfolio crosses 400 products, Food vertical added" },
-  { year: "2020s", title: "Digital Transformation", desc: "Modern logistics and expanded principal partnerships" },
+  { year: "1990s", title: "Quality Certifications", desc: "ISO 9001:2008 certification & Dun & Bradstreet rating achieved" },
+  { year: "2000s", title: "Pan-India Presence", desc: "Operations expand across 5 metro cities with certified warehouse facilities" },
+  { year: "2010s", title: "400+ Products", desc: "Portfolio crosses 400 products, Food vertical added with global partnerships" },
+  { year: "2020s", title: "Digital Transformation", desc: "Modern logistics, cold chain capabilities and expanded principal partnerships across 3 continents" },
 ];
 
 const values = [
-  { icon: Target, title: "Mission", desc: "To identify and bring the latest products and technologies for pharmaceutical, cosmetic, and food formulations, Health and Wellness.", bg: "bg-primary text-primary-foreground" },
-  { icon: Eye, title: "Vision", desc: "To be India's most trusted and comprehensive excipient partner.", bg: "bg-teal text-teal-foreground" },
-  { icon: Gem, title: "Values", desc: "Trust, Transparency, and Fair Play in every relationship.", bg: "bg-card text-foreground border border-border" },
+  { icon: Target, title: "Mission", desc: "To identify and bring the latest products and technologies for pharmaceutical formulations, Health and Wellness.", bg: "bg-primary text-primary-foreground" },
+  { icon: Eye, title: "Vision", desc: "To conduct our business in a caring, socially and environmentally responsible way.", bg: "bg-teal text-teal-foreground" },
+  { icon: Gem, title: "Values", desc: "Trust, Transparency and Fair Play remains the corner stone of all our relationships.", bg: "bg-card text-foreground border border-border" },
 ];
 
 const expertise = [
@@ -71,6 +71,72 @@ const About = () => {
         </div>
       </section>
 
+      {/* Chairman's Message */}
+      <section className="section-padding bg-background">
+        <div className="container-scope">
+          <div className="mx-auto max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative rounded-3xl border border-border/50 bg-card p-8 md:p-12 shadow-[0_8px_40px_rgba(13,33,55,0.08)]"
+            >
+              <Quote className="absolute top-6 left-6 h-12 w-12 text-accent/20" />
+              <div className="relative z-10">
+                <h2 className="font-display text-h2 font-bold text-foreground">Chairman's Message</h2>
+                <blockquote className="mt-6 font-body text-base leading-relaxed text-muted-foreground italic">
+                  "Social responsibility can change lives for better. As we turn a new leaf, Scope is driven by this simple philosophy which reflects in the way we approach business and clients. Our responsibility begins with our clients first. We go to great detail to procure genuine ingredients from renowned companies and also pass through stringent quality tests; transparent transactions, backed by a professional sales force, ensuring that all business requirements are dealt timely to facilitate one's production schedule."
+                </blockquote>
+                <p className="mt-4 font-body text-sm leading-relaxed text-muted-foreground">
+                  "We strongly believe that good business ethics go a long way in contributing towards the betterment of the society we live in."
+                </p>
+                <div className="mt-8 flex items-center gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary ring-4 ring-accent/20">
+                    <span className="font-display text-lg font-bold text-primary-foreground">VKJ</span>
+                  </div>
+                  <div>
+                    <p className="font-display text-base font-semibold text-foreground">Vijaylal Kawarlal Jain</p>
+                    <p className="font-body text-sm text-accent">Chairman & Founder</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Legacy Section */}
+      <section className="section-padding bg-card">
+        <div className="container-scope">
+          <div className="mx-auto max-w-3xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="font-display text-h2 font-bold text-foreground">Our Legacy</h2>
+              <p className="mt-6 font-body text-base leading-relaxed text-muted-foreground">
+                Scope Ingredients, formerly known as Kawarlal Excipients, was formed in 1959 by Chairman and Promoter, Mr. Vijaylal Kawarlal. The Company was founded with the ambition of providing single window excipients solutions. Now ably managed by a leadership team with a collective pharma experience of over 160 years.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-6">
+                <div className="rounded-2xl border border-accent/20 bg-background px-6 py-4 text-center">
+                  <p className="font-display text-2xl font-bold text-accent">160+</p>
+                  <p className="font-body text-xs text-muted-foreground">Years Collective Experience</p>
+                </div>
+                <div className="rounded-2xl border border-accent/20 bg-background px-6 py-4 text-center">
+                  <p className="font-display text-2xl font-bold text-accent">1959</p>
+                  <p className="font-body text-xs text-muted-foreground">Year Founded</p>
+                </div>
+                <div className="rounded-2xl border border-accent/20 bg-background px-6 py-4 text-center">
+                  <p className="font-display text-2xl font-bold text-accent">400+</p>
+                  <p className="font-body text-xs text-muted-foreground">Products</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Horizontal Timeline */}
       <section className="section-padding bg-background overflow-hidden">
         <div className="container-scope">
@@ -95,9 +161,7 @@ const About = () => {
           </div>
 
           <div className="relative mt-12">
-            {/* Timeline line */}
             <div className="absolute left-0 right-0 top-8 h-0.5 bg-accent/20" />
-
             <div
               ref={scrollRef}
               className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide"
@@ -113,7 +177,6 @@ const About = () => {
                   className="relative flex-shrink-0"
                   style={{ width: 280, scrollSnapAlign: "start" }}
                 >
-                  {/* Dot on timeline */}
                   <div className="relative z-10 mb-6 flex items-center">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent shadow-lg shadow-accent/20">
                       <span className="font-display text-sm font-bold text-accent-foreground">{item.year}</span>
@@ -122,8 +185,6 @@ const About = () => {
                       <div className="ml-2 h-0.5 flex-1 bg-accent/20" />
                     )}
                   </div>
-
-                  {/* Card */}
                   <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-[0_4px_24px_rgba(13,33,55,0.06)]">
                     <h3 className="font-display text-base font-semibold text-foreground">{item.title}</h3>
                     <p className="mt-2 font-body text-sm leading-relaxed text-text-secondary">{item.desc}</p>
@@ -191,6 +252,9 @@ const About = () => {
       <section className="section-padding bg-card">
         <div className="container-scope">
           <h2 className="text-center font-display text-h2 font-bold text-foreground">Our Expertise</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-center font-body text-muted-foreground">
+            Active in the marketing of specialty excipients for all kinds of drug delivery systems, representing the best global manufacturers in their respective areas.
+          </p>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {expertise.map((item, i) => (
               <motion.div
