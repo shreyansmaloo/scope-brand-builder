@@ -119,7 +119,7 @@ const HeroSection = () => {
   const slide = slides[current];
 
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-primary">
+    <section className="relative flex min-h-[100svh] items-center overflow-hidden surface-dark">
       {/* Background images */}
       {slides.map((s, i) => (
         <motion.div
@@ -133,17 +133,17 @@ const HeroSection = () => {
             src={s.image}
             alt=""
             className="h-full w-full object-cover"
-            style={{ filter: "brightness(0.3)" }}
+            style={{ filter: "brightness(0.35)" }}
           />
         </motion.div>
       ))}
 
-      {/* Gradient overlay — dark navy with warm accent gradient */}
+      {/* Warm overlay — charcoal to amber, NO blue */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(13,33,55,0.88) 40%, rgba(13,33,55,0.5) 70%, rgba(232,114,26,0.08) 100%)",
+            "linear-gradient(135deg, rgba(36,28,22,0.85) 35%, rgba(36,28,22,0.55) 65%, rgba(232,114,26,0.18) 100%)",
         }}
       />
 
@@ -162,14 +162,14 @@ const HeroSection = () => {
           <span className="mb-4 inline-block rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 font-body text-sm text-accent">
             {slide.eyebrow}
           </span>
-          <h1 className="font-display text-hero font-bold leading-[1.05] text-primary-foreground">
+          <h1 className="font-display text-hero font-bold leading-[1.05] text-surface-dark-foreground">
             {slide.headline.map((line, i) => (
               <span key={i} className="block">
                 {line}
               </span>
             ))}
           </h1>
-          <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-primary-foreground/70">
+          <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-surface-dark-foreground/80">
             {slide.subtext}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
@@ -182,7 +182,7 @@ const HeroSection = () => {
             </Link>
             <Link
               to={slide.ctaSecondary.href}
-              className="flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 font-display text-sm font-semibold text-primary-foreground transition-all hover:border-primary-foreground/60 hover:bg-primary-foreground/5"
+              className="flex items-center gap-2 rounded-full border border-surface-dark-foreground/30 px-6 py-3 font-display text-sm font-semibold text-surface-dark-foreground transition-all hover:border-accent hover:bg-surface-dark-foreground/5"
             >
               {slide.ctaSecondary.label}
             </Link>
@@ -196,7 +196,7 @@ const HeroSection = () => {
               key={i}
               onClick={() => setCurrent(i)}
               className={`h-2 rounded-full transition-all ${
-                i === current ? "w-8 bg-accent" : "w-2 bg-primary-foreground/30"
+                i === current ? "w-8 bg-accent" : "w-2 bg-surface-dark-foreground/30"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />

@@ -6,62 +6,66 @@
 
 @layer base {
   :root {
-    /* Primary — Deep Slate Navy */
-    --background: 228 45% 97%;
-    --foreground: 210 54% 11%;
+    /* === SCOPE BRAND PALETTE — White + Orange + Yellow only === */
+    /* Backgrounds: warm white / soft cream */
+    --background: 36 33% 98%;
+    --foreground: 24 18% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 54% 11%;
+    --card-foreground: 24 18% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 54% 11%;
+    --popover-foreground: 24 18% 14%;
 
-    --primary: 210 63% 13%;
-    --primary-foreground: 228 45% 97%;
+    /* PRIMARY — Brand orange (logo burst) */
+    --primary: 25 90% 53%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 30 95% 60%;
+    --primary-muted: 32 60% 88%;
 
-    --secondary: 210 55% 20%;
-    --secondary-foreground: 228 45% 97%;
+    /* SECONDARY — Warm light cream */
+    --secondary: 36 50% 95%;
+    --secondary-foreground: 24 30% 20%;
 
-    /* Accent — Warm Amber/Burnt Orange */
-    --accent: 25 83% 51%;
+    /* ACCENT — same as primary, warm orange */
+    --accent: 25 90% 53%;
     --accent-foreground: 0 0% 100%;
+    --accent-light: 32 95% 62%;
+    --accent-pale: 36 90% 95%;
 
-    /* Teal */
-    --teal: 173 100% 35%;
-    --teal-foreground: 0 0% 100%;
-    --teal-light: 173 100% 42%;
-    --teal-pale: 173 70% 94%;
+    /* TEAL slot is now repurposed to YELLOW (logo highlight) */
+    --teal: 42 100% 55%;
+    --teal-foreground: 24 30% 15%;
+    --teal-light: 45 100% 65%;
+    --teal-pale: 45 100% 95%;
 
-    /* Accent extended */
-    --accent-light: 29 91% 57%;
-    --accent-pale: 29 93% 95%;
+    --muted: 36 20% 94%;
+    --muted-foreground: 24 8% 42%;
 
-    /* Primary extended */
-    --primary-light: 210 55% 20%;
-    --primary-muted: 210 59% 29%;
-
-    --muted: 216 24% 91%;
-    --muted-foreground: 212 12% 59%;
-
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 75% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 216 24% 91%;
-    --input: 216 24% 91%;
-    --ring: 25 83% 51%;
+    --border: 32 25% 90%;
+    --input: 32 25% 90%;
+    --ring: 25 90% 53%;
 
     --radius: 1rem;
 
-    --text-secondary: 218 17% 35%;
+    --text-secondary: 24 12% 32%;
 
-    --sidebar-background: 210 63% 13%;
-    --sidebar-foreground: 228 45% 97%;
-    --sidebar-primary: 25 83% 51%;
+    /* Dark surface used for footer/hero — warm charcoal/brown, NO blue */
+    --surface-dark: 24 18% 14%;
+    --surface-dark-foreground: 36 33% 98%;
+    --surface-dark-muted: 24 12% 28%;
+
+    --sidebar-background: 24 18% 14%;
+    --sidebar-foreground: 36 33% 98%;
+    --sidebar-primary: 25 90% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 55% 20%;
-    --sidebar-accent-foreground: 228 45% 97%;
-    --sidebar-border: 210 59% 29%;
-    --sidebar-ring: 25 83% 51%;
+    --sidebar-accent: 24 12% 22%;
+    --sidebar-accent-foreground: 36 33% 98%;
+    --sidebar-border: 24 12% 28%;
+    --sidebar-ring: 25 90% 53%;
   }
 }
 
@@ -86,24 +90,36 @@
 
 @layer components {
   .section-padding {
-    @apply py-20 lg:py-28;
+    @apply py-16 lg:py-24;
   }
 
+  /* FULL-WIDTH container — only horizontal padding, no max-width */
   .container-scope {
-    @apply mx-auto max-w-[1280px] px-6 lg:px-16;
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-10 xl:px-14;
+  }
+
+  /* Optional bounded variant when needed */
+  .container-bounded {
+    @apply mx-auto max-w-[1480px] px-4 sm:px-6 lg:px-10 xl:px-14;
   }
 
   .section-tag {
-    @apply inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-pale px-4 py-1.5 text-sm font-medium text-accent;
+    @apply inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-pale px-4 py-1.5 text-sm font-medium text-accent;
     font-family: 'Sora', sans-serif;
   }
 
   .card-scope {
-    @apply rounded-2xl bg-card shadow-[0_4px_24px_rgba(13,33,55,0.08)] transition-all duration-300;
+    @apply rounded-2xl bg-card shadow-[0_4px_24px_rgba(180,90,20,0.08)] transition-all duration-300;
   }
 
   .card-scope:hover {
-    @apply shadow-[0_12px_40px_rgba(13,33,55,0.16)] -translate-y-1;
+    @apply shadow-[0_12px_40px_rgba(180,90,20,0.18)] -translate-y-1;
+  }
+
+  /* Surfaces for warm-dark sections (footer, hero) */
+  .surface-dark {
+    background-color: hsl(var(--surface-dark));
+    color: hsl(var(--surface-dark-foreground));
   }
 
   /* Marquee animation */
@@ -115,27 +131,17 @@
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
   }
-  .animate-marquee-left {
-    animation: marquee-left 30s linear infinite;
-  }
-  .animate-marquee-right {
-    animation: marquee-right 30s linear infinite;
-  }
+  .animate-marquee-left { animation: marquee-left 30s linear infinite; }
+  .animate-marquee-right { animation: marquee-right 30s linear infinite; }
   .animate-marquee-left:hover,
-  .animate-marquee-right:hover {
-    animation-play-state: paused;
-  }
+  .animate-marquee-right:hover { animation-play-state: paused; }
 
-  /* Float animation for badges */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
+  .animate-float { animation: float 3s ease-in-out infinite; }
 
-  /* Pulse ring for WhatsApp */
   @keyframes pulse-ring {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(1.5); opacity: 0; }
@@ -144,12 +150,9 @@
     animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Hide scrollbar utility */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
