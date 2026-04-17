@@ -123,9 +123,7 @@ const Navbar = () => {
     <>
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          navBg
-            ? "bg-primary/95 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
+          navBg ? "bg-surface-dark/95 backdrop-blur-md shadow-lg" : "bg-transparent"
         }`}
         initial={false}
         animate={{ height: scrolled ? 56 : 100 }}
@@ -158,7 +156,7 @@ const Navbar = () => {
                     className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
                       ["/pharma", "/cosmetics", "/food"].includes(location.pathname)
                         ? "text-accent"
-                        : "text-primary-foreground/80 hover:text-accent"
+                        : "text-surface-dark-foreground/85 hover:text-accent"
                     }`}
                   >
                     {link.label}
@@ -170,7 +168,7 @@ const Navbar = () => {
                     className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
                       location.pathname === link.href
                         ? "text-accent"
-                        : "text-primary-foreground/80 hover:text-accent"
+                        : "text-surface-dark-foreground/85 hover:text-accent"
                     }`}
                   >
                     {link.label}
@@ -226,10 +224,9 @@ const Navbar = () => {
 
           {/* Right: Actions */}
           <div className="hidden flex-1 items-center justify-end gap-3 lg:flex">
-            {/* Search toggle */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-primary-foreground/70 transition-colors hover:bg-primary-light hover:text-accent"
+              className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-surface-dark-foreground/75 transition-colors hover:bg-surface-dark-muted hover:text-accent"
               aria-label="Search"
             >
               <Search className="h-4 w-4" />
@@ -243,17 +240,16 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile: search + hamburger */}
           <div className="flex flex-1 items-center justify-end gap-2 lg:hidden">
             <button
-              className="rounded-lg p-2 text-primary-foreground"
+              className="rounded-lg p-2 text-surface-dark-foreground"
               onClick={() => setSearchOpen(!searchOpen)}
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
             </button>
             <button
-              className="rounded-lg p-2 text-primary-foreground"
+              className="rounded-lg p-2 text-surface-dark-foreground"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -270,7 +266,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-primary/80 p-4 backdrop-blur-sm"
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-surface-dark/80 p-4 backdrop-blur-sm"
               onClick={() => setSearchOpen(false)}
             >
               <motion.div
@@ -279,23 +275,23 @@ const Navbar = () => {
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-2xl overflow-hidden rounded-2xl border border-primary-muted/20 bg-primary shadow-2xl"
+                className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
               >
                 <form onSubmit={handleSearch} className="relative flex items-center">
-                  <Search className="absolute left-6 h-6 w-6 text-primary-foreground/50" />
+                  <Search className="absolute left-6 h-6 w-6 text-muted-foreground" />
                   <input
                     ref={searchInputRef}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={searchPlaceholders[placeholderIndex]}
-                    className="h-20 w-full bg-transparent pl-16 pr-20 font-display text-xl text-primary-foreground placeholder:text-primary-foreground/40 placeholder:transition-opacity placeholder:duration-500 focus:outline-none"
+                    className="h-20 w-full bg-transparent pl-16 pr-20 font-display text-xl text-foreground placeholder:text-muted-foreground focus:outline-none"
                   />
                   <div className="absolute right-4 flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => { setSearchQuery(""); setSearchOpen(false); }}
-                      className="rounded-full p-2 text-primary-foreground/50 transition-colors hover:bg-primary-light hover:text-primary-foreground"
+                      className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                     >
                       <X className="h-5 w-5" />
                     </button>
@@ -328,30 +324,28 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 left-0 z-[70] w-4/5 max-w-sm border-r border-primary-muted/20 bg-primary pt-6 shadow-2xl lg:hidden"
+              className="fixed inset-y-0 left-0 z-[70] w-4/5 max-w-sm border-r border-surface-dark-muted bg-surface-dark pt-6 shadow-2xl lg:hidden"
             >
               <div className="flex h-full flex-col overflow-y-auto px-6 pb-8">
-                {/* Header with Close Button */}
-                <div className="mb-6 flex items-center justify-between pb-4 border-b border-primary-muted/20">
-                  <span className="font-display text-lg font-bold text-primary-foreground tracking-wider">MENU</span>
+                <div className="mb-6 flex items-center justify-between pb-4 border-b border-surface-dark-muted">
+                  <span className="font-display text-lg font-bold text-surface-dark-foreground tracking-wider">MENU</span>
                   <button
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-full bg-primary-light p-2 text-primary-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    className="rounded-full bg-surface-dark-muted p-2 text-surface-dark-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                     aria-label="Close menu"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
 
-                {/* Navigation Links */}
                 <div className="flex-1 space-y-1">
                   {navLinks.map((link) => (
-                    <div key={link.label} className="border-b border-primary-muted/10 last:border-0">
+                    <div key={link.label} className="border-b border-surface-dark-muted/40 last:border-0">
                       {link.children ? (
                         <div>
                           <button
                             onClick={() => setMobileIndustryOpen(!mobileIndustryOpen)}
-                            className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-primary-foreground transition-colors hover:text-accent"
+                            className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-surface-dark-foreground transition-colors hover:text-accent"
                           >
                             {link.label}
                             <ChevronDown className={`h-5 w-5 transition-transform ${mobileIndustryOpen ? "rotate-180 text-accent" : ""}`} />
@@ -368,7 +362,7 @@ const Navbar = () => {
                                   <Link
                                     key={child.label}
                                     to={child.href}
-                                    className="block py-2.5 font-body text-base text-primary-foreground/70 transition-colors hover:text-accent"
+                                    className="block py-2.5 font-body text-base text-surface-dark-foreground/75 transition-colors hover:text-accent"
                                     onClick={() => setMobileOpen(false)}
                                   >
                                     {child.label}
@@ -381,7 +375,7 @@ const Navbar = () => {
                       ) : (
                         <Link
                           to={link.href}
-                          className="block py-4 font-display text-lg font-medium text-primary-foreground transition-colors hover:text-accent"
+                          className="block py-4 font-display text-lg font-medium text-surface-dark-foreground transition-colors hover:text-accent"
                           onClick={() => setMobileOpen(false)}
                         >
                           {link.label}
@@ -391,8 +385,7 @@ const Navbar = () => {
                   ))}
                 </div>
 
-                {/* Footer Actions */}
-                <div className="mt-8 space-y-6 pt-6 border-t border-primary-muted/20">
+                <div className="mt-8 space-y-6 pt-6 border-t border-surface-dark-muted/40">
                   <Link
                     to="/request-sample"
                     className="block w-full rounded-full bg-accent py-3.5 text-center font-display text-sm font-semibold text-accent-foreground transition-transform active:scale-95"
@@ -400,7 +393,7 @@ const Navbar = () => {
                   >
                     Request a Sample
                   </Link>
-                  <a href="tel:+914440400400" className="flex items-center justify-center gap-2 font-body text-sm text-primary-foreground/60 transition-colors hover:text-accent">
+                  <a href="tel:+914440400400" className="flex items-center justify-center gap-2 font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-accent">
                     <Phone className="h-4 w-4" /> +91 44 4040 0400
                   </a>
                 </div>
