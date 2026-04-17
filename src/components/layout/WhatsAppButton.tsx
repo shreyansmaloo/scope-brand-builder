@@ -10,7 +10,7 @@ const WhatsAppButton = () => {
       href="https://wa.me/914440400400"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-24 right-6 z-50 flex items-center gap-2 lg:bottom-8"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Chat with us on WhatsApp"
@@ -29,9 +29,9 @@ const WhatsAppButton = () => {
       </AnimatePresence>
 
       <div className="relative">
-        <div className="absolute inset-0 rounded-full bg-teal animate-pulse-ring" />
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-teal shadow-lg transition-transform hover:scale-110">
-          <MessageCircle className="h-7 w-7 text-teal-foreground" />
+        <div className="absolute inset-0 rounded-full bg-accent animate-pulse-ring" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent shadow-lg transition-transform hover:scale-110">
+          <MessageCircle className="h-7 w-7 text-accent-foreground" />
         </div>
       </div>
     </a>

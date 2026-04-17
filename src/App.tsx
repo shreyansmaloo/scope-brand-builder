@@ -7,7 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import WhatsAppButton from "./components/layout/WhatsAppButton";
-import MobileBottomBar from "./components/layout/MobileBottomBar";
+// MobileBottomBar removed per client request
 import ScrollToTop from "./components/layout/ScrollToTop";
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -51,7 +51,7 @@ const App = () => (
           </Routes>
           <Footer />
           <WhatsAppButton />
-          <MobileBottomBar />
+          
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
