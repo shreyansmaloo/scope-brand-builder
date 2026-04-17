@@ -10,54 +10,27 @@ import {
 } from "lucide-react";
 
 const timeline = [
-  {
-    year: "1959",
-    title: "Founded as Kawarlal Excipients",
-    desc: "Mr. Vijaylal Kawarlal establishes the company in Chennai as a single-window excipient solution provider",
-    icon: Building2,
-    color: "from-accent to-accent-light",
-  },
-  {
-    year: "1980s",
-    title: "Cosmetics Expansion",
-    desc: "Entry into personal care and cosmetic ingredients market",
-    icon: Beaker,
-    color: "from-teal to-teal-light",
-  },
-  {
-    year: "1990s",
-    title: "Quality Certifications",
-    desc: "ISO 9001:2008 certification & Dun & Bradstreet rating achieved",
-    icon: ShieldCheck,
-    color: "from-accent to-accent-light",
-  },
-  {
-    year: "2000s",
-    title: "Pan-India Presence",
-    desc: "Operations expand across 5 metro cities with certified warehouse facilities",
-    icon: Globe,
-    color: "from-teal to-teal-light",
-  },
-  {
-    year: "2010s",
-    title: "400+ Products",
-    desc: "Portfolio crosses 400 products, Food vertical added with global partnerships",
-    icon: Leaf,
-    color: "from-accent to-accent-light",
-  },
-  {
-    year: "2020s",
-    title: "Digital Transformation",
-    desc: "Modern logistics, cold chain capabilities and expanded principal partnerships across 3 continents",
-    icon: Truck,
-    color: "from-teal to-teal-light",
-  },
+  { year: "1959", title: "Entrepreneurship Begins", desc: "Late Vijay Kawarlal Jain leaves his job to start his own venture, founded on integrity and trust.", icon: Building2, color: "from-accent to-accent-light" },
+  { year: "1965", title: "Chemical Trading", desc: "Began chemical trading in Chennai's local markets.", icon: Beaker, color: "from-teal to-teal-light" },
+  { year: "1971", title: "Pharma Excipients", desc: "Entered the pharmaceutical excipients distribution business.", icon: ShieldCheck, color: "from-accent to-accent-light" },
+  { year: "1975", title: "Pan-India Distribution", desc: "Pan-India sales established through a robust distributor network.", icon: Globe, color: "from-teal to-teal-light" },
+  { year: "1980", title: "Global Imports", desc: "Began importing excipients from global markets.", icon: Truck, color: "from-accent to-accent-light" },
+  { year: "1990", title: "Mumbai Office", desc: "Mumbai branch office and warehouse established.", icon: Building2, color: "from-teal to-teal-light" },
+  { year: "1995", title: "Delhi & Hyderabad", desc: "Branch offices opened in Delhi and Hyderabad.", icon: Globe, color: "from-accent to-accent-light" },
+  { year: "2004", title: "Manufacturing Begins", desc: "Started excipients manufacturing at the Valsad factory.", icon: Beaker, color: "from-teal to-teal-light" },
+  { year: "2006", title: "Food Division", desc: "Launched a dedicated food ingredients division.", icon: Leaf, color: "from-accent to-accent-light" },
+  { year: "2008", title: "Ahmedabad Operations", desc: "Ahmedabad office and warehouse operations started.", icon: Building2, color: "from-teal to-teal-light" },
+  { year: "2010", title: "Cosmetic Ingredients", desc: "Entered cosmetic ingredients and personal care.", icon: Beaker, color: "from-accent to-accent-light" },
+  { year: "2015", title: "Baroda Facility", desc: "Second manufacturing facility established in Baroda.", icon: ShieldCheck, color: "from-teal to-teal-light" },
+  { year: "2020", title: "50+ Brands", desc: "Representing 50+ global brands across India.", icon: Handshake, color: "from-accent to-accent-light" },
+  { year: "2022", title: "Exports Begin", desc: "Began exports to international markets.", icon: Globe, color: "from-teal to-teal-light" },
+  { year: "2025", title: "US Office", desc: "United States branch office established.", icon: Building2, color: "from-accent to-accent-light" },
 ];
 
 const values = [
-  { icon: Target, title: "Mission", desc: "To identify and bring the latest products and technologies for pharmaceutical formulations, Health and Wellness.", bg: "bg-primary text-primary-foreground" },
-  { icon: Eye, title: "Vision", desc: "To conduct our business in a caring, socially and environmentally responsible way.", bg: "bg-teal text-teal-foreground" },
-  { icon: Gem, title: "Values", desc: "Trust, Transparency and Fair Play remains the corner stone of all our relationships.", bg: "bg-accent text-accent-foreground" },
+  { icon: Target, title: "Mission", desc: "To curate and deliver world-class products and advanced technologies for pharmaceutical formulations, health, and wellness.", bg: "bg-accent text-accent-foreground" },
+  { icon: Eye, title: "Values", desc: "Trust, transparency, and integrity are the enduring pillars that define every relationship we foster.", bg: "bg-surface-dark text-surface-dark-foreground" },
+  { icon: Gem, title: "Experience", desc: "Elevating your business through the depth and distinction of over 175 years of collective industry expertise.", bg: "bg-teal text-teal-foreground" },
 ];
 
 const expertise = [
@@ -109,29 +82,28 @@ const About = () => {
       />
       <StructuredData data={breadcrumbSchema} />
       {/* Hero */}
-      <section className="bg-primary pt-32 pb-20">
+      <section className="surface-dark pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
+          <p className="font-body text-sm text-surface-dark-foreground/60">
             <Link to="/" className="hover:text-accent">Home</Link> &gt; About Us
           </p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 font-display text-h1 font-bold text-primary-foreground"
+            className="mt-4 font-display text-h1 font-bold text-surface-dark-foreground"
           >
             Six Decades of Excipient Excellence
           </motion.h1>
-          <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
-            From a single-window operation in 1959 to India's most comprehensive excipient partner
+          <p className="mt-4 max-w-xl font-body text-lg text-surface-dark-foreground/70">
+            From a single-window operation in 1959 to India's most comprehensive excipient partner.
           </p>
 
-          {/* Legacy stats inline in hero */}
           <div className="mt-10 flex flex-wrap gap-8">
             {[
               { value: "1959", label: "Year Founded" },
-              { value: "160+", label: "Years Collective Experience" },
+              { value: "175+", label: "Years Collective Experience" },
               { value: "400+", label: "Products" },
-              { value: "35+", label: "Global Principals" },
+              { value: "50+", label: "Global Brands" },
             ].map((stat) => (
               <motion.div
                 key={stat.label}
@@ -140,7 +112,7 @@ const About = () => {
                 transition={{ delay: 0.3 }}
               >
                 <p className="font-display text-3xl font-bold text-accent">{stat.value}</p>
-                <p className="font-body text-xs text-primary-foreground/50">{stat.label}</p>
+                <p className="font-body text-xs text-surface-dark-foreground/60">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -162,10 +134,10 @@ const About = () => {
               <div className="relative z-10">
                 <span className="section-tag">Chairman's Message</span>
                 <blockquote className="mt-6 font-body text-base leading-relaxed text-muted-foreground italic">
-                  "Social responsibility can change lives for better. As we turn a new leaf, Scope is driven by this simple philosophy which reflects in the way we approach business and clients. Our responsibility begins with our clients first. We go to great detail to procure genuine ingredients from renowned companies and also pass through stringent quality tests; transparent transactions, backed by a professional sales force, ensuring that all business requirements are dealt timely to facilitate one's production schedule."
+                  "The foundation of our company is rooted in the vision and values of Late Vijay Kawarlal Jain, whose entrepreneurial journey was driven by integrity, trust, and a deep sense of responsibility toward customers. He believed that true success in business comes from delivering genuine products, maintaining transparent relationships, and consistently supporting client needs."
                 </blockquote>
                 <p className="mt-4 font-body text-sm leading-relaxed text-muted-foreground">
-                  "We strongly believe that good business ethics go a long way in contributing towards the betterment of the society we live in."
+                  "At Scope, our responsibility begins with our clients. We ensure the procurement of high-quality ingredients from globally reputed manufacturers, with every product undergoing stringent quality checks. We also strongly believe that ethical business practices contribute to the betterment of society."
                 </p>
                 <div className="mt-8 flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary ring-4 ring-accent/20">
