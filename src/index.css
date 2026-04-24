@@ -6,66 +6,73 @@
 
 @layer base {
   :root {
-    /* === SCOPE BRAND PALETTE — White + Orange + Yellow only === */
-    /* Backgrounds: warm white / soft cream */
-    --background: 36 33% 98%;
-    --foreground: 24 18% 14%;
+    /* === SCOPE OFFICIAL BRAND PALETTE ===
+       Golden Yellow  #F0A500  hsl(41 100% 47%)
+       Orange         #E67E22  hsl(28 80% 52%)
+       Deep Orange    #D96B1B  hsl(25 78% 48%)
+       Light Grey BG  #F2F2F2  hsl(0 0% 95%)
+       Dark Text      #1A1A1A  hsl(0 0% 10%)
+    */
+
+    /* Backgrounds: pure white + light grey supporting surface */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 24 18% 14%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 24 18% 14%;
+    --popover-foreground: 0 0% 10%;
 
-    /* PRIMARY — Brand orange (logo burst) */
-    --primary: 25 90% 53%;
+    /* PRIMARY — Brand Orange #E67E22 */
+    --primary: 28 80% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 30 95% 60%;
-    --primary-muted: 32 60% 88%;
+    --primary-light: 28 85% 60%;
+    --primary-muted: 28 60% 92%;
 
-    /* SECONDARY — Warm light cream */
-    --secondary: 36 50% 95%;
-    --secondary-foreground: 24 30% 20%;
+    /* SECONDARY — Light Grey #F2F2F2 */
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 10%;
 
-    /* ACCENT — same as primary, warm orange */
-    --accent: 25 90% 53%;
+    /* ACCENT — Deep Orange #D96B1B */
+    --accent: 25 78% 48%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 32 95% 62%;
-    --accent-pale: 36 90% 95%;
+    --accent-light: 28 80% 52%;
+    --accent-pale: 28 70% 95%;
 
-    /* TEAL slot is now repurposed to YELLOW (logo highlight) */
-    --teal: 42 100% 55%;
-    --teal-foreground: 24 30% 15%;
-    --teal-light: 45 100% 65%;
-    --teal-pale: 45 100% 95%;
+    /* TEAL slot repurposed to Golden Yellow #F0A500 */
+    --teal: 41 100% 47%;
+    --teal-foreground: 0 0% 10%;
+    --teal-light: 41 100% 58%;
+    --teal-pale: 41 100% 94%;
 
-    --muted: 36 20% 94%;
-    --muted-foreground: 24 8% 42%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 35%;
 
     --destructive: 0 75% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 25% 90%;
-    --input: 32 25% 90%;
-    --ring: 25 90% 53%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 28 80% 52%;
 
     --radius: 1rem;
 
-    --text-secondary: 24 12% 32%;
+    --text-secondary: 0 0% 25%;
 
-    /* Dark surface used for footer/hero — warm charcoal/brown, NO blue */
-    --surface-dark: 24 18% 14%;
-    --surface-dark-foreground: 36 33% 98%;
-    --surface-dark-muted: 24 12% 28%;
+    /* Dark surface used for footer/hero — Dark Text #1A1A1A */
+    --surface-dark: 0 0% 10%;
+    --surface-dark-foreground: 0 0% 100%;
+    --surface-dark-muted: 0 0% 20%;
 
-    --sidebar-background: 24 18% 14%;
-    --sidebar-foreground: 36 33% 98%;
-    --sidebar-primary: 25 90% 53%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 28 80% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 24 12% 22%;
-    --sidebar-accent-foreground: 36 33% 98%;
-    --sidebar-border: 24 12% 28%;
-    --sidebar-ring: 25 90% 53%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 28 80% 52%;
   }
 }
 
