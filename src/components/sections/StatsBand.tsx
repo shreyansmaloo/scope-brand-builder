@@ -32,7 +32,7 @@ const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
   }, [inView, target]);
 
   return (
-    <span ref={ref} className="font-display text-4xl font-extrabold text-accent lg:text-5xl">
+    <span ref={ref} className="font-display text-4xl font-extrabold text-primary-foreground lg:text-5xl">
       {count}
       {suffix}
     </span>
@@ -51,10 +51,10 @@ const StatsBand = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="flex flex-col items-center text-center lg:border-r lg:border-primary-muted/20 lg:last:border-r-0"
+              className="flex flex-col items-center text-center lg:border-r lg:border-primary-foreground/20 lg:last:border-r-0"
             >
               <Counter target={stat.value} suffix={stat.suffix} />
-              <span className="mt-2 font-body text-sm text-primary-foreground/60">
+              <span className="mt-2 font-body text-sm font-medium text-primary-foreground/90">
                 {stat.label}
               </span>
             </motion.div>
