@@ -79,7 +79,7 @@ const FloatingShapes = () => (
     {/* Abstract gradient blob */}
     <motion.div
       className="absolute -left-32 bottom-1/4 h-80 w-80 rounded-full opacity-[0.07]"
-      style={{ background: "radial-gradient(circle, hsl(25, 83%, 51%), transparent 70%)", filter: "blur(60px)" }}
+      style={{ background: "radial-gradient(circle, hsl(var(--primary)), transparent 70%)", filter: "blur(60px)" }}
       animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
       transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
     />
@@ -138,12 +138,12 @@ const HeroSection = () => {
         </motion.div>
       ))}
 
-      {/* Warm overlay — charcoal to amber, NO blue */}
+      {/* Dark-to-orange brand overlay for contrast */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(36,28,22,0.85) 35%, rgba(36,28,22,0.55) 65%, rgba(232,114,26,0.18) 100%)",
+            "linear-gradient(135deg, hsl(var(--surface-dark) / 0.9) 35%, hsl(var(--surface-dark) / 0.65) 65%, hsl(var(--primary) / 0.25) 100%)",
         }}
       />
 

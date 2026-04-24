@@ -317,7 +317,7 @@ const About = () => {
       </section>
 
       {/* Leadership */}
-      <section className="section-padding bg-zinc-50 dark:bg-zinc-900/40 relative overflow-hidden">
+      <section className="section-padding bg-secondary relative overflow-hidden">
         {/* Subtle background element */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 h-96 w-96 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 h-96 w-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
@@ -358,7 +358,7 @@ const About = () => {
                   <div className="mt-auto w-full pt-5 flex justify-center border-t border-border/50">
                     <a
                       href={member.linkedin}
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-primary transition-all hover:bg-[#0A66C2] hover:text-white mt-1"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary transition-all hover:bg-primary hover:text-primary-foreground mt-1"
                       aria-label={`${member.name} LinkedIn`}
                     >
                       <Linkedin className="h-3.5 w-3.5" />
@@ -372,7 +372,7 @@ const About = () => {
       </section>
 
       {/* Expertise Grid */}
-      <section className="section-padding relative bg-zinc-50 dark:bg-zinc-950/50">
+      <section className="section-padding relative bg-secondary">
         <div className="container-scope">
           <div className="flex flex-col items-start">
             <span className="section-tag">What We Do</span>
@@ -390,7 +390,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.3 }}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-border/50 p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/30"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card border border-border/50 p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/30"
               >
                 <div className="absolute right-0 top-0 -mr-6 -mt-6 h-24 w-24 rounded-bl-full bg-accent/5 transition-transform duration-700 ease-out group-hover:scale-[2] group-hover:bg-accent/10" />
                 

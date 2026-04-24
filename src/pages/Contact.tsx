@@ -196,7 +196,7 @@ const Contact = () => {
       </section>
 
       {/* Network Presence Section */}
-      <section className="section-padding bg-slate-50 overflow-hidden">
+      <section className="section-padding bg-secondary overflow-hidden">
         <div className="container-scope">
           <div className="mb-12 text-center lg:text-left">
             <h2 className="font-display text-h2 font-bold text-foreground">Our Network Across India</h2>
