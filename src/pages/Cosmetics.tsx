@@ -67,13 +67,13 @@ const Cosmetics = () => {
       <section className="section-padding bg-background">
         <div className="container-scope">
           <h2 className="font-display text-h2 font-bold text-foreground">Explore by Category</h2>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {categories.map((cat, i) => (
-              <motion.div key={cat.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="card-scope group p-6">
-                <cat.icon className="h-8 w-8 text-teal" />
-                <h3 className="mt-3 font-display text-base font-semibold text-foreground">{cat.name}</h3>
-                <p className="mt-1 font-body text-sm text-text-secondary">{cat.desc}</p>
-                <Link to={`/products?category=${encodeURIComponent(cat.name)}`} className="mt-3 inline-flex items-center gap-1 font-body text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100">
+              <motion.div key={cat.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="card-scope group p-4 sm:p-6">
+                <cat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-teal" />
+                <h3 className="mt-3 font-display text-sm sm:text-base font-semibold text-foreground">{cat.name}</h3>
+                <p className="mt-1 font-body text-xs sm:text-sm text-text-secondary">{cat.desc}</p>
+                <Link to={`/products?category=${encodeURIComponent(cat.name)}`} className="mt-3 inline-flex items-center gap-1 font-body text-xs sm:text-sm text-accent opacity-0 transition-opacity group-hover:opacity-100">
                   View Products <ArrowRight className="h-3 w-3" />
                 </Link>
               </motion.div>
@@ -85,9 +85,9 @@ const Cosmetics = () => {
       <section className="section-padding bg-card">
         <div className="container-scope">
           <h2 className="font-display text-h2 font-bold text-foreground">Cosmetic Principals</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid grid-rows-2 grid-flow-col auto-cols-[85%] overflow-x-auto snap-x snap-mandatory gap-4 pb-6 scrollbar-hide -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid-rows-none sm:grid-flow-row sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible sm:snap-none sm:pb-0">
             {cosPartners.map((p) => (
-              <Link to={`/principals/${p.id}`} key={p.id} className="card-scope flex items-center gap-4 p-4 hover:border-accent/30 transition-colors group">
+              <Link to={`/principals/${p.id}`} key={p.id} className="card-scope flex items-center gap-4 p-4 hover:border-accent/30 transition-colors group snap-start">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-card border border-border">
                   <img 
                     src={`/logos/${p.id}.png`} 

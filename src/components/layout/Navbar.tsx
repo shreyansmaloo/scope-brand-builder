@@ -100,12 +100,11 @@ const Navbar = () => {
   }, [searchOpen]);
 
   useEffect(() => {
-    if (!searchOpen) return;
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, [searchOpen]);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -224,17 +223,24 @@ const Navbar = () => {
 
           {/* Right: Actions */}
           <div className="hidden flex-1 items-center justify-end gap-3 lg:flex">
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-surface-dark-foreground/75 transition-colors hover:bg-surface-dark-muted hover:text-accent"
-              aria-label="Search"
+            <form 
+              onSubmit={handleSearch} 
+              className="relative flex items-center w-full max-w-[240px] xl:max-w-[300px]"
             >
-              <Search className="h-4 w-4" />
-              <span className="hidden xl:inline">Search</span>
-            </button>
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-dark-foreground/50" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={searchPlaceholders[placeholderIndex]}
+                  className="w-full rounded-full bg-surface-dark-foreground/10 py-2 pl-9 pr-4 text-sm text-surface-dark-foreground placeholder:text-surface-dark-foreground/50 border border-transparent focus:border-surface-dark-foreground/20 focus:bg-surface-dark-foreground/15 focus:outline-none transition-all"
+                />
+              </div>
+            </form>
             <Link
               to="/request-sample"
-              className="rounded-full bg-accent px-5 py-2 font-display text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-light hover:shadow-lg"
+              className="shrink-0 rounded-full bg-accent px-5 py-2 font-display text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-light hover:shadow-lg"
             >
               Request Sample
             </Link>

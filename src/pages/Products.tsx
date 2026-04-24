@@ -24,6 +24,11 @@ const Products = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sort, setSort] = useState<SortOption>("default");
   const [searchSticky, setSearchSticky] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(120);
+
+  useEffect(() => {
+    setVisibleCount(120);
+  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, selectedForm, selectedDosageForm, sort]);
 
   useEffect(() => {
     const onScroll = () => setSearchSticky(window.scrollY > 240);
@@ -325,8 +330,8 @@ const Products = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                  {filtered.slice(0, 120).map((product, i) => (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {filtered.slice(0, visibleCount).map((product, i) => (
                     <motion.div
                       key={product.id}
                       initial={{ opacity: 0, y: 10 }}
@@ -363,8 +368,18 @@ const Products = () => {
                 </div>
               )}
 
-              {filtered.length > 120 && (
-                <p className="mt-6 text-center font-body text-xs text-muted-foreground">Showing first 120 of {filtered.length}. Refine filters to narrow results.</p>
+              {filtered.length > visibleCount && (
+                <div className="mt-10 flex flex-col items-center gap-3">
+                  <p className="font-body text-xs text-muted-foreground">
+                    Showing {visibleCount} of {filtered.length} products
+                  </p>
+                  <button 
+                    onClick={() => setVisibleCount(prev => prev + 120)}
+                    className="rounded-full border border-border bg-card px-8 py-2.5 font-display text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-accent hover:text-accent"
+                  >
+                    Load More
+                  </button>
+                </div>
               )}
             </div>
           </div>

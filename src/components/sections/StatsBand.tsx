@@ -41,9 +41,10 @@ const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
 
 const StatsBand = () => {
   return (
-    <section className="bg-primary">
-      <div className="container-scope py-10">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+    <section className="relative overflow-hidden bg-primary py-12 lg:py-16">
+      <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-90" />
+      <div className="container-scope relative z-10">
+        <div className="flex -mx-4 px-4 overflow-x-auto gap-8 pb-4 lg:grid lg:grid-cols-4 lg:mx-0 lg:px-0 lg:pb-0 scrollbar-hide snap-x snap-mandatory">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -51,7 +52,7 @@ const StatsBand = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="flex flex-col items-center text-center lg:border-r lg:border-primary-foreground/20 lg:last:border-r-0"
+              className="flex min-w-[160px] flex-shrink-0 snap-center flex-col items-center text-center lg:min-w-0 lg:flex-shrink lg:border-r lg:border-primary-foreground/20 lg:last:border-r-0"
             >
               <Counter target={stat.value} suffix={stat.suffix} />
               <span className="mt-2 font-body text-sm font-medium text-primary-foreground/90">

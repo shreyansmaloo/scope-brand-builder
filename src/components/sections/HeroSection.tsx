@@ -51,16 +51,16 @@ const FloatingShapes = () => (
 
     {/* Floating molecular dots cluster */}
     {[
-      { x: "15%", y: "20%", size: 6, delay: 0 },
-      { x: "80%", y: "65%", size: 4, delay: 1.5 },
-      { x: "70%", y: "25%", size: 5, delay: 0.8 },
-      { x: "25%", y: "70%", size: 3, delay: 2 },
-      { x: "60%", y: "80%", size: 4, delay: 1 },
-      { x: "85%", y: "40%", size: 5, delay: 0.5 },
+      { x: "15%", y: "20%", size: 6, delay: 0, color: "bg-accent" },
+      { x: "80%", y: "65%", size: 4, delay: 1.5, color: "bg-teal" },
+      { x: "70%", y: "25%", size: 5, delay: 0.8, color: "bg-teal" },
+      { x: "25%", y: "70%", size: 3, delay: 2, color: "bg-accent" },
+      { x: "60%", y: "80%", size: 4, delay: 1, color: "bg-accent" },
+      { x: "85%", y: "40%", size: 5, delay: 0.5, color: "bg-teal" },
     ].map((dot, i) => (
       <motion.div
         key={i}
-        className="absolute rounded-full bg-accent"
+        className={`absolute rounded-full ${dot.color}`}
         style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size }}
         animate={{ y: [0, -15, 0], opacity: [0.3, 0.7, 0.3] }}
         transition={{ duration: 4 + i * 0.5, repeat: Infinity, delay: dot.delay, ease: "easeInOut" }}

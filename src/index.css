@@ -56,7 +56,7 @@
     --input: 0 0% 90%;
     --ring: 28 80% 52%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
     --text-secondary: 0 0% 25%;
 
@@ -88,39 +88,42 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Sora', sans-serif;
+    @apply tracking-tight;
   }
 }
 
 @layer components {
   .section-padding {
-    @apply py-16 lg:py-24;
+    @apply py-20 lg:py-32;
   }
 
   /* FULL-WIDTH container — only horizontal padding, no max-width */
   .container-scope {
-    @apply mx-auto w-full px-4 sm:px-6 lg:px-10 xl:px-14;
+    @apply mx-auto w-full px-5 sm:px-8 lg:px-12 xl:px-16;
   }
 
   /* Optional bounded variant when needed */
   .container-bounded {
-    @apply mx-auto max-w-[1480px] px-4 sm:px-6 lg:px-10 xl:px-14;
+    @apply mx-auto max-w-[1536px] px-5 sm:px-8 lg:px-12 xl:px-16;
   }
 
   .section-tag {
-    @apply inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-pale px-4 py-1.5 text-sm font-medium text-accent;
+    @apply inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-accent;
     font-family: 'Sora', sans-serif;
   }
 
   .card-scope {
-    @apply rounded-2xl bg-card shadow-[0_4px_24px_rgba(180,90,20,0.08)] transition-all duration-300;
+    @apply rounded-3xl bg-card border border-border/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 ease-out;
   }
 
   .card-scope:hover {
-    @apply shadow-[0_12px_40px_rgba(180,90,20,0.18)] -translate-y-1;
+    @apply shadow-[0_20px_50px_rgba(230,126,34,0.12)] -translate-y-2 border-primary/20;
   }
 
   /* Surfaces for warm-dark sections (footer, hero) */

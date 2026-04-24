@@ -6,10 +6,10 @@ const Footer = () => {
   return (
     <footer className="relative surface-dark">
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.1]"
         style={{
-          backgroundImage: "radial-gradient(circle, hsl(var(--accent)) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
+          backgroundImage: "radial-gradient(circle, hsl(var(--teal)) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
         }}
       />
 
@@ -23,10 +23,10 @@ const Footer = () => {
               India's most comprehensive excipient partner since 1959. Pharma, Cosmetics & Food ingredients.
             </p>
             <div className="mt-6 flex gap-3">
-              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-accent" aria-label="LinkedIn">
+              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-teal" aria-label="LinkedIn">
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-accent" aria-label="Twitter">
+              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-teal" aria-label="Twitter">
                 <Twitter className="h-4 w-4" />
               </a>
             </div>
@@ -53,7 +53,7 @@ const Footer = () => {
                 { label: "Contact", href: "/contact" },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link to={item.href} className="font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-accent">
+                  <Link to={item.href} className="font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-teal">
                     {item.label}
                   </Link>
                 </li>
@@ -62,7 +62,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-accent/90">
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-teal">
               Our Verticals
             </h4>
             <ul className="mt-4 space-y-3">
@@ -73,7 +73,7 @@ const Footer = () => {
                 { label: "All Principals", href: "/principals" },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link to={item.href} className="font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-accent">
+                  <Link to={item.href} className="font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-teal">
                     {item.label}
                   </Link>
                 </li>
