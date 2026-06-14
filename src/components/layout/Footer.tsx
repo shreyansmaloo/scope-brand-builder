@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" className="inline-block">
-              <img src={logoImg} alt="Scope Ingredients" className="h-16 w-auto" />
+              <img src={logoImg} alt="Scope Ingredients" className="h-16 w-auto invert hue-rotate-180" />
             </Link>
             <p className="mt-4 font-body text-sm leading-relaxed text-surface-dark-foreground/75">
               India's most comprehensive excipient partner since 1959. Pharma, Cosmetics & Food ingredients.
