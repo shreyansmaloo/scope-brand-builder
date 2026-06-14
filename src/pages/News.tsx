@@ -40,6 +40,9 @@ const News = () => {
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             News & Events
           </motion.h1>
+          <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
+            Stay updated with our latest news, product highlights, and corporate announcements.
+          </p>
         </div>
       </section>
 

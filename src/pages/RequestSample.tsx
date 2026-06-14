@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle, ClipboardList, Package, Microscope, Plus, Trash2, ArrowRight, ArrowLeft } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
@@ -35,13 +35,15 @@ const inputClass = "mt-1 w-full rounded-xl border border-border bg-card px-4 py-
 const labelClass = "font-body text-sm font-medium text-foreground";
 
 const RequestSample = () => {
+  const [searchParams] = useSearchParams();
+  const initialProduct = searchParams.get("product") || "";
   const [submitted, setSubmitted] = useState(false);
   const [step, setStep] = useState(1);
   const [productSearch, setProductSearch] = useState("");
 
   const { register, handleSubmit, control, formState: { errors }, trigger } = useForm<SampleForm>({
     resolver: zodResolver(schema),
-    defaultValues: { items: [{ product: "", quantity: "", purpose: "" }] },
+    defaultValues: { items: [{ product: initialProduct, quantity: "", purpose: "" }] },
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "items" });

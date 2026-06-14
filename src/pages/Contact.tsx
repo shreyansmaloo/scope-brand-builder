@@ -72,7 +72,7 @@ const Contact = () => {
       <section className="section-padding bg-background">
         
         <div className="container-scope">
-          <div className="grid gap-12 lg:grid-cols-2">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             
             {/* Form */}
             <div>

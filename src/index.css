@@ -6,73 +6,87 @@
 
 @layer base {
   :root {
-    /* === SCOPE OFFICIAL BRAND PALETTE ===
-       Golden Yellow  #F0A500  hsl(41 100% 47%)
-       Orange         #E67E22  hsl(28 80% 52%)
-       Deep Orange    #D96B1B  hsl(25 78% 48%)
-       Light Grey BG  #F2F2F2  hsl(0 0% 95%)
-       Dark Text      #1A1A1A  hsl(0 0% 10%)
+    /* === SCOPE OFFICIAL BRAND PALETTE — exact hex, stored as RGB channels ===
+       Primary / Brand   #F69A1E  rgb(246 154  30)
+       Accent / Dark     #DB8E00  rgb(219 142   0)
+       Personal Care     #DBA237  rgb(219 162  55)
+       Food              #FCD201  rgb(252 210   1)
+       Body Text         #494949  rgb( 73  73  73)
+       Background        #FFFFFF  rgb(255 255 255)
     */
 
     /* Backgrounds: pure white + light grey supporting surface */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
+    --background: 252 253 248;
+    --foreground: 73 73 73;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 252 253 248;
+    --card-foreground: 73 73 73;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover: 252 253 248;
+    --popover-foreground: 73 73 73;
 
-    /* PRIMARY — Brand Orange #E67E22 */
-    --primary: 28 80% 52%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 28 85% 60%;
-    --primary-muted: 28 60% 92%;
+    /* PRIMARY — Brand Amber #F69A1E */
+    --primary: 246 154 30;
+    --primary-foreground: 255 255 255;
+    --primary-light: 249 188 103;
+    --primary-muted: 254 242 226;
 
-    /* SECONDARY — Light Grey #F2F2F2 */
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 10%;
+    /* SECONDARY — Light Grey #F5F5F5 */
+    --secondary: 245 245 245;
+    --secondary-foreground: 73 73 73;
 
-    /* ACCENT — Deep Orange #D96B1B */
-    --accent: 25 78% 48%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 28 80% 52%;
-    --accent-pale: 28 70% 95%;
+    /* DESTRUCTIVE — Red */
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
 
-    /* TEAL slot repurposed to Golden Yellow #F0A500 */
-    --teal: 41 100% 47%;
-    --teal-foreground: 0 0% 10%;
-    --teal-light: 41 100% 58%;
-    --teal-pale: 41 100% 94%;
+    /* ACCENT — Deep Orange #DB8E00 */
+    --accent: 219 142 0;
+    --accent-foreground: 255 255 255;
+    --accent-light: 246 154 30;
+    --accent-pale: 254 242 226;
 
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 35%;
+    /* BRAND YELLOW — Golden Yellow #FCD201 */
+    --brand-yellow: 252 210 1;
+    --brand-yellow-foreground: 73 73 73;
+    --brand-yellow-light: 254 220 52;
+    --brand-yellow-pale: 255 250 225;
 
-    --destructive: 0 75% 52%;
-    --destructive-foreground: 0 0% 100%;
+    /* INDUSTRY SPECIFIC BRAND COLORS */
+    --pharma: 219 142 0;
+    --personal-care: 219 162 55;
+    --food: 252 210 1;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 28 80% 52%;
+    /* REAL TEAL / NAVY for cooler accents */
+    --brand-navy: 15 23 41;
+    --teal: 42 144 157;
+    --teal-foreground: 255 255 255;
+    --teal-light: 52 180 197;
+    --teal-pale: 215 241 244;
+
+    --muted: 245 245 245;
+    --muted-foreground: 115 115 115;
+
+    --border: 230 230 230;
+    --input: 230 230 230;
+    --ring: 246 154 30;
 
     --radius: 1.25rem;
 
-    --text-secondary: 0 0% 25%;
+    --text-secondary: 115 115 115;
 
-    /* Dark surface used for footer/hero — Dark Text #1A1A1A */
-    --surface-dark: 0 0% 10%;
-    --surface-dark-foreground: 0 0% 100%;
-    --surface-dark-muted: 0 0% 20%;
+    /* Dark surface used for footer/hero — #1A1A1A */
+    --surface-dark: 26 26 26;
+    --surface-dark-foreground: 255 255 255;
+    --surface-dark-muted: 51 51 51;
 
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 28 80% 52%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 28 80% 52%;
+    --sidebar-background: 26 26 26;
+    --sidebar-foreground: 255 255 255;
+    --sidebar-primary: 246 154 30;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 46 46 46;
+    --sidebar-accent-foreground: 255 255 255;
+    --sidebar-border: 51 51 51;
+    --sidebar-ring: 246 154 30;
   }
 }
 
@@ -97,6 +111,44 @@
     @apply tracking-tight;
   }
 }
+
+/* =================================================================
+   SCOPE DESIGN SYSTEM — SECTION TEMPLATES
+   -----------------------------------------------------------------
+   Template A — White/Light  (bg-background or bg-muted/40)
+     padding  : section-padding  (py-20 lg:py-32)
+     eyebrow  : <span class="section-tag">✦ Label</span>
+     heading  : font-display text-h2 font-bold text-foreground
+     body     : font-body text-[15px] text-muted-foreground
+     primary CTA : bg-primary text-white rounded-full px-6 py-3
+     secondary   : border border-border text-foreground rounded-full
+     cards    : rounded-2xl border border-border/60 bg-card
+                hover:border-accent/30 hover:shadow-[0_8px_24px_rgba(219,142,0,0.08)]
+
+   Template B — Dark  (bg-[hsl(var(--surface-dark))])
+     padding  : py-20 lg:py-28
+     eyebrow  : horizontal rule + small white/30 uppercase label
+     decoration : dot grid opacity-[0.04], amber glow blob opacity-[0.06–0.12]
+     heading  : text-white
+     body     : text-white/50
+     primary CTA : bg-primary text-white  (ring-glow on hover)
+     secondary   : border border-white/20 text-white/60
+
+   Template C — Amber  (bg-primary)
+     padding  : py-20 lg:py-28
+     eyebrow  : bg-white/15 border-white/25 text-white
+     decoration : dot grid white opacity-[0.08]
+     heading  : text-white
+     body     : text-white/70
+     input    : bg-white text-foreground shadow-xl
+     CTA btn  : bg-[hsl(var(--surface-dark))] text-white
+     pills    : bg-white/10 border-white/20 text-white/70
+
+   Page rhythm:
+     Hero (white+aurora) → StatsBand (dark) → Partners (white)
+     → Industries (white) → Why Scope (muted) → Search (amber)
+     → Certs (white) → Sample CTA (dark|image) → News (white)
+   ================================================================= */
 
 @layer components {
   .section-padding {
@@ -123,13 +175,13 @@
   }
 
   .card-scope:hover {
-    @apply shadow-[0_20px_50px_rgba(230,126,34,0.12)] -translate-y-2 border-primary/20;
+    @apply shadow-[0_20px_50px_rgba(246,154,30,0.12)] -translate-y-2 border-primary/20;
   }
 
   /* Surfaces for warm-dark sections (footer, hero) */
   .surface-dark {
-    background-color: hsl(var(--surface-dark));
-    color: hsl(var(--surface-dark-foreground));
+    background-color: rgb(var(--surface-dark));
+    color: rgb(var(--surface-dark-foreground));
   }
 
   /* Marquee animation */
@@ -141,8 +193,8 @@
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
   }
-  .animate-marquee-left { animation: marquee-left 30s linear infinite; }
-  .animate-marquee-right { animation: marquee-right 30s linear infinite; }
+  .animate-marquee-left { animation: marquee-left 60s linear infinite; }
+  .animate-marquee-right { animation: marquee-right 60s linear infinite; }
   .animate-marquee-left:hover,
   .animate-marquee-right:hover { animation-play-state: paused; }
 

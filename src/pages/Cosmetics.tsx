@@ -90,7 +90,7 @@ const Cosmetics = () => {
               <Link to={`/principals/${p.id}`} key={p.id} className="card-scope flex items-center gap-4 p-4 hover:border-accent/30 transition-colors group snap-start">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-card border border-border">
                   <img 
-                    src={`/logos/${p.id}.png`} 
+                    src={p.logo ? `/logos/${p.logo}` : `/logos/${p.id}.png`} 
                     alt={`${p.name} company logo`}
                     className="h-full w-full object-contain p-2"
                     loading="lazy"

@@ -2,10 +2,43 @@ import { useParams, Link } from "react-router-dom";
 import { partners } from "@/data/partners";
 import { products } from "@/data/products";
 import { motion } from "framer-motion";
-import { ArrowRight, Globe, ArrowLeft, Hexagon } from "lucide-react";
+import { ArrowRight, Globe, ArrowLeft, Hexagon, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+
+const formatProductName = (name: string): string => {
+  if (!name) return "";
+  const hasLowercase = /[a-z]/.test(name);
+  if (hasLowercase) {
+    return name.trim();
+  }
+  const minorWords = ["and", "or", "of", "with", "for", "in", "by", "to", "at", "on", "a", "an", "the"];
+  return name
+    .split(/\s+/)
+    .map((word, index) => {
+      if (!word) return "";
+      const slashParts = word.split('/');
+      const formattedSlash = slashParts.map(part => {
+        const hyphenParts = part.split('-');
+        const formattedHyphen = hyphenParts.map(subWord => {
+          if (!subWord) return "";
+          if (/^C\d+/i.test(subWord)) {
+            return "C" + subWord.slice(1).toUpperCase();
+          }
+          return subWord.charAt(0).toUpperCase() + subWord.slice(1).toLowerCase();
+        });
+        return formattedHyphen.join('-');
+      });
+      const resultWord = formattedSlash.join('/');
+      const lower = word.toLowerCase();
+      if (minorWords.includes(lower) && index !== 0) {
+        return lower;
+      }
+      return resultWord;
+    })
+    .join(' ');
+};
 
 const PrincipalDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,7 +106,7 @@ const PrincipalDetail = () => {
                 className="rounded-2xl border border-border bg-background p-8 shadow-sm flex items-center justify-center min-h-[200px]"
               >
                 <img 
-                  src={`/logos/${partner.id}.png`} 
+                  src={partner.logo ? `/logos/${partner.logo}` : `/logos/${partner.id}.png`} 
                   alt={partner.name}
                   className="w-full max-w-[200px] object-contain"
                   onError={(e) => {
@@ -107,47 +140,67 @@ const PrincipalDetail = () => {
           </div>
 
           {partnerProducts.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {partnerProducts.map((product, i) => (
-                 <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="card-scope flex flex-col justify-between p-6 hover:border-accent/30 transition-colors"
-                >
-                  <div>
-                    <div className="mb-4 inline-flex items-center rounded-md bg-accent/10 px-2.5 py-1 text-xs font-semibold text-accent-light">
-                      {product.industry.charAt(0).toUpperCase() + product.industry.slice(1)}
-                    </div>
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="font-display text-xl font-bold text-foreground">
-                        {product.name}
-                      </h3>
-                    </div>
-                    <p className="mt-3 font-body text-sm leading-relaxed text-text-secondary">
-                      {product.description}
-                    </p>
-                  </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {partnerProducts.map((product, i) => {
+                let titleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "")
+                  ? product.brand.trim()
+                  : product.name.trim();
 
-                  <div className="mt-6 flex flex-col gap-4">
-                    <div className="flex flex-wrap gap-2">
-                       <span className="inline-flex items-center rounded bg-primary-muted/10 px-2 py-0.5 text-xs font-medium text-primary">
-                          <Hexagon className="mr-1.5 h-3 w-3" />
-                          {product.category}
-                        </span>
-                    </div>
+                if (product.grade && product.grade !== "-" && !titleText.includes(product.grade)) {
+                  titleText = `${titleText} (${product.grade})`;
+                }
 
+                // Remove registered trademark ® and trade mark ™ symbols
+                titleText = titleText
+                  .replace(/®/g, " ")
+                  .replace(/™/g, " ")
+                  .replace(/\s+/g, " ")
+                  .trim()
+                  .toUpperCase();
+
+                const subtitleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "" && product.brand.trim().toLowerCase() !== product.name.trim().toLowerCase())
+                  ? formatProductName(product.name)
+                  : "";
+
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: Math.min(i * 0.015, 0.2) }}
+                    className="group relative flex flex-col justify-between overflow-hidden rounded-[1.25rem] bg-primary-muted/45 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
+                  >
                     <Link
-                      to={`/contact?product=${encodeURIComponent(product.name)}`}
-                      className="inline-flex w-full items-center justify-center rounded-lg border border-border bg-card px-4 py-2 font-display text-sm font-semibold text-foreground transition-all hover:border-accent/40 hover:bg-accent hover:text-accent-foreground"
+                      to={`/request-sample?product=${encodeURIComponent(
+                        product.brand && product.brand !== "-"
+                          ? `${product.brand} (${product.name})`
+                          : product.name
+                      )}`}
+                      className="flex flex-col justify-between h-full min-h-[160px] w-full"
                     >
-                      Request Details
+                      <div className="flex flex-col">
+                        {/* Title (Brand Name) */}
+                        <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug">
+                          {titleText}
+                        </h3>
+                        {/* Subtitle (Generic Name) */}
+                        {subtitleText && (
+                          <p className="mt-2 font-body text-xs sm:text-sm text-neutral-500 font-normal leading-normal">
+                            {subtitleText}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Bottom Circular Arrow Button */}
+                      <div className="mt-4 flex justify-end">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                          <ChevronRight className="h-4 w-4" />
+                        </div>
+                      </div>
                     </Link>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-border/60 bg-card/50 p-12 text-center">

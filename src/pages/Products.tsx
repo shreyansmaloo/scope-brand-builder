@@ -3,23 +3,74 @@ import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/Struc
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
+import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ, ChevronRight } from "lucide-react";
 import { products, categories, industries } from "@/data/products";
 import { partners } from "@/data/partners";
 
 type SortOption = "default" | "az" | "za";
 
+const industryCardStyles: Record<string, { hoverBorder: string; hoverShadow: string; bgTint: string }> = {
+  pharma: {
+    hoverBorder: "hover:border-neutral-400",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
+    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+  },
+  cosmetics: {
+    hoverBorder: "hover:border-neutral-400",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
+    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+  },
+  food: {
+    hoverBorder: "hover:border-neutral-400",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
+    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+  },
+};
+
+const formatProductName = (name: string): string => {
+  if (!name) return "";
+  const hasLowercase = /[a-z]/.test(name);
+  if (hasLowercase) {
+    return name.trim();
+  }
+  const minorWords = ["and", "or", "of", "with", "for", "in", "by", "to", "at", "on", "a", "an", "the"];
+  return name
+    .split(/\s+/)
+    .map((word, index) => {
+      if (!word) return "";
+      const slashParts = word.split('/');
+      const formattedSlash = slashParts.map(part => {
+        const hyphenParts = part.split('-');
+        const formattedHyphen = hyphenParts.map(subWord => {
+          if (!subWord) return "";
+          if (/^C\d+/i.test(subWord)) {
+            return "C" + subWord.slice(1).toUpperCase();
+          }
+          return subWord.charAt(0).toUpperCase() + subWord.slice(1).toLowerCase();
+        });
+        return formattedHyphen.join('-');
+      });
+      const resultWord = formattedSlash.join('/');
+      const lower = word.toLowerCase();
+      if (minorWords.includes(lower) && index !== 0) {
+        return lower;
+      }
+      return resultWord;
+    })
+    .join(' ');
+};
+
 const Products = () => {
   const [searchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   const initialPrincipal = searchParams.get("principal") || null;
+  const initialIndustry = searchParams.get("industry") || null;
+  const initialCategory = searchParams.get("category") || null;
 
   const [search, setSearch] = useState(initialSearch);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(initialIndustry);
   const [selectedPrincipal, setSelectedPrincipal] = useState<string | null>(initialPrincipal);
-  const [selectedForm, setSelectedForm] = useState<string | null>(null);
-  const [selectedDosageForm, setSelectedDosageForm] = useState<string | null>(null);
   const [optionsSearch, setOptionsSearch] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sort, setSort] = useState<SortOption>("default");
@@ -28,7 +79,7 @@ const Products = () => {
 
   useEffect(() => {
     setVisibleCount(120);
-  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, selectedForm, selectedDosageForm, sort]);
+  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, sort]);
 
   useEffect(() => {
     const onScroll = () => setSearchSticky(window.scrollY > 240);
@@ -38,9 +89,16 @@ const Products = () => {
 
   useEffect(() => {
     const p = searchParams.get("principal");
-    if (p) setSelectedPrincipal(p);
+    setSelectedPrincipal(p);
+    
     const s = searchParams.get("search");
-    if (s !== null) setSearch(s);
+    setSearch(s || "");
+    
+    const ind = searchParams.get("industry");
+    setSelectedIndustry(ind);
+    
+    const cat = searchParams.get("category");
+    setSelectedCategory(cat);
   }, [searchParams]);
 
   const selectedPartner = useMemo(() => {
@@ -49,14 +107,10 @@ const Products = () => {
   }, [selectedPrincipal]);
 
   const principals = useMemo(() => [...new Set(products.map((p) => p.principal))].sort(), []);
-  const forms = useMemo(() => [...new Set(products.filter((p) => p.form).map((p) => p.form!))].sort(), []);
-  const dosageForms = useMemo(() => [...new Set(products.filter((p) => p.dosageForm).map((p) => p.dosageForm!))].sort(), []);
 
   const filteredIndustries = useMemo(() => industries.filter((i) => i.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
   const filteredCategories = useMemo(() => categories.filter((c) => c.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
   const filteredPrincipals = useMemo(() => principals.filter((p) => p.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, principals]);
-  const filteredForms = useMemo(() => forms.filter((f) => f.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, forms]);
-  const filteredDosageForms = useMemo(() => dosageForms.filter((d) => d.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, dosageForms]);
 
   const filtered = useMemo(() => {
     let result = products.filter((p) => {
@@ -73,18 +127,16 @@ const Products = () => {
       const matchesCategory = !selectedCategory || p.category === selectedCategory;
       const matchesIndustry = !selectedIndustry || p.industry === selectedIndustry;
       const matchesPrincipal = !selectedPrincipal || p.principal === selectedPrincipal;
-      const matchesForm = !selectedForm || p.form === selectedForm;
-      const matchesDosageForm = !selectedDosageForm || p.dosageForm === selectedDosageForm;
-      return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal && matchesForm && matchesDosageForm;
+      return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal;
     });
 
     if (sort === "az") result = [...result].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "za") result = [...result].sort((a, b) => b.name.localeCompare(a.name));
 
     return result;
-  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, selectedForm, selectedDosageForm, sort]);
+  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, sort]);
 
-  const activeFilterCount = [selectedCategory, selectedIndustry, selectedPrincipal, selectedForm, selectedDosageForm].filter(Boolean).length;
+  const activeFilterCount = [selectedCategory, selectedIndustry, selectedPrincipal].filter(Boolean).length;
 
   const clearFilters = () => {
     setSearch("");
@@ -92,8 +144,6 @@ const Products = () => {
     setSelectedCategory(null);
     setSelectedIndustry(null);
     setSelectedPrincipal(null);
-    setSelectedForm(null);
-    setSelectedDosageForm(null);
     setSort("default");
   };
 
@@ -106,9 +156,9 @@ const Products = () => {
   const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
     <div className="border-b border-border/60 py-4 first:pt-0">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-[11px] font-bold uppercase tracking-[0.08em] text-foreground">{title}</h4>
+        <h4 className="font-display text-[13px] font-extrabold uppercase tracking-wider text-foreground">{title}</h4>
         {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-semibold text-accent-foreground">{count}</span>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">{count}</span>
         )}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -118,12 +168,11 @@ const Products = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-1.5 text-left font-body text-[13px] transition-colors ${
-        active ? "bg-accent-pale text-accent font-medium" : "text-muted-foreground hover:bg-muted hover:text-foreground"
-      }`}
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[15px] transition-colors ${active ? "bg-accent-pale text-accent font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
+        }`}
     >
-      <span className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
-        {active && <span className="block h-1.5 w-1.5 rounded-[1px] bg-white" />}
+      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
+        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-white" />}
       </span>
       <span className="capitalize truncate">{label}</span>
     </button>
@@ -166,18 +215,6 @@ const Products = () => {
         ))}
       </FilterGroup>
 
-      <FilterGroup title="Form" count={selectedForm ? 1 : 0}>
-        {filteredForms.map((f) => (
-          <FilterCheckbox key={f} label={f} active={selectedForm === f} onClick={() => setSelectedForm(selectedForm === f ? null : f)} />
-        ))}
-      </FilterGroup>
-
-      <FilterGroup title="Dosage Form" count={selectedDosageForm ? 1 : 0}>
-        {filteredDosageForms.map((d) => (
-          <FilterCheckbox key={d} label={d} active={selectedDosageForm === d} onClick={() => setSelectedDosageForm(selectedDosageForm === d ? null : d)} />
-        ))}
-      </FilterGroup>
-
       {activeFilterCount > 0 && (
         <button onClick={clearFilters} className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-destructive/30 bg-destructive/5 py-2 font-body text-xs font-medium text-destructive hover:bg-destructive/10">
           <X className="h-3.5 w-3.5" /> Clear all filters
@@ -201,34 +238,34 @@ const Products = () => {
       <StructuredData data={breadcrumbSchema} />
 
       {/* Hero */}
-      <section className="surface-dark pt-28 pb-10">
+      <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-xs text-surface-dark-foreground/60">
+          <p className="font-body text-sm text-primary-foreground/50">
             <Link to="/" className="hover:text-accent">Home</Link> &gt; Products
           </p>
-          <h1 className="mt-3 font-display text-3xl md:text-4xl font-bold text-surface-dark-foreground">
+          <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             {selectedPartner ? `${selectedPartner.name} Products` : "Product Catalog"}
           </h1>
-          <p className="mt-2 max-w-3xl font-body text-sm text-surface-dark-foreground/70">
+          <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
             {selectedPartner?.about ? selectedPartner.about : "Search by product name, compound name (INCI), brand, principal or application."}
           </p>
         </div>
       </section>
 
       {/* Sticky search + toolbar */}
-      <div className={`sticky top-14 z-30 border-b border-border bg-background/95 backdrop-blur-md transition-shadow ${searchSticky ? "shadow-md" : ""}`}>
-        <div className="container-scope flex flex-col gap-3 py-3 lg:flex-row lg:items-center">
+      <div className={`sticky top-16 z-30 border-b border-border bg-background/95 backdrop-blur-md transition-shadow ${searchSticky ? "shadow-md" : ""}`}>
+        <div className="container-scope flex flex-col gap-4 py-4 sm:py-5 lg:flex-row lg:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search products by name or compound (INCI)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="h-12 w-full rounded-full border border-border bg-card pl-12 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             {search && (
-              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
+              <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
                 <X className="h-4 w-4" />
               </button>
             )}
@@ -294,10 +331,10 @@ const Products = () => {
           <div className="flex flex-col gap-6 lg:flex-row">
             {/* Desktop full-length sidebar */}
             <aside className="hidden w-72 shrink-0 lg:block">
-              <div className="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <div className="sticky top-44 max-h-[calc(100vh-12rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-display text-sm font-bold text-foreground">Filters</h3>
-                  <span className="rounded-full bg-accent-pale px-2 py-0.5 font-body text-xs font-medium text-accent">{filtered.length}</span>
+                  <h3 className="font-display text-sm font-extrabold text-foreground uppercase tracking-wider">Filters</h3>
+                  <span className="rounded-full bg-accent-pale px-2 py-0.5 font-body text-xs font-bold text-accent">{filtered.length}</span>
                 </div>
                 {filtersContent}
               </div>
@@ -311,8 +348,6 @@ const Products = () => {
                   {selectedIndustry && <Pill label={selectedIndustry} onClear={() => setSelectedIndustry(null)} />}
                   {selectedCategory && <Pill label={selectedCategory} onClear={() => setSelectedCategory(null)} />}
                   {selectedPrincipal && <Pill label={selectedPrincipal} onClear={() => setSelectedPrincipal(null)} />}
-                  {selectedForm && <Pill label={selectedForm} onClear={() => setSelectedForm(null)} />}
-                  {selectedDosageForm && <Pill label={selectedDosageForm} onClear={() => setSelectedDosageForm(null)} />}
                 </div>
               )}
 
@@ -330,41 +365,67 @@ const Products = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.slice(0, visibleCount).map((product, i) => (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(i * 0.01, 0.15) }}
-                      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card p-4 transition-all hover:border-accent/40 hover:shadow-[0_12px_40px_rgba(180,90,20,0.12)]"
-                    >
-                      <div className="absolute left-0 top-0 h-full w-1 bg-accent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {filtered.slice(0, visibleCount).map((product, i) => {
+                    let titleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "")
+                      ? product.brand.trim()
+                      : product.name.trim();
 
-                      <div className="flex flex-wrap gap-1.5">
-                        <span className={`rounded-full px-2 py-0.5 font-body text-[10px] font-semibold uppercase ${industryColors[product.industry]}`}>{product.industry}</span>
-                        <span className="rounded-full bg-teal-pale px-2 py-0.5 font-body text-[10px] font-medium text-teal-foreground">{product.category}</span>
-                        {product.form && <span className="rounded-full bg-muted px-2 py-0.5 font-body text-[10px] font-medium text-muted-foreground">{product.form}</span>}
-                      </div>
+                    if (product.grade && product.grade !== "-" && !titleText.includes(product.grade)) {
+                      titleText = `${titleText} (${product.grade})`;
+                    }
 
-                      <h3 className="mt-3 font-display text-sm font-semibold text-foreground leading-snug line-clamp-2">{product.name}</h3>
-                      {product.brand && <p className="mt-0.5 font-body text-[11px] font-medium text-accent">{product.brand}</p>}
-                      {product.grade && <p className="mt-0.5 font-body text-[11px] text-muted-foreground">Grade: <span className="text-foreground">{product.grade}</span></p>}
-                      <p className="mt-1 font-body text-xs text-muted-foreground">{product.principal}{product.country ? ` · ${product.country}` : ""}</p>
-                      <p className="mt-2 flex-1 font-body text-xs text-text-secondary line-clamp-2">{product.description}</p>
+                    // Remove registered trademark ® and trade mark ™ symbols
+                    titleText = titleText
+                      .replace(/®/g, " ")
+                      .replace(/™/g, " ")
+                      .replace(/\s+/g, " ")
+                      .trim()
+                      .toUpperCase();
 
-                      {product.dosageForm && (
-                        <div className="mt-2.5 border-t border-border/50 pt-2">
-                          <span className="font-body text-[11px] text-muted-foreground">📋 {product.dosageForm}</span>
-                        </div>
-                      )}
+                    const subtitleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "" && product.brand.trim().toLowerCase() !== product.name.trim().toLowerCase())
+                      ? formatProductName(product.name)
+                      : "";
 
-                      <div className="mt-3 flex gap-2">
-                        <Link to="/contact" className="flex-1 rounded-lg bg-accent px-3 py-1.5 text-center font-body text-xs font-medium text-accent-foreground hover:bg-accent-light">Enquire</Link>
-                        <Link to="/request-sample" className="flex-1 rounded-lg border border-border px-3 py-1.5 text-center font-body text-xs font-medium text-foreground hover:bg-muted">Sample</Link>
-                      </div>
-                    </motion.div>
-                  ))}
+                    return (
+                      <motion.div
+                        key={product.id}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: Math.min(i * 0.015, 0.2) }}
+                        className="group relative flex flex-col justify-between overflow-hidden rounded-[1.25rem] bg-primary-muted/45 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
+                      >
+                        <Link
+                          to={`/request-sample?product=${encodeURIComponent(
+                            product.brand && product.brand !== "-"
+                              ? `${product.brand} (${product.name})`
+                              : product.name
+                          )}`}
+                          className="flex flex-col justify-between h-full min-h-[160px] w-full"
+                        >
+                          <div className="flex flex-col">
+                            {/* Title (Brand Name) */}
+                            <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug">
+                              {titleText}
+                            </h3>
+                            {/* Subtitle (Generic Name) */}
+                            {subtitleText && (
+                              <p className="mt-2 font-body text-xs sm:text-sm text-neutral-500 font-normal leading-normal">
+                                {subtitleText}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Bottom Circular Arrow Button */}
+                          <div className="mt-4 flex justify-end">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                              <ChevronRight className="h-4 w-4" />
+                            </div>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
 
@@ -373,7 +434,7 @@ const Products = () => {
                   <p className="font-body text-xs text-muted-foreground">
                     Showing {visibleCount} of {filtered.length} products
                   </p>
-                  <button 
+                  <button
                     onClick={() => setVisibleCount(prev => prev + 120)}
                     className="rounded-full border border-border bg-card px-8 py-2.5 font-display text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-accent hover:text-accent"
                   >

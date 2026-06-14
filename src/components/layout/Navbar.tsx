@@ -1,53 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, ChevronDown, Search } from "lucide-react";
+import { Menu, X, Phone, Search } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
 const searchPlaceholders = [
   "Search products, ingredients, principals...",
-  "Searching for some principle...",
-  "Searching for some medicine...",
   "Searching for excipients...",
   "Searching for cosmetics...",
+  "Searching for food ingredients...",
 ];
 
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  {
-    label: "Industry",
-    href: "#",
-    children: [
-      {
-        label: "Pharmaceuticals",
-        href: "/pharma",
-        sub: [
-          { label: "Solid Orals", href: "/pharma#solid-orals" },
-          { label: "Liquid Orals", href: "/pharma#liquid-orals" },
-          { label: "Topicals", href: "/pharma#topicals" },
-        ],
-      },
-      {
-        label: "Cosmetics & Personal Care",
-        href: "/cosmetics",
-        sub: [
-          { label: "Emollients", href: "/cosmetics#emollients" },
-          { label: "Actives", href: "/cosmetics#actives" },
-          { label: "Emulsifiers", href: "/cosmetics#emulsifiers" },
-        ],
-      },
-      {
-        label: "Food & Nutraceuticals",
-        href: "/food",
-        sub: [
-          { label: "Stabilizers", href: "/food#stabilizers" },
-          { label: "Sweeteners", href: "/food#sweeteners" },
-          { label: "Functional Actives", href: "/food#actives" },
-        ],
-      },
-    ],
-  },
   { label: "Products", href: "/products" },
   { label: "Principals", href: "/principals" },
   { label: "News", href: "/news" },
@@ -57,10 +23,8 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [mobileIndustryOpen, setMobileIndustryOpen] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
@@ -70,11 +34,10 @@ const Navbar = () => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     
-    // Add escape key listener
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSearchOpen(false);
-        setMobileOpen(false); // Also close mobile drawer on escape
+        setMobileOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -87,10 +50,8 @@ const Navbar = () => {
 
   useEffect(() => {
     setMobileOpen(false);
-    setActiveDropdown(null);
     setSearchOpen(false);
     setSearchQuery("");
-    setMobileIndustryOpen(false);
   }, [location]);
 
   useEffect(() => {
@@ -121,11 +82,9 @@ const Navbar = () => {
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          navBg ? "bg-surface-dark/95 backdrop-blur-md shadow-lg" : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background shadow-sm transition-all duration-300"
         initial={false}
-        animate={{ height: scrolled ? 56 : 100 }}
+        animate={{ height: scrolled ? 64 : 88 }}
         transition={{ duration: 0.3 }}
       >
         <div className="container-scope flex h-full items-center justify-between">
@@ -136,126 +95,59 @@ const Navbar = () => {
                 src={logoImg}
                 alt="Scope Ingredients"
                 className="w-auto object-contain transition-all duration-300"
-                style={{ height: scrolled ? 36 : 56 }}
+                style={{
+                  height: scrolled ? 40 : 52,
+                }}
               />
             </Link>
           </div>
 
           {/* Center: Desktop nav */}
-          <div className="hidden shrink-0 items-center justify-center gap-0.5 lg:flex">
+          <div className="hidden shrink-0 items-center justify-center gap-2 lg:flex">
             {navLinks.map((link) => (
-              <div
+              <Link
                 key={link.label}
-                className="relative"
-                onMouseEnter={() => link.children && setActiveDropdown(link.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                to={link.href}
+                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-body text-[15px] font-semibold uppercase tracking-widest transition-colors ${
+                  location.pathname === link.href
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-primary"
+                }`}
               >
-                {link.href === "#" ? (
-                  <button
-                    className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
-                      ["/pharma", "/cosmetics", "/food"].includes(location.pathname)
-                        ? "text-accent"
-                        : "text-surface-dark-foreground/85 hover:text-accent"
-                    }`}
-                  >
-                    {link.label}
-                    {link.children && <ChevronDown className="h-3 w-3" />}
-                  </button>
-                ) : (
-                  <Link
-                    to={link.href}
-                    className={`flex items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors ${
-                      location.pathname === link.href
-                        ? "text-accent"
-                        : "text-surface-dark-foreground/85 hover:text-accent"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                )}
-
-                {/* Industry Mega-menu */}
-                <AnimatePresence>
-                  {link.children && activeDropdown === link.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.2 }}
-                      className="fixed left-0 right-0 top-full mt-0 border-t border-border/10 bg-card shadow-2xl"
-                    >
-                      <div className="container-scope grid grid-cols-3 gap-8 py-8">
-                        {link.children.map((child) => (
-                          <div key={child.label} className="space-y-2">
-                            <Link
-                              to={child.href}
-                              className="flex items-center gap-2 rounded-lg px-3 py-2.5 font-display text-sm font-bold text-foreground transition-colors hover:bg-accent-pale hover:text-accent"
-                            >
-                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-                                {child.label === "Pharmaceuticals" ? "💊" : child.label === "Cosmetics & Personal Care" ? "✨" : "🌿"}
-                              </span>
-                              {child.label}
-                            </Link>
-                            {"sub" in child && child.sub?.map((sub) => (
-                              <Link
-                                key={sub.label}
-                                to={sub.href}
-                                className="block rounded-md px-3 py-1.5 pl-14 font-body text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                              >
-                                {sub.label}
-                              </Link>
-                            ))}
-                            <Link
-                              to={child.href}
-                              className="block px-3 pl-14 font-body text-xs font-medium text-accent hover:underline"
-                            >
-                              View all →
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                {link.label}
+              </Link>
             ))}
           </div>
 
           {/* Right: Actions */}
-          <div className="hidden flex-1 items-center justify-end gap-3 lg:flex">
+          <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
             <form 
               onSubmit={handleSearch} 
               className="relative flex items-center w-full max-w-[240px] xl:max-w-[300px]"
             >
               <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-dark-foreground/50" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={searchPlaceholders[placeholderIndex]}
-                  className="w-full rounded-full bg-surface-dark-foreground/10 py-2 pl-9 pr-4 text-sm text-surface-dark-foreground placeholder:text-surface-dark-foreground/50 border border-transparent focus:border-surface-dark-foreground/20 focus:bg-surface-dark-foreground/15 focus:outline-none transition-all"
+                  className="w-full rounded-full border border-border/60 bg-muted py-2 pl-9 pr-4 text-sm text-foreground placeholder:text-foreground/40 transition-all focus:border-primary/30 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
             </form>
             <Link
               to="/request-sample"
-              className="shrink-0 rounded-full bg-accent px-5 py-2 font-display text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-light hover:shadow-lg"
+              className="shrink-0 rounded-full bg-primary px-5 py-2.5 font-display text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-light hover:shadow-md"
             >
               Request Sample
             </Link>
           </div>
 
+          {/* Mobile Toggle */}
           <div className="flex flex-1 items-center justify-end gap-2 lg:hidden">
             <button
-              className="rounded-lg p-2 text-surface-dark-foreground"
-              onClick={() => setSearchOpen(!searchOpen)}
-              aria-label="Search"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-            <button
-              className="rounded-lg p-2 text-surface-dark-foreground"
+              className="rounded-lg p-2 text-foreground active:scale-95 transition-transform"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -303,7 +195,6 @@ const Navbar = () => {
                     </button>
                   </div>
                 </form>
-                {/* Optional suggestions area could go below here */}
               </motion.div>
             </motion.div>
           )}
@@ -330,76 +221,59 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 left-0 z-[70] w-4/5 max-w-sm border-r border-surface-dark-muted bg-surface-dark pt-6 shadow-2xl lg:hidden"
+              className="fixed inset-y-0 left-0 z-[70] w-4/5 max-w-sm border-r border-border bg-background pt-6 shadow-2xl lg:hidden"
             >
               <div className="flex h-full flex-col overflow-y-auto px-6 pb-8">
-                <div className="mb-6 flex items-center justify-between pb-4 border-b border-surface-dark-muted">
-                  <span className="font-display text-lg font-bold text-surface-dark-foreground tracking-wider">MENU</span>
+                <div className="mb-4 flex items-center justify-between pb-4 border-b border-border">
+                  <span className="font-display text-lg font-bold text-foreground tracking-wider">MENU</span>
                   <button
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-full bg-surface-dark-muted p-2 text-surface-dark-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    className="rounded-full bg-muted p-2 text-foreground transition-all hover:bg-primary hover:text-primary-foreground active:scale-95"
                     aria-label="Close menu"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
 
+                {/* Mobile Search */}
+                <div className="mb-6">
+                  <form onSubmit={(e) => { handleSearch(e); setMobileOpen(false); }} className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search products..."
+                      className="w-full rounded-full border border-border bg-muted py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-foreground/40 focus:border-primary/30 focus:outline-none transition-all"
+                    />
+                  </form>
+                </div>
+
                 <div className="flex-1 space-y-1">
                   {navLinks.map((link) => (
-                    <div key={link.label} className="border-b border-surface-dark-muted/40 last:border-0">
-                      {link.children ? (
-                        <div>
-                          <button
-                            onClick={() => setMobileIndustryOpen(!mobileIndustryOpen)}
-                            className="flex w-full items-center justify-between py-4 font-display text-lg font-medium text-surface-dark-foreground transition-colors hover:text-accent"
-                          >
-                            {link.label}
-                            <ChevronDown className={`h-5 w-5 transition-transform ${mobileIndustryOpen ? "rotate-180 text-accent" : ""}`} />
-                          </button>
-                          <AnimatePresence>
-                            {mobileIndustryOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden pb-4 pl-4"
-                              >
-                                {link.children.map((child) => (
-                                  <Link
-                                    key={child.label}
-                                    to={child.href}
-                                    className="block py-2.5 font-body text-base text-surface-dark-foreground/75 transition-colors hover:text-accent"
-                                    onClick={() => setMobileOpen(false)}
-                                  >
-                                    {child.label}
-                                  </Link>
-                                ))}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      ) : (
-                        <Link
-                          to={link.href}
-                          className="block py-4 font-display text-lg font-medium text-surface-dark-foreground transition-colors hover:text-accent"
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {link.label}
-                        </Link>
-                      )}
+                    <div key={link.label} className="border-b border-border/50 last:border-0">
+                      <Link
+                        to={link.href}
+                        className={`block py-4 font-display text-lg font-medium transition-colors ${
+                          location.pathname === link.href ? "text-primary" : "text-foreground/80 hover:text-primary"
+                        }`}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-8 space-y-6 pt-6 border-t border-surface-dark-muted/40">
+                <div className="mt-8 space-y-6 pt-6 border-t border-border">
                   <Link
                     to="/request-sample"
-                    className="block w-full rounded-full bg-accent py-3.5 text-center font-display text-sm font-semibold text-accent-foreground transition-transform active:scale-95"
+                    className="block w-full rounded-full bg-primary py-3.5 text-center font-display text-sm font-semibold text-primary-foreground transition-transform active:scale-95"
                     onClick={() => setMobileOpen(false)}
                   >
                     Request a Sample
                   </Link>
-                  <a href="tel:+914440400400" className="flex items-center justify-center gap-2 font-body text-sm text-surface-dark-foreground/70 transition-colors hover:text-accent">
+                  <a href="tel:+914440400400" className="flex items-center justify-center gap-2 font-body text-sm text-foreground/50 transition-colors hover:text-primary">
                     <Phone className="h-4 w-4" /> +91 44 4040 0400
                   </a>
                 </div>

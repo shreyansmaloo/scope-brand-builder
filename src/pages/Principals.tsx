@@ -61,9 +61,9 @@ const Principals = () => {
   const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
     <div className="border-b border-border/60 py-4 first:pt-0">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-[11px] font-bold uppercase tracking-[0.08em] text-foreground">{title}</h4>
+        <h4 className="font-display text-[13px] font-extrabold uppercase tracking-wider text-foreground">{title}</h4>
         {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-semibold text-accent-foreground">{count}</span>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">{count}</span>
         )}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -73,12 +73,12 @@ const Principals = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-1.5 text-left font-body text-[13px] transition-colors ${
-        active ? "bg-accent-pale text-accent font-medium" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[15px] transition-colors ${
+        active ? "bg-accent-pale text-accent font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
       }`}
     >
-      <span className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
-        {active && <span className="block h-1.5 w-1.5 rounded-[1px] bg-white" />}
+      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
+        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-white" />}
       </span>
       <span className="capitalize truncate">{label}</span>
     </button>
@@ -136,32 +136,34 @@ const Principals = () => {
       />
       <StructuredData data={breadcrumbSchema} />
 
-      <section className="surface-dark pt-28 pb-10">
+      <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-xs text-surface-dark-foreground/60">
+          <p className="font-body text-sm text-primary-foreground/50">
             <Link to="/" className="hover:text-accent">Home</Link> &gt; Principals
           </p>
-          <h1 className="mt-3 font-display text-3xl md:text-4xl font-bold text-surface-dark-foreground">Our Global Principals</h1>
-          <p className="mt-2 max-w-3xl font-body text-sm text-surface-dark-foreground/70">
-            World-class ingredient manufacturers we proudly represent in India. Search by name, compound, specialty or country.
+          <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
+            Global Principals & Partners
+          </h1>
+          <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
+            We represent world-class ingredient manufacturers, bringing high-quality excipients and actives directly to the Indian market.
           </p>
         </div>
       </section>
 
       {/* Sticky search bar */}
-      <div className={`sticky top-14 z-30 border-b border-border bg-background/95 backdrop-blur-md transition-shadow ${searchSticky ? "shadow-md" : ""}`}>
-        <div className="container-scope flex flex-col gap-3 py-3 lg:flex-row lg:items-center">
+      <div className={`sticky top-16 z-30 border-b border-border bg-background/95 backdrop-blur-md transition-shadow ${searchSticky ? "shadow-md" : ""}`}>
+        <div className="container-scope flex flex-col gap-4 py-4 sm:py-5 lg:flex-row lg:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search principals by name, compound, specialty or country..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="h-12 w-full rounded-full border border-border bg-card pl-12 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             {search && (
-              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
+              <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
                 <X className="h-4 w-4" />
               </button>
             )}
@@ -220,10 +222,10 @@ const Principals = () => {
         <div className="container-scope">
           <div className="flex flex-col gap-6 lg:flex-row">
             <aside className="hidden w-72 shrink-0 lg:block">
-              <div className="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <div className="sticky top-44 max-h-[calc(100vh-12rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-display text-sm font-bold text-foreground">Filters</h3>
-                  <span className="rounded-full bg-accent-pale px-2 py-0.5 font-body text-xs font-medium text-accent">{filtered.length}</span>
+                  <h3 className="font-display text-sm font-extrabold text-foreground uppercase tracking-wider">Filters</h3>
+                  <span className="rounded-full bg-accent-pale px-2 py-0.5 font-body text-xs font-bold text-accent">{filtered.length}</span>
                 </div>
                 {filtersContent}
               </div>
@@ -253,7 +255,7 @@ const Principals = () => {
                       <div>
                         <div className="flex h-16 w-32 shrink-0 items-center justify-start">
                           <img
-                            src={`/logos/${partner.id}.png`}
+                            src={partner.logo ? `/logos/${partner.logo}` : `/logos/${partner.id}.png`}
                             alt={partner.name}
                             className="h-full w-full object-contain object-left"
                             onError={(e) => {

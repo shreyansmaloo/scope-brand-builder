@@ -1,100 +1,229 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Pill, Sparkles, Leaf } from "lucide-react";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 import industryPharma from "@/assets/industry-pharma.jpg";
 import industryCosmetics from "@/assets/industry-cosmetics.jpg";
 import industryFood from "@/assets/industry-food.jpg";
 
 const industries = [
   {
-    title: "Pharmaceuticals",
-    subtitle: "Excipient Excellence",
-    desc: "Comprehensive solutions for oral, liquid, and topical dosage forms with global principal support.",
+    id: "pharma",
+    title: "Pharmaceutical",
+    short: "Pharma",
+    tagline: "Excipient Excellence",
+    desc: "400+ pharmaceutical-grade excipients for solid, liquid, topical and specialty dosage forms — backed by global ISO-certified principal partnerships and 65+ years of formulation expertise.",
     image: industryPharma,
-    href: "/pharma",
-    icon: <Pill className="h-6 w-6" />,
-    color: "bg-accent", // Deep Orange
-    colSpan: "md:col-span-2",
-    rowSpan: "md:row-span-2",
+    href: "/products?industry=pharma",
+    highlights: ["Oral Solid Dosage", "Liquid & Topical Forms", "Specialty Excipients", "CDSCO Compliant"],
+    stat: { value: "400+", label: "Products" },
   },
   {
-    title: "Cosmetics",
-    subtitle: "Personal Care",
-    desc: "Innovative actives and functional ingredients for skin, hair, and body care formulations.",
+    id: "cosmetics",
+    title: "Personal Care & Derma",
+    short: "Personal Care",
+    tagline: "Innovative Actives",
+    desc: "Premium active and functional ingredients from world-class global principals for modern skin, hair, and body formulations — including peptides, ceramides, and botanical extracts.",
     image: industryCosmetics,
-    href: "/cosmetics",
-    icon: <Sparkles className="h-6 w-6" />,
-    color: "bg-primary", // Orange
-    colSpan: "md:col-span-1",
-    rowSpan: "md:row-span-1",
+    href: "/products?industry=cosmetics",
+    highlights: ["Skin Actives & Peptides", "Ceramides & Lipids", "Botanical Extracts", "Hair Care Solutions"],
+    stat: { value: "50+", label: "Principals" },
   },
   {
+    id: "food",
     title: "Food & Nutraceuticals",
-    subtitle: "Health & Wellness",
-    desc: "Quality stabilizers, sweeteners, and functional ingredients for health and wellness.",
+    short: "Food & Nutra",
+    tagline: "Health & Wellness",
+    desc: "Stabilizers, sweeteners, prebiotic fibers and functional actives for nutraceutical, food and health & wellness applications — FSSAI certified and globally sourced.",
     image: industryFood,
-    href: "/food",
-    icon: <Leaf className="h-6 w-6" />,
-    color: "bg-teal", // Golden Yellow
-    colSpan: "md:col-span-1",
-    rowSpan: "md:row-span-1",
+    href: "/products?industry=food",
+    highlights: ["Prebiotic Fibers", "Natural Sweeteners", "Plant-based Proteins", "Functional Actives"],
+    stat: { value: "65+", label: "Years" },
   },
 ];
 
 const IndustryCards = () => {
+  const [active, setActive] = useState(0);
+  const ind = industries[active];
+
   return (
-    <section className="section-padding bg-secondary overflow-hidden">
-      <div className="container-scope">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="max-w-2xl">
-            <span className="section-tag">✦ Industry Expertise</span>
-            <h2 className="mt-6 font-display text-h1 font-bold text-foreground leading-tight">
-              A Diverse Portfolio of <span className="text-accent italic">Excipient</span> Solutions
+    <section className="relative overflow-hidden bg-[#FCFDF8] py-20 lg:py-32">
+      {/* Subtle warm background wash */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(246,154,30,0.06) 0%, transparent 70%)" }}
+      />
+
+      <div className="container-scope relative z-10">
+        {/* ── Header ─────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+        >
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.07] px-4 py-1.5 font-display text-[11px] font-bold uppercase tracking-widest text-primary">
+              ✦ Industry Expertise
+            </span>
+            <h2 className="mt-5 font-display text-h1 font-black text-foreground leading-tight">
+              Three Industries,{" "}
+              <span className="text-primary">One Partner</span>
             </h2>
           </div>
-          <Link 
-            to="/products" 
-            className="group flex items-center gap-2 font-display text-sm font-bold text-accent"
+          <Link
+            to="/products"
+            className="group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-5 py-2.5 font-display text-sm font-bold text-primary transition-all hover:bg-primary hover:text-white hover:shadow-md"
           >
-            Explore Full Catalog <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            Full Catalog
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-nowrap overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:auto-rows-[250px] lg:auto-rows-[300px] md:overflow-visible md:snap-none md:pb-0">
+        {/* ── Tab selector ───────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-hide"
+        >
+          {industries.map((ind, i) => (
+            <button
+              key={ind.id}
+              onClick={() => setActive(i)}
+              className={`group shrink-0 flex items-center gap-2 rounded-full px-5 py-2.5 font-display text-sm font-bold transition-all duration-300 ${
+                active === i
+                  ? "bg-primary text-white shadow-[0_4px_16px_rgba(246,154,30,0.35)]"
+                  : "border border-border/60 bg-card text-muted-foreground hover:border-primary/30 hover:text-primary"
+              }`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full transition-colors ${
+                  active === i ? "bg-white" : "bg-muted-foreground group-hover:bg-primary"
+                }`}
+              />
+              {ind.short}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* ── Main showcase ───────────────────────────── */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={ind.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="grid gap-6 lg:grid-cols-5 lg:grid-rows-1"
+          >
+            {/* Image panel */}
+            <div className="relative lg:col-span-3 overflow-hidden rounded-[2rem] shadow-2xl" style={{ minHeight: "480px" }}>
+              <img
+                src={ind.image}
+                alt={`${ind.title} ingredients`}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {/* Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
+              {/* Primary accent bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+
+              {/* Corner stat */}
+              <div className="absolute top-6 right-6 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md px-5 py-4 text-right">
+                <p className="font-display text-3xl font-black text-white">{ind.stat.value}</p>
+                <p className="font-body text-[11px] text-white/60">{ind.stat.label}</p>
+              </div>
+
+              {/* Bottom content */}
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ind.tagline}</p>
+                <h3 className="mt-2 font-display text-4xl font-black text-white leading-tight">{ind.title}</h3>
+                <Link
+                  to={ind.href}
+                  className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur-md px-5 py-2.5 font-display text-xs font-semibold text-white transition-all hover:bg-primary hover:border-primary hover:shadow-lg"
+                >
+                  Explore Products
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Info panel */}
+            <div className="lg:col-span-2 flex flex-col gap-5">
+              {/* Description card */}
+              <div className="flex-1 rounded-[2rem] border border-border/50 bg-card p-7 shadow-sm">
+                <p className="font-body text-[15px] leading-relaxed text-muted-foreground">{ind.desc}</p>
+
+                <div className="mt-6 space-y-2.5">
+                  {ind.highlights.map((h) => (
+                    <div key={h} className="flex items-center gap-3">
+                      <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <span className="font-body text-[13px] font-medium text-foreground">{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Link
+                  to={ind.href}
+                  className="group mt-8 inline-flex items-center gap-2 font-display text-sm font-bold text-primary transition-all hover:gap-3"
+                >
+                  View all products
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+
+              {/* Other industry quick-access tiles */}
+              <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
+                {industries
+                  .filter((_, i) => i !== active)
+                  .map((other) => (
+                    <button
+                      key={other.id}
+                      onClick={() => setActive(industries.findIndex((x) => x.id === other.id))}
+                      className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-4 text-left shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
+                    >
+                      <div
+                        className="absolute inset-0 opacity-[0.07] transition-opacity group-hover:opacity-[0.14]"
+                        style={{ backgroundImage: `url(${other.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/60" />
+                      <div className="relative">
+                        <p className="font-display text-[10px] font-bold uppercase tracking-widest text-primary">{other.tagline}</p>
+                        <p className="mt-0.5 font-display text-sm font-bold text-foreground">{other.short}</p>
+                      </div>
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ── Mobile cards (stacked) — shown below md ── */}
+        <div className="mt-6 flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 -mx-5 px-5 scrollbar-hide lg:hidden">
           {industries.map((ind, i) => (
             <motion.div
-              key={ind.title}
-              initial={{ opacity: 0, y: 20 }}
+              key={ind.id}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`w-[85%] h-[350px] md:h-auto md:w-auto shrink-0 snap-center sm:w-[400px] group relative overflow-hidden rounded-[2.5rem] ${ind.colSpan} ${ind.rowSpan} card-scope border-none`}
+              className="relative w-[78vw] max-w-sm h-[420px] shrink-0 snap-center overflow-hidden rounded-[2rem] shadow-xl"
             >
-              <img
-                src={ind.image}
-                alt={`${ind.title} industry at Scope India`}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              {/* Dark overlay for high contrast instead of primary color */}
-              <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/95 via-surface-dark/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-              
-              <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${ind.color} text-white shadow-lg transition-transform group-hover:scale-110 group-hover:rotate-3`}>
-                  {ind.icon}
-                </div>
-                <span className="text-xs font-bold uppercase tracking-widest text-white/80">{ind.subtitle}</span>
-                <h3 className="mt-1 font-display text-2xl font-bold text-white lg:text-3xl">
-                  {ind.title}
-                </h3>
-                <p className="mt-3 max-w-sm font-body text-sm text-white/70 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                  {ind.desc}
-                </p>
-                
+              <img src={ind.image} alt={ind.title} className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{ind.tagline}</p>
+                <h3 className="mt-1.5 font-display text-2xl font-bold text-white">{ind.title}</h3>
+                <p className="mt-2 font-body text-xs text-white/60 line-clamp-2">{ind.desc}</p>
                 <Link
                   to={ind.href}
-                  className="mt-6 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white transition-all hover:bg-white hover:text-surface-dark"
+                  className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur-md px-4 py-2 font-display text-xs font-semibold text-white"
                 >
-                  <ArrowUpRight className="h-5 w-5" />
+                  Explore <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </motion.div>
