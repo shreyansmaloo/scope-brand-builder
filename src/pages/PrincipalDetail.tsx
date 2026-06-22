@@ -171,11 +171,7 @@ const PrincipalDetail = () => {
                     className="group relative flex flex-col justify-between overflow-hidden rounded-[1.25rem] bg-primary-muted/45 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
                   >
                     <Link
-                      to={`/request-sample?product=${encodeURIComponent(
-                        product.brand && product.brand !== "-"
-                          ? `${product.brand} (${product.name})`
-                          : product.name
-                      )}`}
+                      to={`/products/${product.id}`}
                       className="flex flex-col justify-between h-full min-h-[160px] w-full"
                     >
                       <div className="flex flex-col">

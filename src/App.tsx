@@ -19,6 +19,9 @@ import Principals from "./pages/Principals";
 import NotFound from "./pages/NotFound";
 import PrincipalDetail from "./pages/PrincipalDetail";
 import Careers from "./pages/Careers";
+import HomepageVariants from "./pages/HomepageVariants";
+import LeadershipVariants from "./pages/LeadershipVariants";
+import ProductDetail from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -38,12 +41,15 @@ const App = () => (
             <Route path="/cosmetics" element={<Navigate to="/products?industry=cosmetics" replace />} />
             <Route path="/food" element={<Navigate to="/products?industry=food" replace />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/request-sample" element={<RequestSample />} />
             <Route path="/news" element={<News />} />
             <Route path="/principals" element={<Principals />} />
             <Route path="/principals/:id" element={<PrincipalDetail />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/design-lab" element={<HomepageVariants />} />
+            <Route path="/leadership-lab" element={<LeadershipVariants />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

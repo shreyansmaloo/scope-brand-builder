@@ -73,7 +73,7 @@ const Products = () => {
   const [selectedPrincipal, setSelectedPrincipal] = useState<string | null>(initialPrincipal);
   const [optionsSearch, setOptionsSearch] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [sort, setSort] = useState<SortOption>("default");
+  const [sort, setSort] = useState<SortOption>("az");
   const [searchSticky, setSearchSticky] = useState(false);
   const [visibleCount, setVisibleCount] = useState(120);
 
@@ -130,8 +130,10 @@ const Products = () => {
       return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal;
     });
 
-    if (sort === "az") result = [...result].sort((a, b) => a.name.localeCompare(b.name));
-    if (sort === "za") result = [...result].sort((a, b) => b.name.localeCompare(a.name));
+    const displayName = (p: typeof products[0]) =>
+      (p.brand && p.brand !== "-" && p.brand.trim()) ? p.brand.trim() : p.name.trim();
+    if (sort === "az") result = [...result].sort((a, b) => displayName(a).localeCompare(displayName(b)));
+    if (sort === "za") result = [...result].sort((a, b) => displayName(b).localeCompare(displayName(a)));
 
     return result;
   }, [search, selectedCategory, selectedIndustry, selectedPrincipal, sort]);
@@ -393,34 +395,22 @@ const Products = () => {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: Math.min(i * 0.015, 0.2) }}
-                        className="group relative flex flex-col justify-between overflow-hidden rounded-[1.25rem] bg-primary-muted/45 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
+                        className="group relative overflow-hidden rounded-[1.25rem] bg-primary-muted/45 px-5 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
                       >
                         <Link
-                          to={`/request-sample?product=${encodeURIComponent(
-                            product.brand && product.brand !== "-"
-                              ? `${product.brand} (${product.name})`
-                              : product.name
-                          )}`}
-                          className="flex flex-col justify-between h-full min-h-[160px] w-full"
+                          to={`/products/${product.id}`}
+                          className="flex items-center justify-between gap-3 w-full"
                         >
-                          <div className="flex flex-col">
-                            {/* Title (Brand Name) */}
-                            <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className="font-body text-xs text-neutral-900/25 shrink-0 w-6 text-right tabular-nums">
+                              {i + 1}
+                            </span>
+                            <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug truncate">
                               {titleText}
                             </h3>
-                            {/* Subtitle (Generic Name) */}
-                            {subtitleText && (
-                              <p className="mt-2 font-body text-xs sm:text-sm text-neutral-500 font-normal leading-normal">
-                                {subtitleText}
-                              </p>
-                            )}
                           </div>
-
-                          {/* Bottom Circular Arrow Button */}
-                          <div className="mt-4 flex justify-end">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
-                              <ChevronRight className="h-4 w-4" />
-                            </div>
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                            <ChevronRight className="h-4 w-4" />
                           </div>
                         </Link>
                       </motion.div>

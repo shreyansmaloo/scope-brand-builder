@@ -37,7 +37,7 @@ const values = [
 
 
 const team = [
-  { name: "Shri Vijaylal Kawarlal Vaid", title: "Founder & Visionary", linkedin: "#", photo: "/members/vijaylal-vaid.jpeg" },
+  { name: "Late Shri Vijaylal Kawarlal Vaid", title: "Founder & Visionary", linkedin: "#", photo: "/members/vijaylal-vaid.jpeg" },
   { name: "Ramesh V Jain", title: "Director", linkedin: "#", photo: "/members/ramesh-jain.jpeg" },
   { name: "Sachin V Jain", title: "Director", linkedin: "#", photo: "/members/sachin-jain.jpeg" },
   { name: "Ashish V Jain", title: "Director", linkedin: "#", photo: "/members/ashish-jain.jpeg" },
@@ -176,22 +176,22 @@ const About = () => {
                 <div className="relative shrink-0">
                   {/* Decorative background frame */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/10 rounded-[2.5rem] translate-x-3 translate-y-3 -z-10 transition-transform duration-500 group-hover/photo:translate-x-1.5 group-hover/photo:translate-y-1.5" />
-                  
+
                   {/* Image Container */}
                   <div className="relative w-64 sm:w-[280px] aspect-[3/4] overflow-hidden rounded-[2.5rem] border-4 border-white shadow-xl ring-1 ring-border/50 transition-all duration-500 group-hover/photo:-translate-y-1 group-hover/photo:shadow-[0_25px_60px_rgba(246,154,30,0.15)]">
-                    <img 
-                      src="/members/vijaylal-vaid.jpeg" 
-                      alt="Shri Vijaylal Kawarlal Vaid" 
-                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover/photo:scale-105" 
+                    <img
+                      src="/members/vijaylal-vaid.jpeg"
+                      alt="Shri Vijaylal Kawarlal Vaid"
+                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover/photo:scale-105"
                     />
                     {/* Subtle warm overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none opacity-60 group-hover/photo:opacity-0 transition-opacity duration-500" />
                   </div>
                 </div>
-                
+
                 <div className="mt-8">
-                  <h4 className="font-display text-xl font-bold text-foreground">Shri Vijaylal Kawarlal Vaid</h4>
-                  <p className="font-body text-sm font-semibold uppercase tracking-widest text-accent mt-2">Chairman & Founder</p>
+                  <h4 className="font-display text-xl font-bold text-foreground">Late. Shri Vijaylal Kawarlal Jain</h4>
+                  <p className="font-body text-sm font-semibold uppercase tracking-widest text-accent mt-2">Founder & Chairman</p>
                 </div>
               </div>
 
@@ -199,7 +199,7 @@ const About = () => {
               <div className="lg:col-span-8 flex flex-col items-start w-full">
                 <span className="section-tag mb-6">Chairman's Message</span>
                 <blockquote className="font-display text-lg md:text-xl font-medium leading-relaxed text-foreground italic w-full">
-                  "The foundation of our company is rooted in the vision and values of Late Vijay Kawarlal Jain, whose entrepreneurial journey was driven by integrity, trust, and a deep sense of responsibility toward customers. He believed that true success in business comes from delivering genuine products, maintaining transparent relationships, and consistently supporting client needs."
+                  "The foundation of our company is rooted in the vision and values of Late. Shri Vijaylal Kawarlal Jain, whose entrepreneurial journey was driven by integrity, trust, and a deep sense of responsibility toward customers. He believed that true success in business comes from delivering genuine products, maintaining transparent relationships, and consistently supporting client needs."
                 </blockquote>
                 <p className="mt-6 font-body text-base leading-relaxed text-muted-foreground w-full">
                   "At Scope, our responsibility begins with our clients. We ensure the procurement of high-quality ingredients from globally reputed manufacturers, with every product undergoing stringent quality checks. We also strongly believe that ethical business practices contribute to the betterment of society."

@@ -26,16 +26,6 @@ const Footer = () => {
               <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-primary hover:text-white" aria-label="LinkedIn">
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-primary hover:text-white" aria-label="Twitter">
-                <Twitter className="h-4 w-4" />
-              </a>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["ISO 9001", "D&B Rated", "CRISIL", "cGMP", "HACCP", "Kosher"].map((badge) => (
-                <span key={badge} className="rounded-lg border border-surface-dark-muted px-2.5 py-1 font-body text-[10px] text-surface-dark-foreground/60">
-                  {badge}
-                </span>
-              ))}
             </div>
           </div>
 
