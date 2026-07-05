@@ -2,19 +2,20 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { articles } from "@/data/news";
+import { useNews } from "@/context/NewsContext";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 
 const tagColors: Record<string, string> = {
   Event: "bg-accent text-accent-foreground",
-  News: "bg-teal text-teal-foreground",
+  News: "bg-accent text-accent-foreground",
   Press: "bg-primary text-primary-foreground",
 };
 
 const filters = ["All", "Event", "News", "Press"] as const;
 
 const News = () => {
+  const { articles } = useNews();
   const [filter, setFilter] = useState<string>("All");
 
   const filtered = filter === "All" ? articles : articles.filter((a) => a.category === filter);
@@ -34,9 +35,6 @@ const News = () => {
       <StructuredData data={breadcrumbSchema} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; News & Events
-          </p>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             News & Events
           </motion.h1>

@@ -55,9 +55,6 @@ const Pharma = () => {
       <section className="relative bg-primary pt-32 pb-20">
         <img src={heroPharma} alt="Pharmaceutical facilities" className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div className="container-scope relative">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Pharmaceuticals
-          </p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

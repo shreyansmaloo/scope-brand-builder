@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin, Twitter } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
 const Footer = () => {
+  const location = useLocation();
+
+  if (location.pathname === "/creative-home" || location.pathname === "/hero-variants") {
+    return null;
+  }
+
   return (
     <footer className="relative surface-dark border-t border-border/50">
       <div

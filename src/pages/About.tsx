@@ -30,8 +30,8 @@ const timeline = [
 
 const values = [
   { icon: Target, title: "Mission", desc: "To curate and deliver world-class products and advanced technologies for pharmaceutical formulations, health, and wellness.", bg: "bg-accent text-accent-foreground" },
-  { icon: Eye, title: "Values", desc: "Trust, transparency, and integrity are the enduring pillars that define every relationship we foster.", bg: "bg-surface-dark text-surface-dark-foreground" },
-  { icon: Gem, title: "Experience", desc: "Elevating your business through the depth and distinction of over 175 years of collective industry expertise.", bg: "bg-teal text-teal-foreground" },
+  { icon: Eye, title: "Values", desc: "Trust, transparency, and integrity are the enduring pillars that define every relationship we foster.", bg: "bg-[#FCD201] text-[#1a1a1a]" },
+  { icon: Gem, title: "Experience", desc: "Elevating your business through the depth and distinction of over 175 years of collective industry expertise.", bg: "bg-[#DBA237] text-white" },
 ];
 
 
@@ -69,7 +69,7 @@ const TeamCard = ({ member, delay = 0 }: { member: any, delay?: number }) => (
         </div>
       </div>
 
-      <h4 className="mt-4 text-center font-display text-base font-bold leading-tight text-foreground">{member.name}</h4>
+      <h4 className="mt-4 min-h-[3rem] text-center font-display text-base font-bold leading-tight text-foreground">{member.name}</h4>
       <p className="mt-1.5 text-center font-body text-[10px] font-semibold uppercase tracking-widest text-accent">{member.title}</p>
 
       <div className="mt-auto flex w-full justify-center border-t border-border/50 pt-5">
@@ -111,9 +111,6 @@ const About = () => {
       {/* Hero */}
       <section className="bg-primary pt-32 pb-24 relative">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; About Us
-          </p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -198,7 +195,7 @@ const About = () => {
               {/* Right Column: Quotes & Message */}
               <div className="lg:col-span-8 flex flex-col items-start w-full">
                 <span className="section-tag mb-6">Chairman's Message</span>
-                <blockquote className="font-display text-lg md:text-xl font-medium leading-relaxed text-foreground italic w-full">
+                <blockquote className="font-body text-lg md:text-xl font-medium leading-relaxed text-foreground italic w-full">
                   "The foundation of our company is rooted in the vision and values of Late. Shri Vijaylal Kawarlal Jain, whose entrepreneurial journey was driven by integrity, trust, and a deep sense of responsibility toward customers. He believed that true success in business comes from delivering genuine products, maintaining transparent relationships, and consistently supporting client needs."
                 </blockquote>
                 <p className="mt-6 font-body text-base leading-relaxed text-muted-foreground w-full">
@@ -241,8 +238,8 @@ const About = () => {
           <div className="absolute top-24 left-0 w-full px-5 sm:px-8 lg:px-12 xl:px-16 pointer-events-none z-10">
             <div className="max-w-2xl pointer-events-auto">
               <span className="section-tag bg-white shadow-sm">Our History</span>
-              <h2 className="mt-6 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-                A Journey of <span className="text-accent italic">Excellence</span>
+              <h2 className="mt-6 font-display text-h1 font-bold tracking-tight text-foreground">
+                A Journey of <span className="text-accent">Excellence</span>
               </h2>
               <p className="mt-4 font-body text-base text-muted-foreground leading-relaxed">
                 Scroll down to explore our evolution from a single-window excipient provider in 1959 to India's most comprehensive ingredient partner.
@@ -339,51 +336,52 @@ const About = () => {
         <div className="container-scope relative z-10">
           <div className="flex flex-col items-start">
             <span className="section-tag">Our People</span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Leadership Team</h2>
-            <p className="mt-3 max-w-2xl text-base text-muted-foreground">
+            <h2 className="mt-4 font-display text-h2 font-bold tracking-tight text-foreground">Leadership Team</h2>
+            <p className="mt-3 max-w-2xl font-body text-base text-muted-foreground">
               A collective pharma experience of over 160 years, driving Scope's vision for excellence and innovation.
             </p>
           </div>
 
-          <div className="mt-16 flex w-full max-w-5xl flex-col items-center gap-0 sm:gap-12 mx-auto relative">
-            {/* --- Level 1: Founder --- */}
-            <div className="relative flex w-full justify-center z-20">
-              {team.slice(0, 1).map((member) => (
-                <TeamCard key={member.name} member={member} delay={0} />
+          {/* Mobile: single horizontal scroll row with all members */}
+          <div className="mt-10 sm:hidden overflow-x-auto -mx-4 px-4" style={{ WebkitOverflowScrolling: "touch" }}>
+            <div className="flex gap-4 pb-4" style={{ scrollSnapType: "x mandatory" }}>
+              {team.map((member, i) => (
+                <div key={member.name} className="flex-shrink-0" style={{ minWidth: 220, scrollSnapAlign: "start" }}>
+                  <TeamCard member={member} delay={i * 0.05} />
+                </div>
               ))}
-              {/* Vertical line connecting to level 2 */}
-              <div className="absolute top-full left-1/2 h-12 w-[2px] -translate-x-1/2 bg-border/80 hidden sm:block" />
+            </div>
+          </div>
+
+          {/* Desktop: 3-level org chart */}
+          <div className="mt-16 hidden sm:flex w-full max-w-5xl flex-col items-center gap-0 sm:gap-12 mx-auto relative">
+            {/* Level 1: Founder */}
+            <div className="relative flex w-full justify-center z-20">
+              <TeamCard member={team[0]} delay={0} />
+              <div className="absolute top-full left-1/2 h-12 w-[2px] -translate-x-1/2 bg-border/80" />
             </div>
 
-            {/* --- Level 2: Directors --- */}
+            {/* Level 2: Directors */}
             <div className="relative w-full z-10">
-              {/* Horizontal line spanning columns (Connects centers of 1st and 3rd cards) */}
-              <div className="absolute top-0 left-[16.66%] right-[16.66%] h-[2px] bg-border/80 hidden sm:block" />
-
-              <div className="grid grid-cols-1 gap-6 pt-6 sm:grid-cols-3 sm:gap-6 sm:pt-8 relative">
+              <div className="absolute top-0 left-[16.66%] right-[16.66%] h-[2px] bg-border/80" />
+              <div className="grid grid-cols-3 gap-6 pt-8 relative">
                 {team.slice(1, 4).map((member, i) => (
                   <div key={member.name} className="relative flex justify-center">
-                    {/* Vertical line connecting up to horizontal line */}
-                    <div className="absolute bottom-full left-1/2 h-8 w-[2px] -translate-x-1/2 bg-border/80 hidden sm:block" />
+                    <div className="absolute bottom-full left-1/2 h-8 w-[2px] -translate-x-1/2 bg-border/80" />
                     <TeamCard member={member} delay={0.1 + i * 0.1} />
                   </div>
                 ))}
               </div>
-
-              {/* Vertical line connecting down to level 3 */}
-              <div className="absolute top-full left-1/2 h-12 w-[2px] -translate-x-1/2 bg-border/80 hidden sm:block" />
+              <div className="absolute top-full left-1/2 h-12 w-[2px] -translate-x-1/2 bg-border/80" />
             </div>
 
-            {/* --- Level 3: Executive Directors --- */}
+            {/* Level 3: Executive Directors */}
             <div className="relative w-full z-0">
-              {/* Horizontal line spanning columns */}
-              <div className="absolute top-0 left-[16.66%] right-[16.66%] h-[2px] bg-border/80 hidden sm:block" />
-
-              <div className="grid grid-cols-1 gap-6 pt-6 sm:grid-cols-3 sm:gap-6 sm:pt-8 relative">
+              <div className="absolute top-0 left-[16.66%] right-[16.66%] h-[2px] bg-border/80" />
+              <div className="grid grid-cols-3 gap-6 pt-8 relative">
                 {team.slice(4, 7).map((member, i) => (
                   <div key={member.name} className="relative flex justify-center">
-                    {/* Vertical line connecting up to horizontal line */}
-                    <div className="absolute bottom-full left-1/2 h-8 w-[2px] -translate-x-1/2 bg-border/80 hidden sm:block" />
+                    <div className="absolute bottom-full left-1/2 h-8 w-[2px] -translate-x-1/2 bg-border/80" />
                     <TeamCard member={member} delay={0.4 + i * 0.1} />
                   </div>
                 ))}

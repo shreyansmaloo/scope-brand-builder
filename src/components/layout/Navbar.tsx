@@ -76,8 +76,9 @@ const Navbar = () => {
     }
   };
 
-  const isHome = location.pathname === "/";
-  const navBg = scrolled || !isHome;
+  if (location.pathname === "/creative-home" || location.pathname === "/hero-variants") {
+    return null;
+  }
 
   return (
     <>
@@ -89,14 +90,14 @@ const Navbar = () => {
       >
         <div className="container-scope flex h-full items-center justify-between">
           {/* Left: Logo */}
-          <div className="flex flex-1 items-center justify-start">
-            <Link to="/" className="flex flex-col items-center">
+          <div className="flex flex-1 items-center justify-start overflow-visible">
+            <Link to="/" className="flex flex-col items-center overflow-visible">
               <img
                 src={logoImg}
                 alt="Scope Ingredients"
                 className="w-auto object-contain transition-all duration-300"
                 style={{
-                  height: scrolled ? 40 : 52,
+                  height: scrolled ? 52 : 68,
                 }}
               />
             </Link>
@@ -108,7 +109,7 @@ const Navbar = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-body text-[15px] font-semibold uppercase tracking-widest transition-colors ${
+                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-[13px] font-semibold uppercase tracking-widest transition-colors ${
                   location.pathname === link.href
                     ? "text-primary"
                     : "text-foreground/70 hover:text-primary"

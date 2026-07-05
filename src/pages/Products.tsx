@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ, ChevronRight } from "lucide-react";
-import { products, categories, industries } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { partners } from "@/data/partners";
 
 type SortOption = "default" | "az" | "za";
@@ -26,6 +26,14 @@ const industryCardStyles: Record<string, { hoverBorder: string; hoverShadow: str
     bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
   },
 };
+
+const formatPrincipalName = (name: string): string =>
+  name.trim().split(/\s+/).map(word => {
+    const core = word.replace(/[^a-zA-Z0-9]/g, "");
+    // Keep short all-caps tokens as abbreviations (e.g. USA, CHT, BIO, AG, PVT)
+    if (core.length <= 4 && core === core.toUpperCase() && /^[A-Z]+$/.test(core)) return word;
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }).join(" ");
 
 const formatProductName = (name: string): string => {
   if (!name) return "";
@@ -61,6 +69,7 @@ const formatProductName = (name: string): string => {
 };
 
 const Products = () => {
+  const { products } = useProducts();
   const [searchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   const initialPrincipal = searchParams.get("principal") || null;
@@ -88,17 +97,10 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    const p = searchParams.get("principal");
-    setSelectedPrincipal(p);
-    
-    const s = searchParams.get("search");
-    setSearch(s || "");
-    
-    const ind = searchParams.get("industry");
-    setSelectedIndustry(ind);
-    
-    const cat = searchParams.get("category");
-    setSelectedCategory(cat);
+    setSelectedPrincipal(searchParams.get("principal"));
+    setSearch(searchParams.get("search") || "");
+    setSelectedIndustry(searchParams.get("industry"));
+    setSelectedCategory(searchParams.get("category"));
   }, [searchParams]);
 
   const selectedPartner = useMemo(() => {
@@ -106,11 +108,49 @@ const Products = () => {
     return partners.find((p) => p.name === selectedPrincipal) || null;
   }, [selectedPrincipal]);
 
-  const principals = useMemo(() => [...new Set(products.map((p) => p.principal))].sort(), []);
+  // Base pool filtered by search text only (no industry/category/principal filters)
+  // Each filter group shows options available given the OTHER two filters + search
+  const baseSearch = useMemo(() => {
+    if (!search.trim()) return products;
+    const q = search.toLowerCase().trim();
+    return products.filter((p) =>
+      p.name.toLowerCase().includes(q) ||
+      (p.brand && p.brand.toLowerCase().includes(q)) ||
+      (p.grade && p.grade.toLowerCase().includes(q)) ||
+      p.principal.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    );
+  }, [search]);
 
-  const filteredIndustries = useMemo(() => industries.filter((i) => i.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
-  const filteredCategories = useMemo(() => categories.filter((c) => c.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
-  const filteredPrincipals = useMemo(() => principals.filter((p) => p.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, principals]);
+  const availableIndustries = useMemo(() => {
+    const pool = baseSearch.filter((p) =>
+      (!selectedCategory || p.category === selectedCategory) &&
+      (!selectedPrincipal || p.principal === selectedPrincipal)
+    );
+    return [...new Set(pool.map((p) => p.industry))].sort();
+  }, [baseSearch, selectedCategory, selectedPrincipal]);
+
+  const availableCategories = useMemo(() => {
+    const pool = baseSearch.filter((p) =>
+      (!selectedIndustry || p.industry === selectedIndustry) &&
+      (!selectedPrincipal || p.principal === selectedPrincipal)
+    );
+    return [...new Set(pool.map((p) => p.category))].sort();
+  }, [baseSearch, selectedIndustry, selectedPrincipal]);
+
+  const availablePrincipals = useMemo(() => {
+    const pool = baseSearch.filter((p) =>
+      (!selectedIndustry || p.industry === selectedIndustry) &&
+      (!selectedCategory || p.category === selectedCategory)
+    );
+    return [...new Set(pool.map((p) => p.principal))].sort();
+  }, [baseSearch, selectedIndustry, selectedCategory]);
+
+  const q = optionsSearch.toLowerCase();
+  const filteredIndustries = availableIndustries.filter(i => i.toLowerCase().includes(q));
+  const filteredCategories = availableCategories.filter(c => c.toLowerCase().includes(q));
+  const filteredPrincipals = availablePrincipals.filter(p => p.toLowerCase().includes(q));
 
   const filtered = useMemo(() => {
     let result = products.filter((p) => {
@@ -130,8 +170,7 @@ const Products = () => {
       return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal;
     });
 
-    const displayName = (p: typeof products[0]) =>
-      (p.brand && p.brand !== "-" && p.brand.trim()) ? p.brand.trim() : p.name.trim();
+    const displayName = (p: typeof products[0]) => p.name.trim();
     if (sort === "az") result = [...result].sort((a, b) => displayName(a).localeCompare(displayName(b)));
     if (sort === "za") result = [...result].sort((a, b) => displayName(b).localeCompare(displayName(a)));
 
@@ -170,8 +209,7 @@ const Products = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[15px] transition-colors ${active ? "bg-accent-pale text-accent font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
-        }`}
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[15px] transition-colors ${active ? "bg-accent-pale text-accent font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
     >
       <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
         {active && <span className="block h-2 w-2 rounded-[1.5px] bg-white" />}
@@ -182,14 +220,13 @@ const Products = () => {
 
   const filtersContent = (
     <div className="flex flex-col">
-      {/* Inner search */}
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <input
           type="text"
           placeholder="Filter options..."
           value={optionsSearch}
-          onChange={(e) => setOptionsSearch(e.target.value)}
+          onChange={e => setOptionsSearch(e.target.value)}
           className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-8 font-body text-xs text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
         />
         {optionsSearch && (
@@ -200,20 +237,20 @@ const Products = () => {
       </div>
 
       <FilterGroup title="Industry" count={selectedIndustry ? 1 : 0}>
-        {filteredIndustries.map((ind) => (
+        {filteredIndustries.map(ind => (
           <FilterCheckbox key={ind} label={ind} active={selectedIndustry === ind} onClick={() => setSelectedIndustry(selectedIndustry === ind ? null : ind)} />
         ))}
       </FilterGroup>
 
       <FilterGroup title="Category" count={selectedCategory ? 1 : 0}>
-        {filteredCategories.map((cat) => (
+        {filteredCategories.map(cat => (
           <FilterCheckbox key={cat} label={cat} active={selectedCategory === cat} onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)} />
         ))}
       </FilterGroup>
 
       <FilterGroup title="Principal" count={selectedPrincipal ? 1 : 0}>
-        {filteredPrincipals.map((p) => (
-          <FilterCheckbox key={p} label={p} active={selectedPrincipal === p} onClick={() => setSelectedPrincipal(selectedPrincipal === p ? null : p)} />
+        {filteredPrincipals.map(p => (
+          <FilterCheckbox key={p} label={formatPrincipalName(p)} active={selectedPrincipal === p} onClick={() => setSelectedPrincipal(selectedPrincipal === p ? null : p)} />
         ))}
       </FilterGroup>
 
@@ -242,9 +279,6 @@ const Products = () => {
       {/* Hero */}
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Products
-          </p>
           <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             {selectedPartner ? `${selectedPartner.name} Products` : "Product Catalog"}
           </h1>
@@ -349,7 +383,7 @@ const Products = () => {
                 <div className="mb-4 hidden flex-wrap gap-2 lg:flex">
                   {selectedIndustry && <Pill label={selectedIndustry} onClear={() => setSelectedIndustry(null)} />}
                   {selectedCategory && <Pill label={selectedCategory} onClear={() => setSelectedCategory(null)} />}
-                  {selectedPrincipal && <Pill label={selectedPrincipal} onClear={() => setSelectedPrincipal(null)} />}
+                  {selectedPrincipal && <Pill label={formatPrincipalName(selectedPrincipal)} onClear={() => setSelectedPrincipal(null)} />}
                 </div>
               )}
 
@@ -369,25 +403,11 @@ const Products = () => {
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {filtered.slice(0, visibleCount).map((product, i) => {
-                    let titleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "")
-                      ? product.brand.trim()
-                      : product.name.trim();
-
-                    if (product.grade && product.grade !== "-" && !titleText.includes(product.grade)) {
+                    let titleText = product.name.trim();
+                    if (product.grade && product.grade !== "-") {
                       titleText = `${titleText} (${product.grade})`;
                     }
-
-                    // Remove registered trademark ® and trade mark ™ symbols
-                    titleText = titleText
-                      .replace(/®/g, " ")
-                      .replace(/™/g, " ")
-                      .replace(/\s+/g, " ")
-                      .trim()
-                      .toUpperCase();
-
-                    const subtitleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "" && product.brand.trim().toLowerCase() !== product.name.trim().toLowerCase())
-                      ? formatProductName(product.name)
-                      : "";
+                    titleText = titleText.replace(/\s+/g, " ").trim().toUpperCase();
 
                     return (
                       <motion.div

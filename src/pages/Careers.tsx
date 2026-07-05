@@ -143,9 +143,6 @@ const Careers = () => {
       {/* Hero */}
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Careers
-          </p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -291,7 +288,7 @@ const Careers = () => {
             <div className="lg:col-span-5 relative">
               <div className="sticky top-24 rounded-3xl border border-border/50 bg-card p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300" id="apply-form">
                 <div>
-                  <h2 className="font-display text-2xl font-bold text-foreground">Apply Now</h2>
+                  <h2 className="font-display text-h2 font-bold text-foreground">Apply Now</h2>
                   <p className="mt-2 font-body text-sm text-muted-foreground">
                     Submit your application and we'll connect within 5 business days.
                   </p>
@@ -300,12 +297,12 @@ const Careers = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
                    <div className="grid gap-5 sm:grid-cols-2">
                      <div>
-                       <Label htmlFor="name" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Full Name *</Label>
+                       <Label htmlFor="name" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Full Name *</Label>
                        <Input id="name" {...register("name")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="Your full name" />
                        {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
                      </div>
                      <div>
-                       <Label htmlFor="email" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Email *</Label>
+                       <Label htmlFor="email" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Email *</Label>
                        <Input id="email" type="email" {...register("email")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="you@example.com" />
                        {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
                      </div>
@@ -313,12 +310,12 @@ const Careers = () => {
 
                    <div className="grid gap-5 sm:grid-cols-2">
                      <div>
-                       <Label htmlFor="phone" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Phone *</Label>
+                       <Label htmlFor="phone" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Phone *</Label>
                        <Input id="phone" type="tel" {...register("phone")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="+91 98765 43210" />
                        {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
                      </div>
                      <div>
-                       <Label htmlFor="experience" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Experience *</Label>
+                       <Label htmlFor="experience" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Experience *</Label>
                        <select
                          id="experience"
                          {...register("experience")}
@@ -335,7 +332,7 @@ const Careers = () => {
                    </div>
 
                    <div>
-                     <Label htmlFor="role" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Position *</Label>
+                     <Label htmlFor="role" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Position *</Label>
                      <select
                        id="role"
                        {...register("role")}
@@ -351,7 +348,7 @@ const Careers = () => {
                    </div>
 
                    <div>
-                     <Label htmlFor="resume" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Resume / CV</Label>
+                     <Label htmlFor="resume" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Resume / CV</Label>
                      <div className="mt-1.5 flex items-center justify-center rounded-xl border-2 border-dashed border-border/60 bg-background/50 px-6 py-6 transition-colors hover:border-accent/40 cursor-pointer">
                        <div className="text-center">
                          <Upload className="mx-auto h-6 w-6 text-muted-foreground/70" />
@@ -364,11 +361,11 @@ const Careers = () => {
                    </div>
 
                    <div>
-                     <Label htmlFor="message" className="font-display text-xs font-semibold text-foreground uppercase tracking-wider">Cover Note (Optional)</Label>
+                     <Label htmlFor="message" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Cover Note (Optional)</Label>
                      <Textarea id="message" {...register("message")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent resize-none" rows={3} placeholder="Tell us why you'd be a great fit..." />
                    </div>
 
-                   <Button type="submit" disabled={isSubmitting} className="w-full rounded-full bg-accent py-5 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light shadow-md hover:shadow-lg transition-all">
+                   <Button type="submit" disabled={isSubmitting} className="w-full rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light shadow-md hover:shadow-lg transition-all">
                      {isSubmitting ? "Submitting..." : "Submit Application"}
                    </Button>
                 </form>

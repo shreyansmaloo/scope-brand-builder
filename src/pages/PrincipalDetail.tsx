@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { partners } from "@/data/partners";
-import { products } from "@/data/products";
+import { usePartners } from "@/context/PartnersContext";
+import { useProducts } from "@/context/ProductsContext";
 import { motion } from "framer-motion";
 import { ArrowRight, Globe, ArrowLeft, Hexagon, ChevronRight } from "lucide-react";
 import NotFound from "./NotFound";
@@ -41,6 +41,8 @@ const formatProductName = (name: string): string => {
 };
 
 const PrincipalDetail = () => {
+  const { partners } = usePartners();
+  const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
   const partner = partners.find((p) => p.id === id);
 
@@ -83,7 +85,7 @@ const PrincipalDetail = () => {
                   <Globe className="mr-2 h-3 w-3" />
                   {partner.country}
                 </div>
-                <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">
+                <h1 className="font-display text-hero font-bold text-foreground">
                   {partner.name}
                 </h1>
                 {partner.about && (
@@ -106,7 +108,7 @@ const PrincipalDetail = () => {
                 className="rounded-2xl border border-border bg-background p-8 shadow-sm flex items-center justify-center min-h-[200px]"
               >
                 <img 
-                  src={partner.logo ? `/logos/${partner.logo}` : `/logos/${partner.id}.png`} 
+                  src={partner.logo ? (partner.logo.startsWith("data:") ? partner.logo : `/logos/${partner.logo}`) : `/logos/${partner.id}.png`}
                   alt={partner.name}
                   className="w-full max-w-[200px] object-contain"
                   onError={(e) => {
@@ -140,27 +142,13 @@ const PrincipalDetail = () => {
           </div>
 
           {partnerProducts.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {partnerProducts.map((product, i) => {
-                let titleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "")
-                  ? product.brand.trim()
-                  : product.name.trim();
-
-                if (product.grade && product.grade !== "-" && !titleText.includes(product.grade)) {
+                let titleText = product.name.trim();
+                if (product.grade && product.grade !== "-") {
                   titleText = `${titleText} (${product.grade})`;
                 }
-
-                // Remove registered trademark ® and trade mark ™ symbols
-                titleText = titleText
-                  .replace(/®/g, " ")
-                  .replace(/™/g, " ")
-                  .replace(/\s+/g, " ")
-                  .trim()
-                  .toUpperCase();
-
-                const subtitleText = (product.brand && product.brand !== "-" && product.brand.trim() !== "" && product.brand.trim().toLowerCase() !== product.name.trim().toLowerCase())
-                  ? formatProductName(product.name)
-                  : "";
+                titleText = titleText.replace(/\s+/g, " ").trim().toUpperCase();
 
                 return (
                   <motion.div
@@ -168,30 +156,20 @@ const PrincipalDetail = () => {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: Math.min(i * 0.015, 0.2) }}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-[1.25rem] bg-primary-muted/45 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
+                    className="group relative overflow-hidden rounded-[1.25rem] bg-primary-muted/45 px-5 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
                   >
                     <Link
                       to={`/products/${product.id}`}
-                      className="flex flex-col justify-between h-full min-h-[160px] w-full"
+                      className="flex items-center justify-between gap-3 w-full"
                     >
-                      <div className="flex flex-col">
-                        {/* Title (Brand Name) */}
-                        <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="font-body text-xs text-neutral-900/25 shrink-0 w-6 text-right tabular-nums">{i + 1}</span>
+                        <h3 className="font-display text-sm font-bold text-neutral-900 uppercase tracking-tight leading-snug truncate">
                           {titleText}
                         </h3>
-                        {/* Subtitle (Generic Name) */}
-                        {subtitleText && (
-                          <p className="mt-2 font-body text-xs sm:text-sm text-neutral-500 font-normal leading-normal">
-                            {subtitleText}
-                          </p>
-                        )}
                       </div>
-
-                      {/* Bottom Circular Arrow Button */}
-                      <div className="mt-4 flex justify-end">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
-                          <ChevronRight className="h-4 w-4" />
-                        </div>
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                        <ChevronRight className="h-4 w-4" />
                       </div>
                     </Link>
                   </motion.div>

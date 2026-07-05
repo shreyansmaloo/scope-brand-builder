@@ -4,7 +4,7 @@ import {
   ArrowLeft, FlaskConical, Tag, Globe, Factory,
   Package, ChevronRight, Send, Building2
 } from "lucide-react";
-import { products } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { partners } from "@/data/partners";
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
@@ -39,19 +39,64 @@ const formatName = (name: string): string => {
   }).join(' ');
 };
 
-const DetailRow = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) => (
-  <div className="flex items-start gap-4 py-5 border-b border-border/50 last:border-0">
-    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/8 text-primary">
-      <Icon className="h-5 w-5" />
+const parsePoints = (text: string): string[] | null => {
+  if (!text) return null;
+
+  // Newline-separated bullets/numbers
+  const rawLines = text.split(/\n/).map(l => l.trim()).filter(Boolean);
+  if (rawLines.length > 1) {
+    const hasBullet = rawLines.some(l => /^[•\-\*\t]/.test(l));
+    const hasNumber = rawLines.some(l => /^\d+[\.\)]/.test(l));
+    if (hasBullet || hasNumber) {
+      return rawLines.map(l => l.replace(/^[\s\t•\-\*]+/, '').replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+    }
+    // Plain newline-separated items (more than 1 line = treat as list)
+    if (rawLines.length > 1) return rawLines;
+  }
+
+  // Inline numbered: "1.Text 2.Text 3.Text"
+  if (/\b\d+\./.test(text)) {
+    const parts = text.split(/(?=\b\d+\.)/).map(s => s.replace(/^\d+\.\s*/, '').trim()).filter(s => s.length > 2);
+    if (parts.length > 1) return parts;
+  }
+
+  // Inline bullet char: "• A • B"
+  if (text.includes('•')) {
+    const parts = text.split('•').map(s => s.trim()).filter(Boolean);
+    if (parts.length > 1) return parts;
+  }
+
+  return null;
+};
+
+const DetailRow = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) => {
+  const points = parsePoints(value);
+  return (
+    <div className="flex items-start gap-4 py-5 border-b border-border/50 last:border-0">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/8 text-primary">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="min-w-0 w-full">
+        <p className="font-body text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</p>
+        {points ? (
+          <ul className="mt-2 space-y-1.5">
+            {points.map((pt, i) => (
+              <li key={i} className="flex items-start gap-2 font-body text-sm text-foreground leading-relaxed">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                {pt}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-1 font-body text-base text-foreground leading-relaxed">{value}</p>
+        )}
+      </div>
     </div>
-    <div className="min-w-0">
-      <p className="font-body text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</p>
-      <p className="mt-1 font-body text-base text-foreground leading-relaxed">{value}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const ProductDetail = () => {
+  const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
   const product = products.find((p) => p.id === id);
 
@@ -93,29 +138,11 @@ const ProductDetail = () => {
       {/* Hero */}
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent transition-colors">Home</Link>
-            <span>/</span>
-            <Link to="/products" className="hover:text-accent transition-colors">Products</Link>
-            <span>/</span>
-            <span className="text-primary-foreground/80 truncate max-w-[200px]">{displayTitle}</span>
-          </nav>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-6"
           >
-            {/* Industry badge */}
-            <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-widest mb-4 ${
-              product.industry === "pharma" ? "bg-white/10 border-white/20 text-white/80" :
-              product.industry === "cosmetics" ? "bg-teal/20 border-teal/30 text-teal-foreground" :
-              "bg-white/10 border-white/20 text-white/80"
-            }`}>
-              {industryLabel[product.industry]}
-            </span>
-
             <h1 className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-primary-foreground leading-tight tracking-tight">
               {displayTitle}
             </h1>

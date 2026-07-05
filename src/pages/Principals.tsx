@@ -4,13 +4,14 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
-import { partners } from "@/data/partners";
+import { usePartners } from "@/context/PartnersContext";
 
 type SortOption = "default" | "az" | "za";
 
 const industries = ["pharma", "cosmetics", "food"] as const;
 
 const Principals = () => {
+  const { partners } = usePartners();
   const [search, setSearch] = useState("");
   const [optionsSearch, setOptionsSearch] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
@@ -25,7 +26,7 @@ const Principals = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const countries = useMemo(() => [...new Set(partners.map((p) => p.country))].filter(Boolean).sort(), []);
+  const countries = useMemo(() => [...new Set(partners.map((p) => p.country))].filter(Boolean).sort(), [partners]);
 
   const filteredIndustries = useMemo(() => industries.filter((i) => i.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch]);
   const filteredCountries = useMemo(() => countries.filter((c) => c.toLowerCase().includes(optionsSearch.toLowerCase())), [optionsSearch, countries]);
@@ -46,7 +47,7 @@ const Principals = () => {
     if (sort === "az") result = [...result].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "za") result = [...result].sort((a, b) => b.name.localeCompare(a.name));
     return result;
-  }, [search, selectedIndustry, selectedCountry, sort]);
+  }, [search, selectedIndustry, selectedCountry, sort, partners]);
 
   const activeFilterCount = (selectedIndustry ? 1 : 0) + (selectedCountry ? 1 : 0);
 
@@ -138,9 +139,6 @@ const Principals = () => {
 
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Principals
-          </p>
           <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             Global Principals & Partners
           </h1>
@@ -249,34 +247,38 @@ const Principals = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: Math.min(i * 0.015, 0.15) }}
-                      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-card p-5 transition-all hover:border-accent/40 hover:shadow-[0_12px_40px_rgba(180,90,20,0.12)]"
                     >
-                      <div className="absolute left-0 top-0 h-full w-1 bg-accent opacity-0 transition-opacity group-hover:opacity-100" />
-                      <div>
-                        <div className="flex h-16 w-32 shrink-0 items-center justify-start">
-                          <img
-                            src={partner.logo ? `/logos/${partner.logo}` : `/logos/${partner.id}.png`}
-                            alt={partner.name}
-                            className="h-full w-full object-contain object-left"
-                            onError={(e) => {
-                              const t = e.currentTarget;
-                              t.style.display = "none";
-                              const div = document.createElement("div");
-                              div.className = "flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-accent-foreground font-display text-base font-bold";
-                              div.textContent = partner.name.substring(0, 2).toUpperCase();
-                              t.parentElement?.appendChild(div);
-                            }}
-                          />
+                      <Link
+                        to={`/principals/${partner.id}`}
+                        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-card p-5 transition-all hover:border-accent/40 hover:shadow-[0_12px_40px_rgba(180,90,20,0.12)] block"
+                      >
+                        <div className="absolute left-0 top-0 h-full w-1 bg-accent opacity-0 transition-opacity group-hover:opacity-100" />
+                        <div>
+                          <div className="flex h-16 w-32 shrink-0 items-center justify-start">
+                            <img
+                              src={partner.logo ? (partner.logo.startsWith("data:") ? partner.logo : `/logos/${partner.logo}`) : `/logos/${partner.id}.png`}
+                              alt={partner.name}
+                              className="h-full w-full object-contain object-left"
+                              onError={(e) => {
+                                const t = e.currentTarget;
+                                t.style.display = "none";
+                                const div = document.createElement("div");
+                                div.className = "flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-accent-foreground font-display text-base font-bold";
+                                div.textContent = partner.name.substring(0, 2).toUpperCase();
+                                t.parentElement?.appendChild(div);
+                              }}
+                            />
+                          </div>
+                          <div className="mt-4">
+                            <h3 className="font-display text-lg font-semibold text-foreground">{partner.name}</h3>
+                            <p className="font-body text-xs text-muted-foreground">{partner.country}</p>
+                            <p className="mt-2 font-body text-sm text-text-secondary line-clamp-3">{partner.specialty}</p>
+                          </div>
                         </div>
-                        <div className="mt-4">
-                          <h3 className="font-display text-lg font-semibold text-foreground">{partner.name}</h3>
-                          <p className="font-body text-xs text-muted-foreground">{partner.country}</p>
-                          <p className="mt-2 font-body text-sm text-text-secondary line-clamp-3">{partner.specialty}</p>
+                        <div className="mt-6 flex items-center justify-between font-display text-sm font-semibold text-accent group-hover:text-accent-light">
+                          View Details
+                          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                         </div>
-                      </div>
-                      <Link to={`/principals/${partner.id}`} className="group mt-6 flex items-center justify-between font-display text-sm font-semibold text-accent hover:text-accent-light">
-                        View Details
-                        <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </motion.div>
                   ))}

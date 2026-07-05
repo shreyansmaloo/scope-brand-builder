@@ -57,9 +57,6 @@ const Contact = () => {
       <StructuredData data={[breadcrumbSchema, localBusinessSchema]} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Contact
-          </p>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             Get in Touch
           </motion.h1>
@@ -76,7 +73,7 @@ const Contact = () => {
             
             {/* Form */}
             <div>
-              <h2 className="mb-6 font-display text-2xl font-bold text-foreground">Send us a message</h2>
+              <h2 className="mb-6 font-display text-h2 font-bold text-foreground">Send us a message</h2>
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center rounded-2xl bg-card p-12 text-center shadow-lg">
                   <CheckCircle className="h-16 w-16 text-teal" />
@@ -128,7 +125,7 @@ const Contact = () => {
                     <textarea {...register("message")} id="message" rows={4} className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
                     {errors.message && <p className="mt-1 font-body text-xs text-destructive">{errors.message.message}</p>}
                   </div>
-                  <button type="submit" className="flex items-center gap-2 rounded-full bg-accent px-8 py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light hover:shadow-xl transition-all">
+                  <button type="submit" className="flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary-light hover:shadow-xl transition-all">
                     <Send className="h-4 w-4" />
                     Send Message
                   </button>
@@ -213,7 +210,7 @@ const Contact = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-display text-base font-semibold text-foreground">{branch.city}</h3>
-                      <p className="font-body text-[10px] font-bold uppercase tracking-wider text-teal">{branch.state}</p>
+                      <p className="font-body text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{branch.state}</p>
                     </div>
                     <MapPin className="h-4 w-4 text-accent" />
                   </div>

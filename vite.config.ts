@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    proxy: {
+      "/send-email.php": "http://localhost:9000",
+    },
   },
   plugins: [react()],
   resolve: {

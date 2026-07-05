@@ -51,9 +51,6 @@ const Food = () => {
       <section className="relative bg-primary pt-32 pb-20">
         <img src={heroFood} alt="Nutraceutical and food ingredients" className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div className="container-scope relative">
-          <p className="font-body text-sm text-primary-foreground/50">
-            <Link to="/" className="hover:text-accent">Home</Link> &gt; Food Ingredients
-          </p>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 font-display text-h1 font-bold text-primary-foreground">
             Food Ingredients
           </motion.h1>
