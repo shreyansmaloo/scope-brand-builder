@@ -67,12 +67,15 @@ function useTilt(strength = 7) {
   }, [strength]);
   const onLeave = useCallback(() => {
     if (!ref.current) return;
-    ref.current.style.transform = "perspective(1100px) rotateX(0deg) rotateY(0deg) translateZ(0)";
+    ref.current.style.transform = "";
     ref.current.style.transition = "transform 0.55s cubic-bezier(0.03,0.98,0.52,0.99)";
   }, []);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Skip tilt on touch devices — 3D transforms cause iOS Safari to composite
+    // the image in a separate layer, making it appear to pan during page scroll.
+    if (window.matchMedia("(hover: none)").matches) return;
     el.addEventListener("mousemove", onMove);
     el.addEventListener("mouseleave", onLeave);
     return () => {
