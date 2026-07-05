@@ -121,10 +121,19 @@ const Careers = () => {
   });
 
   const onSubmit = async (data: ApplicationForm) => {
-    // Simulate submission
-    await new Promise(r => setTimeout(r, 1000));
-    toast({ title: "Application Submitted!", description: "We'll get back to you within 5 business days." });
-    reset();
+    try {
+      const res = await fetch('/careers-email.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.message || 'Server error');
+      toast({ title: "Application Submitted!", description: "We'll get back to you within 5 business days." });
+      reset();
+    } catch {
+      toast({ title: "Submission Failed", description: "Please try again or email us directly.", variant: "destructive" });
+    }
   };
 
   const breadcrumbSchema = generateBreadcrumbSchema([
