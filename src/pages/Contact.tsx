@@ -5,6 +5,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema, generateLocalBusinessSchema } from "@/components/seo/StructuredData";
 import IndiaMap from "@/components/sections/IndiaMap";
@@ -36,9 +37,25 @@ const Contact = () => {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = (data: ContactFormData) => {
-    console.log("Contact form submitted:", { ...data, email: "[redacted]" });
-    setSubmitted(true);
+  const onSubmit = async (data: ContactFormData) => {
+    const promise = fetch('/contact-email.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(async (res) => {
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.message || 'Server error');
+      return json;
+    });
+
+    toast.promise(promise, {
+      loading: 'Sending your message...',
+      success: () => {
+        setSubmitted(true);
+        return 'Message sent successfully!';
+      },
+      error: () => 'Failed to send message. Please try again.',
+    });
   };
 
   const breadcrumbSchema = generateBreadcrumbSchema([
