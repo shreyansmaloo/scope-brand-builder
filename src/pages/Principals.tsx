@@ -240,7 +240,7 @@ const Principals = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-3 2xl:grid-cols-4">
                   {filtered.map((partner, i) => (
                     <motion.div
                       key={partner.id}
@@ -250,11 +250,11 @@ const Principals = () => {
                     >
                       <Link
                         to={`/principals/${partner.id}`}
-                        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-card p-5 transition-all hover:border-accent/40 hover:shadow-[0_12px_40px_rgba(180,90,20,0.12)] block"
+                        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-card p-3 sm:p-5 transition-all hover:border-accent/40 hover:shadow-[0_12px_40px_rgba(180,90,20,0.12)] block"
                       >
                         <div className="absolute left-0 top-0 h-full w-1 bg-accent opacity-0 transition-opacity group-hover:opacity-100" />
                         <div>
-                          <div className="flex h-16 w-32 shrink-0 items-center justify-start">
+                          <div className="flex h-12 w-24 sm:h-16 sm:w-32 shrink-0 items-center justify-start">
                             <img
                               src={partner.logo ? (partner.logo.startsWith("data:") ? partner.logo : `/logos/${partner.logo}`) : `/logos/${partner.id}.png`}
                               alt={partner.name}
@@ -269,10 +269,10 @@ const Principals = () => {
                               }}
                             />
                           </div>
-                          <div className="mt-4">
-                            <h3 className="font-display text-lg font-semibold text-foreground">{partner.name}</h3>
+                          <div className="mt-3">
+                            <h3 className="font-display text-sm sm:text-lg font-semibold text-foreground line-clamp-2">{partner.name}</h3>
                             <p className="font-body text-xs text-muted-foreground">{partner.country}</p>
-                            <p className="mt-2 font-body text-sm text-text-secondary line-clamp-3">{partner.specialty}</p>
+                            <p className="mt-1.5 font-body text-xs sm:text-sm text-text-secondary line-clamp-2">{partner.specialty}</p>
                           </div>
                         </div>
                         <div className="mt-6 flex items-center justify-between font-display text-sm font-semibold text-accent group-hover:text-accent-light">

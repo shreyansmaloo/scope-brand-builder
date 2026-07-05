@@ -82,7 +82,7 @@ const WhyChooseScope = () => (
           className="relative"
         >
           {/* Main image */}
-          <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] lg:aspect-[3/4] shadow-2xl">
+          <div className="relative overflow-hidden rounded-[2rem] aspect-[3/2] sm:aspect-[4/3] lg:aspect-[3/4] shadow-2xl">
             <img
               src={whyChooseImg}
               alt="Quality control at Scope Ingredients laboratory"

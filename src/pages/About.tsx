@@ -228,14 +228,14 @@ const About = () => {
       </section>
 
       {/* Scrolljacked Zigzag Timeline */}
-      <section ref={scrollRef} className="relative h-[300vh] bg-secondary">
+      <section ref={scrollRef} className="relative h-[200vh] sm:h-[300vh] bg-secondary">
         <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-gradient-to-b from-secondary to-background">
           {/* Decorative ambient blobs */}
           <div className="absolute left-1/4 top-0 -z-10 h-64 w-64 -translate-y-1/2 rounded-full bg-primary/10 blur-[100px]" />
           <div className="absolute right-1/4 bottom-0 -z-10 h-64 w-64 translate-y-1/2 rounded-full bg-accent/10 blur-[100px]" />
 
           {/* Fixed Header Content */}
-          <div className="absolute top-24 left-0 w-full px-5 sm:px-8 lg:px-12 xl:px-16 pointer-events-none z-10">
+          <div className="absolute top-20 left-0 w-full px-5 sm:px-8 lg:px-12 xl:px-16 pointer-events-none z-20">
             <div className="max-w-2xl pointer-events-auto">
               <span className="section-tag bg-white shadow-sm">Our History</span>
               <h2 className="mt-6 font-display text-h1 font-bold tracking-tight text-foreground">
@@ -248,10 +248,10 @@ const About = () => {
           </div>
 
           {/* The Scrollable Track */}
-          <div className="relative mt-32 h-[600px] w-full flex items-center">
+          <div className="relative mt-48 sm:mt-32 h-[400px] sm:h-[600px] w-full flex items-center">
             {/* Horizontal Scrolling Items */}
             <motion.div
-              className="relative flex gap-12 px-[5vw] sm:px-[10vw] pt-[150px] pb-[150px] w-max"
+              className="relative flex gap-6 sm:gap-12 px-[5vw] sm:px-[10vw] pt-[80px] pb-[80px] sm:pt-[150px] sm:pb-[150px] w-max"
               style={{
                 x: useTransform(
                   useScroll({ target: scrollRef, offset: ["start start", "end end"] }).scrollYProgress,
@@ -261,7 +261,7 @@ const About = () => {
               }}
             >
               {/* The Central Continuous Line (Inside the scroll container so it ends perfectly) */}
-              <div className="absolute left-[calc(5vw+160px)] right-[calc(5vw+160px)] sm:left-[calc(10vw+175px)] sm:right-[calc(10vw+175px)] h-[3px] bg-border/40 top-1/2 -translate-y-1/2">
+              <div className="absolute left-[calc(5vw+100px)] right-[calc(5vw+100px)] sm:left-[calc(10vw+175px)] sm:right-[calc(10vw+175px)] h-[3px] bg-border/40 top-1/2 -translate-y-1/2">
                 {/* Dynamic Glowing Progress Bar linked to scroll */}
                 <motion.div
                   className="h-full bg-primary origin-left shadow-[0_0_15px_rgba(246,154,30,0.5)]"
@@ -277,7 +277,7 @@ const About = () => {
               {timeline.map((item, i) => {
                 const isEven = i % 2 === 0;
                 return (
-                  <div key={item.year} className="relative flex-shrink-0 h-[400px] w-[320px] sm:w-[350px]">
+                  <div key={item.year} className="relative flex-shrink-0 h-[260px] w-[200px] sm:h-[400px] sm:w-[350px]">
                     {/* Timeline Node Dot */}
                     <div className="absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center rounded-full border-4 border-white bg-primary shadow-md z-20 transition-transform duration-300 hover:scale-125 hover:shadow-[0_0_20px_rgba(246,154,30,0.4)]">
                       <div className="h-2 w-2 rounded-full bg-white" />
@@ -293,28 +293,28 @@ const About = () => {
 
                     {/* Content Card */}
                     <div
-                      className={`absolute w-full rounded-[2rem] border border-border/40 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(246,154,30,0.12)] hover:border-accent/30 ${isEven ? "bottom-[calc(50%+40px)]" : "top-[calc(50%+40px)]"
+                      className={`absolute w-full rounded-2xl sm:rounded-[2rem] border border-border/40 bg-white p-4 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(246,154,30,0.12)] hover:border-accent/30 ${isEven ? "bottom-[calc(50%+24px)] sm:bottom-[calc(50%+40px)]" : "top-[calc(50%+24px)] sm:top-[calc(50%+40px)]"
                         }`}
                     >
                       {/* Giant Background Year */}
-                      <span className="absolute -right-4 -top-8 select-none font-display text-[100px] font-black text-secondary opacity-50 transition-transform duration-500 hover:-translate-x-2">
+                      <span className="absolute -right-2 -top-5 hidden sm:block select-none font-display text-[100px] font-black text-secondary opacity-50 transition-transform duration-500 hover:-translate-x-2">
                         {item.year.slice(-2)}
                       </span>
 
                       <div className="relative z-10">
-                        <div className="mb-6 flex items-center justify-between">
-                          <span className="rounded-full bg-primary/10 px-4 py-1.5 font-display text-lg font-bold text-primary">
+                        <div className="mb-2 sm:mb-6 flex items-center justify-between">
+                          <span className="rounded-full bg-primary/10 px-2.5 py-1 sm:px-4 sm:py-1.5 font-display text-sm sm:text-lg font-bold text-primary">
                             {item.year}
                           </span>
-                          <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${item.color} text-white shadow-sm transition-transform duration-500 hover:rotate-6 hover:scale-110`}>
-                            <item.icon className="h-5 w-5" />
+                          <div className={`flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl ${item.color} text-white shadow-sm`}>
+                            <item.icon className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                           </div>
                         </div>
 
-                        <h3 className="font-display text-xl font-bold text-foreground leading-tight">
+                        <h3 className="font-display text-sm sm:text-xl font-bold text-foreground leading-tight">
                           {item.title}
                         </h3>
-                        <p className="mt-3 font-body text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                        <p className="mt-1.5 sm:mt-3 font-body text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2 sm:line-clamp-3">
                           {item.desc}
                         </p>
                       </div>
@@ -343,7 +343,7 @@ const About = () => {
           </div>
 
           {/* Mobile: single horizontal scroll row with all members */}
-          <div className="mt-10 sm:hidden overflow-x-auto -mx-4 px-4" style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className="mt-10 sm:hidden overflow-x-auto -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" style={{ WebkitOverflowScrolling: "touch" }}>
             <div className="flex gap-4 pb-4" style={{ scrollSnapType: "x mandatory" }}>
               {team.map((member, i) => (
                 <div key={member.name} className="flex-shrink-0" style={{ minWidth: 220, scrollSnapAlign: "start" }}>

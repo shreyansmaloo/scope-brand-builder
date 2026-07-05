@@ -658,8 +658,8 @@ const IndustriesSection = () => (
         </motion.p>
       </motion.div>
 
-      {/* Mobile: horizontal scroll; md+: 3-column grid */}
-      <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible md:snap-none md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {/* Mobile: horizontal swipe; md+: 3-column grid */}
+      <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:grid md:grid-cols-3 md:overflow-visible md:snap-none md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {INDUSTRIES.map((ind, i) => (
           <div key={ind.id} className="flex-shrink-0 w-[80vw] max-w-sm md:w-auto md:max-w-none snap-start">
             <IndustryCard ind={ind} i={i} />

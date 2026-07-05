@@ -15,7 +15,7 @@ const PartnersMarquee = () => {
   const renderRow = (items: typeof partners, direction: "left" | "right") => (
     <div className="overflow-x-hidden py-2">
       <div
-        className={`flex gap-5 ${direction === "left" ? "animate-marquee-left" : "animate-marquee-right"}`}
+        className={`flex gap-3 lg:gap-5 ${direction === "left" ? "animate-marquee-left" : "animate-marquee-right"}`}
         style={{ width: "max-content" }}
       >
         {[...items, ...items].map((p, i) => {
@@ -24,13 +24,13 @@ const PartnersMarquee = () => {
             <Link
               to={`/principals/${p.id}`}
               key={`${p.id}-${i}`}
-              className="flex h-[96px] w-56 shrink-0 items-center justify-center rounded-2xl border border-border/60 bg-card px-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(219,142,0,0.08)]"
+              className="flex h-16 w-28 lg:h-[96px] lg:w-56 shrink-0 items-center justify-center rounded-xl lg:rounded-2xl border border-border/60 bg-card px-3 lg:px-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(219,142,0,0.08)]"
             >
               {logoPath ? (
                 <img
                   src={logoPath}
                   alt={p.name}
-                  className="h-12 max-w-[160px] object-contain"
+                  className="h-8 max-w-[80px] lg:h-12 lg:max-w-[160px] object-contain"
                   style={{ mixBlendMode: "multiply" }}
                   loading="lazy"
                   onError={(e) => {

@@ -134,41 +134,41 @@ const Contact = () => {
             </div>
 
             {/* Contact info cards */}
-            <div className="space-y-6">
-              <div className="card-scope p-6">
-                <div className="flex gap-4">
-                  <MapPin className="h-5 w-5 shrink-0 text-accent" />
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-1 lg:space-y-0">
+              <div className="card-scope p-4 lg:p-6">
+                <div className="flex gap-3">
+                  <MapPin className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
                   <div>
                     <h3 className="font-display text-sm font-semibold text-foreground">Registered Office</h3>
-                    <p className="mt-1 font-body text-sm text-text-secondary">No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008</p>
+                    <p className="mt-1 font-body text-xs lg:text-sm text-text-secondary">No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008</p>
                   </div>
                 </div>
               </div>
-              <div className="card-scope p-6">
-                <div className="flex gap-4">
-                  <Phone className="h-5 w-5 shrink-0 text-accent" />
+              <div className="card-scope p-4 lg:p-6">
+                <div className="flex gap-3">
+                  <Phone className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
                   <div>
                     <h3 className="font-display text-sm font-semibold text-foreground">Phone</h3>
-                    <a href="tel:+914440400400" className="mt-1 block font-body text-sm text-text-secondary hover:text-accent">+91 44 40 400 400</a>
-                    <a href="tel:+914440400405" className="block font-body text-sm text-text-secondary hover:text-accent">+91 44 40 400 405</a>
+                    <a href="tel:+914440400400" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-accent">+91 44 40 400 400</a>
+                    <a href="tel:+914440400405" className="block font-body text-xs lg:text-sm text-text-secondary hover:text-accent">+91 44 40 400 405</a>
                   </div>
                 </div>
               </div>
-              <div className="card-scope p-6">
-                <div className="flex gap-4">
-                  <Mail className="h-5 w-5 shrink-0 text-accent" />
+              <div className="card-scope p-4 lg:p-6">
+                <div className="flex gap-3">
+                  <Mail className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
                   <div>
                     <h3 className="font-display text-sm font-semibold text-foreground">Email</h3>
-                    <a href="mailto:sales@scope-india.com" className="mt-1 block font-body text-sm text-text-secondary hover:text-accent">sales@scope-india.com</a>
+                    <a href="mailto:sales@scope-india.com" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-accent break-all">sales@scope-india.com</a>
                   </div>
                 </div>
               </div>
-              <div className="card-scope p-6">
-                <div className="flex gap-4">
-                  <Clock className="h-5 w-5 shrink-0 text-accent" />
+              <div className="card-scope p-4 lg:p-6">
+                <div className="flex gap-3">
+                  <Clock className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
                   <div>
                     <h3 className="font-display text-sm font-semibold text-foreground">Business Hours</h3>
-                    <p className="mt-1 font-body text-sm text-text-secondary">Mon–Sat, 9:00 AM – 6:00 PM IST</p>
+                    <p className="mt-1 font-body text-xs lg:text-sm text-text-secondary">Mon–Sat, 9:00 AM – 6:00 PM IST</p>
                   </div>
                 </div>
               </div>
@@ -204,7 +204,7 @@ const Contact = () => {
           
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-start">
             {/* Left: 3x2 Grid of Branch Offices */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               {branches.map((branch) => (
                 <div key={branch.city} className="card-scope p-5 border border-border/50 hover:border-accent/30 transition-colors bg-card/50">
                   <div className="flex justify-between items-start">
