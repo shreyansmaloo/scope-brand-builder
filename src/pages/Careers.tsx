@@ -15,7 +15,7 @@ import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/Struc
 
 const whyJoin = [
   { icon: Heart, title: "People-First Culture", desc: "A family-run business since 1959 that values every team member's growth and well-being." },
-  { icon: TrendingUp, title: "Growth Opportunities", desc: "Expand your career across pharma, cosmetics and food verticals with continuous learning." },
+  { icon: TrendingUp, title: "Growth Opportunities", desc: "Expand your career across pharma, personal care and food verticals with continuous learning." },
   { icon: Globe, title: "Global Exposure", desc: "Work with world-renowned principals from USA, Europe, Japan and more." },
   { icon: ShieldCheck, title: "Ethical Foundation", desc: "Trust, transparency and fair play are the corner stones of everything we do." },
   { icon: Users, title: "Collaborative Team", desc: "A dedicated technical sales force with 160+ years of collective experience." },
@@ -43,10 +43,10 @@ const openRoles = [
     rules: "Field-based role with regular office reporting. Performance-linked incentives apply."
   },
   { 
-    title: "Business Development Manager — Cosmetics", 
-    location: "Mumbai", 
-    type: "Full-time", 
-    desc: "Expand our personal care and cosmetics ingredient portfolio across key accounts.",
+    title: "Business Development Manager — Personal Care",
+    location: "Mumbai",
+    type: "Full-time",
+    desc: "Expand our personal care ingredient portfolio across key accounts.",
     responsibilities: [
       "Drive revenue growth across personal care and color cosmetics segments.",
       "Introduce novel active ingredients and functional raw materials to formulators.",
@@ -55,7 +55,7 @@ const openRoles = [
     ],
     requirements: [
       "B.Tech/M.Tech in Cosmetic Technology or related scientific discipline.",
-      "5+ years experience in B2B sales of cosmetic ingredients.",
+      "5+ years experience in B2B sales of personal care ingredients.",
       "Established network within the Indian personal care manufacturing industry.",
       "Strategic mindset with proven ability to close complex enterprise deals."
     ],
@@ -168,7 +168,7 @@ const Careers = () => {
       {/* Why Join Us */}
       <section className="section-padding bg-background">
         <div className="container-scope">
-          <h2 className="text-center font-display text-h2 font-bold text-foreground">Why Join Scope?</h2>
+          <h2 className="text-center font-display text-h2 font-bold">Why Join Scope?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-center font-body text-muted-foreground">
             At Scope Ingredients, we believe good business ethics go a long way in contributing towards the betterment of the society we live in.
           </p>
@@ -180,10 +180,10 @@ const Careers = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/30"
+                className="rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/30"
               >
-                <item.icon className="h-8 w-8 text-accent" />
-                <h3 className="mt-4 font-display text-base font-semibold text-foreground">{item.title}</h3>
+                <item.icon className="h-8 w-8 text-primary" />
+                <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
                 <p className="mt-2 font-body text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
               </motion.div>
             ))}
@@ -199,7 +199,7 @@ const Careers = () => {
             {/* Left Column: Open Positions */}
             <div className="lg:col-span-7 space-y-8">
               <div>
-                <h2 className="font-display text-h2 font-bold text-foreground">Open Positions</h2>
+                <h2 className="font-display text-h2 font-bold">Open Positions</h2>
                 <p className="mt-4 font-body text-muted-foreground">
                   Explore opportunities to join our team of industry experts. We are always looking for passionate individuals driven by excellence.
                 </p>
@@ -213,14 +213,14 @@ const Careers = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.08 }}
-                    className="overflow-hidden rounded-2xl border border-border/50 bg-card transition-all hover:border-accent/30 shadow-sm"
+                    className="overflow-hidden rounded-2xl border border-border/50 bg-card transition-all hover:border-primary/30 shadow-sm"
                   >
                     <button
                       onClick={() => setExpandedRole(expandedRole === i ? null : i)}
                       className="flex w-full items-center justify-between p-6 text-left"
                     >
                       <div>
-                        <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{role.title}</h3>
+                        <h3 className="font-display text-lg font-semibold group-hover:text-primary transition-colors">{role.title}</h3>
                         <div className="mt-2 flex flex-wrap items-center gap-3">
                           <span className="flex items-center gap-1.5 font-body text-sm text-muted-foreground">
                              <Globe className="h-4 w-4" /> {role.location}
@@ -238,8 +238,8 @@ const Careers = () => {
                         
                         <div className="space-y-6">
                           <div>
-                            <h4 className="font-display text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                              <TrendingUp className="h-4 w-4 text-accent" /> What we are looking for
+                            <h4 className="font-display text-sm font-bold mb-3 flex items-center gap-2">
+                              <TrendingUp className="h-4 w-4 text-primary" /> What we are looking for
                             </h4>
                             <ul className="list-disc pl-5 space-y-1.5 font-body text-sm text-muted-foreground">
                               {role.responsibilities.map((resp, idx) => (
@@ -249,8 +249,8 @@ const Careers = () => {
                           </div>
 
                           <div>
-                            <h4 className="font-display text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                              <Users className="h-4 w-4 text-accent" /> The right candidate
+                            <h4 className="font-display text-sm font-bold mb-3 flex items-center gap-2">
+                              <Users className="h-4 w-4 text-primary" /> The right candidate
                             </h4>
                             <ul className="list-disc pl-5 space-y-1.5 font-body text-sm text-muted-foreground">
                               {role.requirements.map((req, idx) => (
@@ -259,9 +259,9 @@ const Careers = () => {
                             </ul>
                           </div>
 
-                          <div className="rounded-lg bg-accent/5 p-4 border border-accent/10">
-                            <h4 className="font-display text-sm font-bold text-foreground mb-1 flex items-center gap-2">
-                               <ShieldCheck className="h-4 w-4 text-accent" /> Role Guidelines
+                            <div className="rounded-lg bg-primary/5 p-4 border border-primary/10">
+                            <h4 className="font-display text-sm font-bold mb-1 flex items-center gap-2">
+                               <ShieldCheck className="h-4 w-4 text-primary" /> Role Guidelines
                             </h4>
                             <p className="font-body text-sm text-muted-foreground">{role.rules}</p>
                           </div>
@@ -275,13 +275,13 @@ const Careers = () => {
                               // Highlight effect on form
                               const formEl = document.getElementById("apply-form");
                               if (formEl) {
-                                formEl.classList.add("ring-2", "ring-accent", "ring-offset-4", "ring-offset-background");
+                                formEl.classList.add("ring-2", "ring-primary", "ring-offset-4", "ring-offset-background");
                                 setTimeout(() => {
-                                  formEl.classList.remove("ring-2", "ring-accent", "ring-offset-4", "ring-offset-background");
+                                  formEl.classList.remove("ring-2", "ring-primary", "ring-offset-4", "ring-offset-background");
                                 }, 1500);
                               }
                             }}
-                            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 font-display text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-light"
+                            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-display text-sm font-semibold text-primary-foreground transition-all hover:bg-primary"
                           >
                             Apply for this role <Send className="h-4 w-4" />
                           </Button>
@@ -297,7 +297,7 @@ const Careers = () => {
             <div className="lg:col-span-5 relative">
               <div className="sticky top-24 rounded-3xl border border-border/50 bg-card p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300" id="apply-form">
                 <div>
-                  <h2 className="font-display text-h2 font-bold text-foreground">Apply Now</h2>
+                  <h2 className="font-display text-h2 font-bold">Apply Now</h2>
                   <p className="mt-2 font-body text-sm text-muted-foreground">
                     Submit your application and we'll connect within 5 business days.
                   </p>
@@ -307,12 +307,12 @@ const Careers = () => {
                    <div className="grid gap-5 sm:grid-cols-2">
                      <div>
                        <Label htmlFor="name" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Full Name *</Label>
-                       <Input id="name" {...register("name")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="Your full name" />
+                       <Input id="name" {...register("name")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-primary" placeholder="Your full name" />
                        {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
                      </div>
                      <div>
                        <Label htmlFor="email" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Email *</Label>
-                       <Input id="email" type="email" {...register("email")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="you@example.com" />
+                       <Input id="email" type="email" {...register("email")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-primary" placeholder="you@example.com" />
                        {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
                      </div>
                    </div>
@@ -320,7 +320,7 @@ const Careers = () => {
                    <div className="grid gap-5 sm:grid-cols-2">
                      <div>
                        <Label htmlFor="phone" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Phone *</Label>
-                       <Input id="phone" type="tel" {...register("phone")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent" placeholder="+91 98765 43210" />
+                       <Input id="phone" type="tel" {...register("phone")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-primary" placeholder="+91 98765 43210" />
                        {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
                      </div>
                      <div>
@@ -328,7 +328,7 @@ const Careers = () => {
                        <select
                          id="experience"
                          {...register("experience")}
-                         className="mt-1.5 flex h-10 w-full rounded-md border border-border/50 bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                         className="mt-1.5 flex h-10 w-full rounded-md border border-border/50 bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                        >
                          <option value="">Select experience</option>
                          <option value="0-2">0–2 years</option>
@@ -345,7 +345,7 @@ const Careers = () => {
                      <select
                        id="role"
                        {...register("role")}
-                       className="mt-1.5 flex h-10 w-full rounded-md border border-border/50 bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                       className="mt-1.5 flex h-10 w-full rounded-md border border-border/50 bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
                      >
                        <option value="">Select a role</option>
                        {openRoles.map(r => (
@@ -358,23 +358,23 @@ const Careers = () => {
 
                    <div>
                      <Label htmlFor="resume" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Resume / CV</Label>
-                     <div className="mt-1.5 flex items-center justify-center rounded-xl border-2 border-dashed border-border/60 bg-background/50 px-6 py-6 transition-colors hover:border-accent/40 cursor-pointer">
+                     <div className="mt-1.5 flex items-center justify-center rounded-xl border-2 border-dashed border-border/60 bg-background/50 px-6 py-6 transition-colors hover:border-primary/40 cursor-pointer">
                        <div className="text-center">
                          <Upload className="mx-auto h-6 w-6 text-muted-foreground/70" />
                          <p className="mt-2 font-body text-sm text-foreground/80">
                            Upload your resume
                          </p>
-                         <p className="mt-0.5 font-body text-[11px] text-muted-foreground">PDF, DOC up to 5MB</p>
+                         <p className="mt-0.5 font-body text-[15px] text-muted-foreground">PDF, DOC up to 5MB</p>
                        </div>
                      </div>
                    </div>
 
                    <div>
                      <Label htmlFor="message" className="font-body text-xs font-semibold text-foreground uppercase tracking-wider">Cover Note (Optional)</Label>
-                     <Textarea id="message" {...register("message")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-accent resize-none" rows={3} placeholder="Tell us why you'd be a great fit..." />
+                     <Textarea id="message" {...register("message")} className="mt-1.5 bg-background border-border/50 focus-visible:ring-primary resize-none" rows={3} placeholder="Tell us why you'd be a great fit..." />
                    </div>
 
-                   <Button type="submit" disabled={isSubmitting} className="w-full rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light shadow-md hover:shadow-lg transition-all">
+                   <Button type="submit" disabled={isSubmitting} className="w-full rounded-full bg-primary py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-all">
                      {isSubmitting ? "Submitting..." : "Submit Application"}
                    </Button>
                 </form>

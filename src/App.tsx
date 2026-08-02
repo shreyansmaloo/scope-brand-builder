@@ -22,8 +22,6 @@ import PrincipalDetail from "./pages/PrincipalDetail";
 import Careers from "./pages/Careers";
 import ProductDetail from "./pages/ProductDetail";
 import NewHomePage from "./pages/NewHomePage";
-import HeroVariants from "./pages/HeroVariants";
-import CreativeHome from "./pages/CreativeHome";
 import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
@@ -68,8 +66,6 @@ const App = () => (
                     <Route path="/principals" element={<Principals />} />
                     <Route path="/principals/:id" element={<PrincipalDetail />} />
                     <Route path="/careers" element={<Careers />} />
-                    <Route path="/creative-home" element={<CreativeHome />} />
-                    <Route path="/hero-variants" element={<HeroVariants />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
                 </Routes>

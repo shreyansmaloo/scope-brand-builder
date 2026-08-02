@@ -69,7 +69,7 @@ const PrincipalDetail = () => {
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 bg-card border-b border-border/50">
         <div className="container-scope">
-          <Link to="/principals" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-accent transition-colors mb-8">
+          <Link to="/principals" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to All Principals
           </Link>
@@ -85,7 +85,7 @@ const PrincipalDetail = () => {
                   <Globe className="mr-2 h-3 w-3" />
                   {partner.country}
                 </div>
-                <h1 className="font-display text-hero font-bold text-foreground">
+                <h1 className="font-display text-hero font-bold">
                   {partner.name}
                 </h1>
                 {partner.about && (
@@ -131,12 +131,12 @@ const PrincipalDetail = () => {
         <div className="container-scope">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <h2 className="font-display text-h2 font-bold text-foreground">Our Range from {partner.name}</h2>
+              <h2 className="font-display text-h2 font-bold">Our Range from {partner.name}</h2>
               <p className="mt-2 font-body text-text-secondary">
                 Explore the complete portfolio of {partnerProducts.length} ingredients and solutions.
               </p>
             </div>
-            <Link to={`/products?principal=${encodeURIComponent(partner.name)}`} className="mt-4 md:mt-0 inline-flex items-center text-accent hover:text-accent-light font-display text-sm font-semibold transition-colors">
+            <Link to={`/products?principal=${encodeURIComponent(partner.name)}`} className="mt-4 md:mt-0 inline-flex items-center text-primary hover:text-primary font-display text-sm font-semibold transition-colors">
               Filter in Product Catalog <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -163,12 +163,12 @@ const PrincipalDetail = () => {
                       className="flex items-center justify-between gap-3 w-full"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <span className="font-body text-xs text-neutral-900/25 shrink-0 w-6 text-right tabular-nums">{i + 1}</span>
-                        <h3 className="font-display text-sm font-bold text-neutral-900 uppercase tracking-tight leading-snug truncate">
+                        <span className="font-body text-xs text-heading/25 shrink-0 w-6 text-right tabular-nums">{i + 1}</span>
+                        <h3 className="font-display text-sm font-bold text-heading uppercase tracking-tight leading-snug truncate">
                           {titleText}
                         </h3>
                       </div>
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-background text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent">
                         <ChevronRight className="h-4 w-4" />
                       </div>
                     </Link>
@@ -181,11 +181,11 @@ const PrincipalDetail = () => {
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/5 text-primary">
                 <Hexagon className="h-8 w-8 opacity-50" />
               </div>
-              <h3 className="mt-4 font-display text-xl font-bold text-foreground">No Catalog Products Found</h3>
+              <h3 className="mt-4 font-display text-xl font-bold">No Catalog Products Found</h3>
               <p className="mt-2 mx-auto max-w-md font-body text-text-secondary text-sm">
                 We are currently updating our digital catalog for {partner.name}. Please contact our sales team for the complete product list.
               </p>
-              <Link to="/contact" className="mt-6 inline-flex rounded-full bg-primary px-6 py-2.5 font-display text-sm font-semibold text-primary-foreground hover:bg-primary-light">
+              <Link to="/contact" className="mt-6 inline-flex rounded-full bg-primary px-6 py-2.5 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90">
                 Contact Sales Team
               </Link>
             </div>

@@ -1,16 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Linkedin, Twitter } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 
 const Footer = () => {
-  const location = useLocation();
-
-  if (location.pathname === "/creative-home" || location.pathname === "/hero-variants") {
-    return null;
-  }
-
   return (
-    <footer className="relative surface-dark border-t border-border/50">
+    <footer className="relative border-t border-border/50 bg-black text-surface-dark-foreground">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{
@@ -19,17 +13,21 @@ const Footer = () => {
         }}
       />
 
-      <div className="container-scope relative section-padding">
+      <div className="container-scope relative pt-20 pb-8 lg:pt-32">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" className="inline-block">
               <img src={logoImg} alt="Scope Ingredients" className="h-16 w-auto invert hue-rotate-180" />
             </Link>
             <p className="mt-4 font-body text-sm leading-relaxed text-surface-dark-foreground/75">
-              India's most comprehensive excipient partner since 1959. Pharma, Cosmetics & Food ingredients.
+              India's most comprehensive excipient partner since 1959. Pharma, Personal Care & Food ingredients.
             </p>
             <div className="mt-6 flex gap-3">
-              <a href="#" className="rounded-full bg-surface-dark-muted p-2 transition-colors hover:bg-primary hover:text-white" aria-label="LinkedIn">
+              <a
+                href="#"
+                className="rounded-full bg-primary p-2 text-background transition-colors hover:bg-background hover:text-primary"
+                aria-label="LinkedIn"
+              >
                 <Linkedin className="h-4 w-4" />
               </a>
             </div>
@@ -64,7 +62,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-3">
               {[
                 { label: "Pharmaceuticals", href: "/products?industry=pharma" },
-                { label: "Cosmetics & Personal Care", href: "/products?industry=cosmetics" },
+                { label: "Personal Care", href: "/products?industry=cosmetics" },
                 { label: "Food Ingredients", href: "/products?industry=food" },
                 { label: "All Principals", href: "/principals" },
               ].map((item) => (
@@ -103,7 +101,16 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 border-t border-surface-dark-muted/40 pt-8 text-center font-body text-xs text-surface-dark-foreground/50">
-          © 2025 Scope Ingredients Pvt. Ltd. All Rights Reserved.
+          © 2025 Scope Ingredients Pvt. Ltd. All Rights Reserved. Developed by{" "}
+          <a
+            href="https://www.linkedin.com/in/shreyans-maloo/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-surface-dark-foreground/70 underline underline-offset-2 hover:text-primary"
+          >
+            Shreyans Maloo
+          </a>
+          .
         </div>
       </div>
     </footer>

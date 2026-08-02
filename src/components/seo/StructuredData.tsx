@@ -44,7 +44,7 @@ export const generateLocalBusinessSchema = () => {
       "addressRegion": "Maharashtra",
       "addressCountry": "IN"
     },
-    "description": "Pharmaceutical raw material suppliers India, offering Global principal representation, excipient distributors, and cosmetic, food, and nutra ingredient sourcing."
+    "description": "Pharmaceutical raw material suppliers India, offering Global principal representation, excipient distributors, and personal care, food, and nutra ingredient sourcing."
   };
 };
 

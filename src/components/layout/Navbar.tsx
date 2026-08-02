@@ -7,7 +7,7 @@ import logoImg from "@/assets/logo.png";
 const searchPlaceholders = [
   "Search products, ingredients, principals...",
   "Searching for excipients...",
-  "Searching for cosmetics...",
+  "Searching for personal care...",
   "Searching for food ingredients...",
 ];
 
@@ -29,11 +29,14 @@ const Navbar = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const isHome = location.pathname === "/";
+  const transparent = isHome && !scrolled;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
     window.addEventListener("scroll", onScroll);
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSearchOpen(false);
@@ -46,7 +49,7 @@ const Navbar = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [isHome]);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -76,14 +79,14 @@ const Navbar = () => {
     }
   };
 
-  if (location.pathname === "/creative-home" || location.pathname === "/hero-variants") {
-    return null;
-  }
-
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background shadow-sm transition-all duration-300"
+        className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+          transparent
+            ? "border-transparent bg-transparent shadow-none"
+            : "border-border/60 bg-background shadow-sm"
+        }`}
         initial={false}
         animate={{ height: scrolled ? 64 : 88 }}
         transition={{ duration: 0.3 }}
@@ -98,6 +101,7 @@ const Navbar = () => {
                 className="w-auto object-contain transition-all duration-300"
                 style={{
                   height: scrolled ? 52 : 68,
+                  filter: transparent ? "brightness(0) invert(1)" : "none",
                 }}
               />
             </Link>
@@ -109,9 +113,11 @@ const Navbar = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-[13px] font-semibold uppercase tracking-widest transition-colors ${
+                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-[17px] font-semibold uppercase tracking-widest transition-colors ${
                   location.pathname === link.href
                     ? "text-primary"
+                    : transparent
+                    ? "text-white/90 hover:text-primary"
                     : "text-foreground/70 hover:text-primary"
                 }`}
               >
@@ -127,13 +133,17 @@ const Navbar = () => {
               className="relative flex items-center w-full max-w-[240px] xl:max-w-[300px]"
             >
               <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
+                <Search className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${transparent ? "text-white/60" : "text-foreground/40"}`} />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={searchPlaceholders[placeholderIndex]}
-                  className="w-full rounded-full border border-border/60 bg-muted py-2 pl-9 pr-4 text-sm text-foreground placeholder:text-foreground/40 transition-all focus:border-primary/30 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className={`w-full rounded-full border py-2 pl-9 pr-4 text-sm transition-all focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                    transparent
+                      ? "border-white/30 bg-white/10 text-white placeholder:text-white/50 backdrop-blur-md focus:bg-white/15"
+                      : "border-border/60 bg-muted text-foreground placeholder:text-foreground/40 focus:bg-background"
+                  }`}
                 />
               </div>
             </form>
@@ -148,7 +158,7 @@ const Navbar = () => {
           {/* Mobile Toggle */}
           <div className="flex flex-1 items-center justify-end gap-2 lg:hidden">
             <button
-              className="rounded-lg p-2 text-foreground active:scale-95 transition-transform"
+              className={`rounded-lg p-2 active:scale-95 transition-transform ${transparent ? "text-white" : "text-foreground"}`}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >

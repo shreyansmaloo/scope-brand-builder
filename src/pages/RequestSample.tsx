@@ -19,7 +19,7 @@ const schema = z.object({
     purpose: z.string().max(500).optional(),
   })).min(1, "Add at least one product"),
   firstName: z.string().trim().min(1, "First name is required").max(100),
-  secondName: z.string().trim().min(1, "Second name is required").max(100),
+  lastName: z.string().trim().min(1, "Last name is required").max(100),
   company: z.string().trim().min(1, "Company name is required").max(100),
   email: z.string().trim().email("Invalid email").max(255),
   phone: z.string().trim().min(1, "Phone number is required").max(20),
@@ -37,7 +37,7 @@ type SampleForm = z.infer<typeof schema>;
 
 const INDUSTRY_LABELS: Record<string, string> = {
   pharma: "Pharma",
-  cosmetics: "Personal Care & Cosmetics",
+  cosmetics: "Personal Care",
   food: "Food & Nutrition",
 };
 
@@ -47,7 +47,7 @@ const steps = [
   { icon: Microscope, label: "Technical follow-up", desc: "Our team follows up for feedback" },
 ];
 
-const inputClass = "mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent";
+const inputClass = "mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary";
 const labelClass = "font-body text-sm font-medium text-foreground";
 
 // Per-item grade picker — needs to watch its own product field
@@ -99,7 +99,7 @@ const RequestSample = () => {
       industry: "",
       items: [{ product: initialProduct, grade: "", quantity: "", purpose: "" }],
       firstName: "",
-      secondName: "",
+      lastName: "",
       company: "",
       email: "",
       phone: "",
@@ -130,7 +130,7 @@ const RequestSample = () => {
   const onSubmit = async (data: SampleForm) => {
     const payload = {
       firstName:  data.firstName,
-      secondName: data.secondName,
+      lastName: data.lastName,
       company:    data.company,
       email:      data.email,
       phone:      data.phone,
@@ -187,14 +187,14 @@ const RequestSample = () => {
     <main>
       <SEO
         title="Request Ingredient Samples | Scope Ingredients India"
-        description="Request free samples of pharmaceutical, cosmetic, and food ingredients for your R&D and formulation needs. Quick dispatch across India."
+        description="Submit a sample request for pharmaceutical, personal care, and food ingredients for your R&D and formulation needs. Quick dispatch across India."
         canonical="https://www.scope-india.com/request-sample"
       />
       <StructuredData data={breadcrumbSchema} />
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 font-display text-h1 font-bold text-primary-foreground">
-            Request Free Samples
+            Sample Request
           </motion.h1>
           <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
             Select products, specify quantities, and submit — our team handles the rest.
@@ -206,8 +206,8 @@ const RequestSample = () => {
         <div className="container-scope max-w-2xl">
           {submitted ? (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center rounded-2xl bg-card p-12 text-center shadow-lg">
-              <CheckCircle className="h-16 w-16 text-accent" />
-              <h2 className="mt-4 font-display text-xl font-bold text-foreground">Sample Request Received!</h2>
+              <CheckCircle className="h-16 w-16 text-primary" />
+              <h2 className="mt-4 font-display text-xl font-bold">Sample Request Received!</h2>
               <p className="mt-2 font-body text-text-secondary">Our team will review your request within 24 hours.</p>
             </motion.div>
           ) : (
@@ -217,14 +217,14 @@ const RequestSample = () => {
                 {[1, 2].map((s) => (
                   <div key={s} className="flex items-center gap-2">
                     <div className={`flex h-9 w-9 items-center justify-center rounded-full font-display text-sm font-bold transition-colors ${
-                      step >= s ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground"
+                      step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                     }`}>
                       {s}
                     </div>
                     <span className={`font-body text-sm font-medium ${step >= s ? "text-foreground" : "text-muted-foreground"}`}>
                       {s === 1 ? "Select Products" : "Your Details"}
                     </span>
-                    {s < 2 && <div className={`h-0.5 w-12 ${step > s ? "bg-accent" : "bg-border"}`} />}
+                    {s < 2 && <div className={`h-0.5 w-12 ${step > s ? "bg-primary" : "bg-border"}`} />}
                   </div>
                 ))}
               </div>
@@ -233,7 +233,7 @@ const RequestSample = () => {
                 <AnimatePresence mode="wait">
                   {step === 1 && (
                     <motion.div key="step1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                      <h2 className="font-display text-lg font-semibold text-foreground mb-4">Select Products</h2>
+                      <h2 className="font-display text-lg font-semibold mb-4">Select Products</h2>
 
                       {/* Industry — single for the whole request */}
                       <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -264,7 +264,7 @@ const RequestSample = () => {
                         {fields.map((field, index) => (
                           <div key={field.id} className="rounded-xl border border-border bg-card p-4 shadow-sm">
                             <div className="flex items-center justify-between mb-3">
-                              <span className="font-display text-xs font-semibold text-accent">Product {index + 1}</span>
+                              <span className="font-display text-xs font-semibold text-primary">Product {index + 1}</span>
                               {fields.length > 1 && (
                                 <button type="button" onClick={() => remove(index)} className="flex items-center gap-1 rounded-lg px-2 py-1 font-body text-xs text-destructive hover:bg-destructive/10">
                                   <Trash2 className="h-3 w-3" /> Remove
@@ -331,7 +331,7 @@ const RequestSample = () => {
                         type="button"
                         onClick={() => append({ product: "", grade: "", quantity: "", purpose: "" })}
                         disabled={!selectedIndustry}
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-accent/30 py-3 font-body text-sm font-medium text-accent transition-colors hover:border-accent hover:bg-accent-pale disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary/30 py-3 font-body text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <Plus className="h-4 w-4" /> Add Another Product
                       </button>
@@ -339,7 +339,7 @@ const RequestSample = () => {
                       <button
                         type="button"
                         onClick={nextStep}
-                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all"
+                        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all"
                       >
                         Next: Your Details <ArrowRight className="h-4 w-4" />
                       </button>
@@ -348,7 +348,7 @@ const RequestSample = () => {
 
                   {step === 2 && (
                     <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                      <h2 className="font-display text-lg font-semibold text-foreground mb-4">Your Details & Shipping Address</h2>
+                      <h2 className="font-display text-lg font-semibold mb-4">Your Details & Shipping Address</h2>
 
                       <div className="space-y-4">
                         {/* Name Fields */}
@@ -359,9 +359,9 @@ const RequestSample = () => {
                             {errors.firstName && <p className="mt-1 font-body text-xs text-destructive">{errors.firstName.message}</p>}
                           </div>
                           <div>
-                            <label htmlFor="s-secondName" className={labelClass}>Second Name *</label>
-                            <input {...register("secondName")} id="s-secondName" placeholder="e.g. Doe" className={inputClass} />
-                            {errors.secondName && <p className="mt-1 font-body text-xs text-destructive">{errors.secondName.message}</p>}
+                            <label htmlFor="s-lastName" className={labelClass}>Last Name *</label>
+                            <input {...register("lastName")} id="s-lastName" placeholder="e.g. Doe" className={inputClass} />
+                            {errors.lastName && <p className="mt-1 font-body text-xs text-destructive">{errors.lastName.message}</p>}
                           </div>
                         </div>
 
@@ -450,7 +450,7 @@ const RequestSample = () => {
                         </button>
                         <button
                           type="submit"
-                          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all"
+                          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-primary py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all"
                         >
                           Submit Request <ArrowRight className="h-4 w-4" />
                         </button>
@@ -467,14 +467,14 @@ const RequestSample = () => {
       {/* What Happens Next */}
       <section className="section-padding bg-card">
         <div className="container-scope">
-          <h2 className="text-center font-display text-h2 font-bold text-foreground">What Happens Next?</h2>
+          <h2 className="text-center font-display text-h2 font-bold">What Happens Next?</h2>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {steps.map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
-                  <s.icon className="h-8 w-8 text-accent" />
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <s.icon className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="mt-4 font-display text-base font-semibold text-foreground">{s.label}</h3>
+                <h3 className="mt-4 font-display text-base font-semibold">{s.label}</h3>
                 <p className="mt-1 font-body text-sm text-text-secondary">{s.desc}</p>
               </motion.div>
             ))}

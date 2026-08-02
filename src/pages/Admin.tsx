@@ -17,16 +17,16 @@ const PAGE_SIZE = 25;
 const INDUSTRIES = ["pharma", "cosmetics", "food"] as const;
 const INDUSTRY_LABELS: Record<string, string> = { pharma: "Pharma", cosmetics: "Personal Care", food: "Food" };
 const INDUSTRY_BADGE: Record<string, string> = {
-  pharma: "bg-blue-50 text-blue-700 border-blue-200",
-  cosmetics: "bg-pink-50 text-pink-700 border-pink-200",
-  food: "bg-green-50 text-green-700 border-green-200",
+  pharma: "bg-primary/15 text-primary border-primary/25",
+  cosmetics: "bg-primary/5 text-primary/70 border-primary/15",
+  food: "bg-primary text-primary-foreground border-primary",
 };
 
 const PHARMA_CATS = ["Polymers & Cellulosics","Film Coating Polymers","Enteric Polymers","Fillers & Diluents","Disintegrants","Disintegrants & Binders","Binders","Lubricants & Glidants","Solubilizers & Surfactants","Plasticizers & Humectants","Colorants","Coating & Polishing","Capsule & Gel Formers","Pharmaceutical Excipients"];
 const COSMETICS_CATS = ["Active Ingredients","Antioxidants & Vitamins","Brightening Agents","Anti-Aging Actives","Peptides","Humectants & Fillers","Humectants & Polyols","Protein Actives","Lipids & Ceramides","UV Filters & Sunscreens","Preservatives","Silicones & Emollients","Botanical Extracts","Exfoliants","Emollients & Oils"];
 const FOOD_CATS = ["Sweeteners","Emulsifiers","Stabilizers & Hydrocolloids","Starches & Thickeners","Vitamins & Nutrients","Minerals & Nutrients","Fatty Acids & Lipids","Proteins & Amino Acids","Probiotics & Prebiotics","Colors & Pigments","Flavors & Seasonings","Antioxidants & Preservatives","Food Ingredients"];
 
-const inputCls = "mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent";
+const inputCls = "mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary";
 const labelCls = "font-body text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 
 // ─── Login ────────────────────────────────────────────────────
@@ -45,14 +45,14 @@ const LoginGate = ({ onAuth }: { onAuth: () => void }) => {
             <Lock className="h-6 w-6" />
           </div>
         </div>
-        <h1 className="text-center font-display text-xl font-bold text-foreground mb-1">Admin Panel</h1>
+        <h1 className="text-center font-display text-xl font-bold mb-1">Admin Panel</h1>
         <p className="text-center font-body text-sm text-muted-foreground mb-6">Scope Ingredients — CRM</p>
         <input type="password" placeholder="Password" value={pw}
           onChange={e => { setPw(e.target.value); setErr(false); }}
           onKeyDown={e => e.key==="Enter" && attempt()}
-          className="w-full rounded-xl border border-border bg-background px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
         {err && <p className="mt-2 font-body text-xs text-destructive">Incorrect password</p>}
-        <button onClick={attempt} className="mt-4 w-full rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all">
+        <button onClick={attempt} className="mt-4 w-full rounded-full bg-primary py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all">
           Sign In
         </button>
       </motion.div>
@@ -66,19 +66,19 @@ const SlideOver = ({ title, onClose, onSave, saveLabel, valid, children }: {
   saveLabel?: string; valid: boolean; children: React.ReactNode;
 }) => (
   <div className="fixed inset-0 z-50 flex">
-    <div className="flex-1 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+    <div className="flex-1 bg-heading/40 backdrop-blur-sm" onClick={onClose} />
     <motion.div initial={{ x:"100%" }} animate={{ x:0 }} exit={{ x:"100%" }}
       transition={{ type:"spring", damping:28, stiffness:260 }}
       className="w-full max-w-lg flex flex-col bg-card shadow-2xl">
       <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card px-6 py-4">
-        <h2 className="font-display text-lg font-bold text-foreground">{title}</h2>
+        <h2 className="font-display text-lg font-bold">{title}</h2>
         <button onClick={onClose} className="rounded-full p-2 hover:bg-muted"><X className="h-5 w-5 text-muted-foreground" /></button>
       </div>
       <div className="flex-1 overflow-y-auto p-6 space-y-4">{children}</div>
       <div className="sticky bottom-0 flex gap-3 border-t border-border bg-card px-6 py-4">
         <button onClick={onClose} className="flex-1 rounded-full border border-border py-2.5 font-display text-sm font-semibold hover:bg-muted transition-all">Cancel</button>
         <button onClick={onSave} disabled={!valid}
-          className="flex-1 rounded-full bg-accent py-2.5 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+          className="flex-1 rounded-full bg-primary py-2.5 font-display text-sm font-semibold text-primary-foreground hover:bg-primary disabled:opacity-40 disabled:cursor-not-allowed transition-all">
           {saveLabel ?? "Save"}
         </button>
       </div>
@@ -88,10 +88,10 @@ const SlideOver = ({ title, onClose, onSave, saveLabel, valid, children }: {
 
 // ─── Delete confirm ────────────────────────────────────────────
 const DeleteConfirm = ({ name, onConfirm, onCancel }: { name: string; onConfirm: () => void; onCancel: () => void }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-heading/50 backdrop-blur-sm p-4">
     <motion.div initial={{ scale:0.95,opacity:0 }} animate={{ scale:1,opacity:1 }}
       className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-2xl border border-border">
-      <h3 className="font-display text-lg font-bold text-foreground">Delete?</h3>
+      <h3 className="font-display text-lg font-bold">Delete?</h3>
       <p className="mt-2 font-body text-sm text-muted-foreground">
         "<span className="font-semibold text-foreground">{name}</span>" will be permanently removed.
       </p>
@@ -256,15 +256,15 @@ const ProductsTab = () => {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input type="text" placeholder="Search name, grade, principal..." value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+            className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
         </div>
         <select value={filterIndustry} onChange={e => { setFilterIndustry(e.target.value); setPage(1); }}
-          className="rounded-xl border border-border bg-card px-3 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+          className="rounded-xl border border-border bg-card px-3 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary">
           <option value="">All Industries</option>
           {INDUSTRIES.map(i => <option key={i} value={i}>{INDUSTRY_LABELS[i]}</option>)}
         </select>
         <select value={filterPrincipal} onChange={e => { setFilterPrincipal(e.target.value); setPage(1); }}
-          className="rounded-xl border border-border bg-card px-3 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+          className="rounded-xl border border-border bg-card px-3 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary">
           <option value="">All Principals</option>
           {allPrincipals.map(p => <option key={p} value={p}>{p}</option>)}
         </select>
@@ -275,11 +275,11 @@ const ProductsTab = () => {
             <RotateCcw className="h-3.5 w-3.5" /> Reset
           </button>
         )}
-        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-2 font-display text-xs font-semibold text-accent hover:bg-accent/20 transition-all">
+        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all">
           <Download className="h-3.5 w-3.5" /> Export .ts
         </button>
         <button onClick={() => setDraft({ ...EMPTY_PRODUCT })}
-          className="flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all">
+          className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all">
           <Plus className="h-4 w-4" /> Add Product
         </button>
       </div>
@@ -291,7 +291,7 @@ const ProductsTab = () => {
             <thead>
               <tr className="border-b border-border bg-muted/50">
                 {["#","Name","Grade","Principal","Industry","Category","Application",""].map(h => (
-                  <th key={h} className="px-4 py-3 text-left font-display text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                  <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -301,12 +301,12 @@ const ProductsTab = () => {
                   <td className="px-4 py-3 font-body text-xs text-muted-foreground tabular-nums">{(page-1)*PAGE_SIZE+i+1}</td>
                   <td className="px-4 py-3 max-w-[200px]">
                     <p className="font-display text-sm font-semibold text-foreground truncate">{p.name}</p>
-                    {p.brand && <p className="font-body text-[11px] text-muted-foreground truncate">{p.brand}</p>}
+                    {p.brand && <p className="font-body text-[15px] text-muted-foreground truncate">{p.brand}</p>}
                   </td>
                   <td className="px-4 py-3 font-body text-sm">{p.grade || <span className="text-muted-foreground">—</span>}</td>
                   <td className="px-4 py-3 font-body text-sm max-w-[130px] truncate">{p.principal}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[p.industry]}`}>
+                    <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[p.industry]}`}>
                       {INDUSTRY_LABELS[p.industry]}
                     </span>
                   </td>
@@ -316,7 +316,7 @@ const ProductsTab = () => {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
-                      <button onClick={() => openEdit(p)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-accent hover:bg-accent-pale transition-all">
+                      <button onClick={() => openEdit(p)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-primary hover:bg-primary/10 transition-all">
                         <Pencil className="h-3 w-3" /> Edit
                       </button>
                       <button onClick={() => setDeleteId(p.id)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-destructive hover:bg-destructive/10 transition-all">
@@ -340,7 +340,7 @@ const ProductsTab = () => {
               {Array.from({length:Math.min(5,totalPages)},(_,i) => {
                 const pg = Math.max(1,Math.min(page-2,totalPages-4))+i;
                 return <button key={pg} onClick={() => setPage(pg)}
-                  className={`flex h-8 w-8 items-center justify-center rounded-lg border font-display text-xs font-semibold transition-all ${pg===page?"border-accent bg-accent text-accent-foreground":"border-border hover:bg-muted"}`}>{pg}</button>;
+                  className={`flex h-8 w-8 items-center justify-center rounded-lg border font-display text-xs font-semibold transition-all ${pg===page?"border-primary bg-primary text-primary-foreground":"border-border hover:bg-muted"}`}>{pg}</button>;
               })}
               <button disabled={page===totalPages} onClick={() => setPage(p=>p+1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border hover:bg-muted disabled:opacity-40 transition-all"><ChevronRight className="h-4 w-4" /></button>
             </div>
@@ -363,7 +363,7 @@ const ProductsTab = () => {
                 {INDUSTRIES.map(ind => (
                   <button key={ind} type="button"
                     onClick={() => toggleIndustry(ind)}
-                    className={`flex-1 rounded-xl border py-2.5 font-display text-xs font-semibold transition-all ${draft.selectedIndustries.includes(ind) ? "border-accent bg-accent-pale text-accent" : "border-border text-muted-foreground hover:border-accent/50"}`}>
+                    className={`flex-1 rounded-xl border py-2.5 font-display text-xs font-semibold transition-all ${draft.selectedIndustries.includes(ind) ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/50"}`}>
                     {INDUSTRY_LABELS[ind]}
                   </button>
                 ))}
@@ -398,21 +398,21 @@ const ProductsTab = () => {
                   onKeyDown={e => e.key==="Enter" && (e.preventDefault(), addGrade())}
                   placeholder="e.g. E3, K4M (comma separated)" className={`${inputCls} mt-0 flex-1`} />
                 <button type="button" onClick={addGrade}
-                  className="mt-0 rounded-xl border border-accent px-3 font-display text-xs font-semibold text-accent hover:bg-accent-pale transition-all">
+                  className="mt-0 rounded-xl border border-primary px-3 font-display text-xs font-semibold text-primary hover:bg-primary/10 transition-all">
                   Add
                 </button>
               </div>
               {draft.grades.filter(g=>g).length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {draft.grades.filter(g=>g).map((g,i) => (
-                    <span key={i} className="flex items-center gap-1 rounded-full bg-accent-pale px-3 py-1 font-display text-xs font-semibold text-accent">
+                    <span key={i} className="flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 font-display text-xs font-semibold text-primary">
                       {g}
                       <button type="button" onClick={() => removeGrade(i)} className="hover:text-destructive"><X className="h-3 w-3" /></button>
                     </span>
                   ))}
                 </div>
               )}
-              <p className="mt-1 font-body text-[11px] text-muted-foreground">Leave empty if product has no specific grade</p>
+              <p className="mt-1 font-body text-[15px] text-muted-foreground">Leave empty if product has no specific grade</p>
             </div>
 
             <div>
@@ -507,12 +507,12 @@ const PrincipalsTab = () => {
         <div className="relative flex-1 min-w-[180px] max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input type="text" placeholder="Search principals..." value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+            className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
         </div>
         <span className="font-body text-sm text-muted-foreground ml-auto">{filtered.length} principals</span>
         {isCustomized && <button onClick={() => confirm("Reset?") && resetToDefault()} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-2 font-display text-xs font-semibold text-muted-foreground hover:bg-muted transition-all"><RotateCcw className="h-3.5 w-3.5" /> Reset</button>}
-        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-2 font-display text-xs font-semibold text-accent hover:bg-accent/20 transition-all"><Download className="h-3.5 w-3.5" /> Export .ts</button>
-        <button onClick={() => setDraft({...EMPTY_PARTNER})} className="flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all"><Plus className="h-4 w-4" /> Add Principal</button>
+        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all"><Download className="h-3.5 w-3.5" /> Export .ts</button>
+        <button onClick={() => setDraft({...EMPTY_PARTNER})} className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all"><Plus className="h-4 w-4" /> Add Principal</button>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -520,7 +520,7 @@ const PrincipalsTab = () => {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               {["Logo","Name","Country","Verticals","Specialty",""].map(h => (
-                <th key={h} className="px-4 py-3 text-left font-display text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
               ))}
             </tr>
           </thead>
@@ -536,13 +536,13 @@ const PrincipalsTab = () => {
                 <td className="px-4 py-3 font-body text-sm text-muted-foreground">{p.country}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1">
-                    {p.verticals.map(v => <span key={v} className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[v]}`}>{INDUSTRY_LABELS[v]}</span>)}
+                    {p.verticals.map(v => <span key={v} className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[v]}`}>{INDUSTRY_LABELS[v]}</span>)}
                   </div>
                 </td>
                 <td className="px-4 py-3 font-body text-xs text-muted-foreground max-w-[200px] truncate">{p.specialty}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-1">
-                    <button onClick={() => setDraft(p)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-accent hover:bg-accent-pale transition-all"><Pencil className="h-3 w-3" /> Edit</button>
+                    <button onClick={() => setDraft(p)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-primary hover:bg-primary/10 transition-all"><Pencil className="h-3 w-3" /> Edit</button>
                     <button onClick={() => setDeleteId(p.id)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-destructive hover:bg-destructive/10 transition-all"><Trash2 className="h-3 w-3" /> Delete</button>
                   </div>
                 </td>
@@ -574,14 +574,14 @@ const PrincipalsTab = () => {
                     <img
                       src={draft.logo.startsWith("data:") ? draft.logo : `/logos/${draft.logo}`}
                       alt="preview"
-                      className="h-10 max-w-[120px] object-contain rounded border border-border p-1 bg-white"
+                      className="h-10 max-w-[120px] object-contain rounded border border-border p-1 bg-background"
                     />
                     <button type="button" onClick={() => set({ logo: "" })}
                       className="font-body text-xs text-destructive hover:underline">Remove</button>
                   </div>
                 )}
                 {/* Upload button */}
-                <label className="mt-1 flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-background px-3 py-2.5 hover:border-accent/60 transition-colors">
+                <label className="mt-1 flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-background px-3 py-2.5 hover:border-primary/60 transition-colors">
                   <span className="font-body text-sm text-muted-foreground">
                     {draft.logo ? "Replace logo..." : "Upload logo file..."}
                   </span>
@@ -598,12 +598,12 @@ const PrincipalsTab = () => {
                     }}
                   />
                 </label>
-                <p className="mt-1 font-body text-[11px] text-muted-foreground">
+                <p className="mt-1 font-body text-[15px] text-muted-foreground">
                   Or type a filename if already in /logos/:{" "}
                   <input value={draft.logo?.startsWith("data:") ? "" : (draft.logo || "")}
                     onChange={e => set({ logo: e.target.value })}
                     placeholder="e.g. basf.png"
-                    className="inline w-32 rounded border border-border bg-background px-2 py-0.5 font-body text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent" />
+                    className="inline w-32 rounded border border-border bg-background px-2 py-0.5 font-body text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
                 </p>
               </div>
             </div>
@@ -612,7 +612,7 @@ const PrincipalsTab = () => {
               <div className="mt-2 flex gap-3">
                 {INDUSTRIES.map(ind => (
                   <button key={ind} type="button" onClick={() => toggleVertical(ind)}
-                    className={`flex-1 rounded-xl border py-2.5 font-display text-xs font-semibold transition-all ${draft.verticals.includes(ind) ? "border-accent bg-accent-pale text-accent" : "border-border text-muted-foreground hover:border-accent/50"}`}>
+                    className={`flex-1 rounded-xl border py-2.5 font-display text-xs font-semibold transition-all ${draft.verticals.includes(ind) ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/50"}`}>
                     {INDUSTRY_LABELS[ind]}
                   </button>
                 ))}
@@ -668,9 +668,9 @@ const NewsTab = () => {
   };
 
   const CATEGORY_BADGE: Record<string,string> = {
-    Event: "bg-accent-pale text-accent border-accent/20",
-    News: "bg-blue-50 text-blue-700 border-blue-200",
-    Press: "bg-purple-50 text-purple-700 border-purple-200",
+    Event: "bg-primary/10 text-primary border-primary/20",
+    News: "bg-primary/40 text-primary border-primary/50",
+    Press: "bg-primary text-primary-foreground border-primary",
   };
 
   const valid = !!draft && draft.title.trim() && draft.excerpt.trim() && draft.date;
@@ -680,8 +680,8 @@ const NewsTab = () => {
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <span className="font-body text-sm text-muted-foreground">{articles.length} articles</span>
         {isCustomized && <button onClick={() => confirm("Reset?") && resetToDefault()} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-2 font-display text-xs font-semibold text-muted-foreground hover:bg-muted transition-all"><RotateCcw className="h-3.5 w-3.5" /> Reset</button>}
-        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-2 font-display text-xs font-semibold text-accent hover:bg-accent/20 transition-all"><Download className="h-3.5 w-3.5" /> Export .ts</button>
-        <button onClick={() => setDraft({...EMPTY_ARTICLE})} className="ml-auto flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 font-display text-sm font-semibold text-accent-foreground hover:bg-accent-light transition-all"><Plus className="h-4 w-4" /> Add Article</button>
+        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all"><Download className="h-3.5 w-3.5" /> Export .ts</button>
+        <button onClick={() => setDraft({...EMPTY_ARTICLE})} className="ml-auto flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all"><Plus className="h-4 w-4" /> Add Article</button>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -689,7 +689,7 @@ const NewsTab = () => {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               {["Date","Category","Title","Excerpt",""].map(h => (
-                <th key={h} className="px-4 py-3 text-left font-display text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
               ))}
             </tr>
           </thead>
@@ -698,7 +698,7 @@ const NewsTab = () => {
               <tr key={a.id} className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors">
                 <td className="px-4 py-3 font-body text-xs text-muted-foreground whitespace-nowrap">{a.date}</td>
                 <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[10px] font-bold ${CATEGORY_BADGE[a.category]}`}>{a.category}</span>
+                  <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold ${CATEGORY_BADGE[a.category]}`}>{a.category}</span>
                 </td>
                 <td className="px-4 py-3 font-display text-sm font-semibold text-foreground max-w-[220px]">
                   <p className="truncate">{a.title}</p>
@@ -708,7 +708,7 @@ const NewsTab = () => {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-1">
-                    <button onClick={() => setDraft(a)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-accent hover:bg-accent-pale transition-all"><Pencil className="h-3 w-3" /> Edit</button>
+                    <button onClick={() => setDraft(a)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-primary hover:bg-primary/10 transition-all"><Pencil className="h-3 w-3" /> Edit</button>
                     <button onClick={() => setDeleteId(a.id)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-destructive hover:bg-destructive/10 transition-all"><Trash2 className="h-3 w-3" /> Delete</button>
                   </div>
                 </td>
@@ -785,7 +785,7 @@ const Admin = () => {
       <div className="sticky top-0 z-30 border-b border-border bg-card shadow-sm">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-foreground">Scope Admin</h1>
+            <h1 className="font-display text-xl font-bold">Scope Admin</h1>
             <p className="font-body text-xs text-muted-foreground mt-0.5">Product, Principal & News Management</p>
           </div>
           <button onClick={() => { sessionStorage.removeItem("scope_admin_auth"); setAuthed(false); }}
@@ -798,10 +798,10 @@ const Admin = () => {
         <div className="mx-auto max-w-[1600px] px-6 flex gap-1 pb-0">
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 px-4 py-3 font-display text-sm font-semibold border-b-2 transition-all ${tab===t.id ? "border-accent text-accent" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+              className={`flex items-center gap-2 px-4 py-3 font-display text-sm font-semibold border-b-2 transition-all ${tab===t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               <t.icon className="h-4 w-4" />
               {t.label}
-              <span className={`rounded-full px-1.5 py-0.5 font-body text-[10px] font-bold ${tab===t.id ? "bg-accent text-white" : "bg-muted text-muted-foreground"}`}>{t.count}</span>
+              <span className={`rounded-full px-1.5 py-0.5 font-body text-[14px] font-bold ${tab===t.id ? "bg-primary text-background" : "bg-muted text-muted-foreground"}`}>{t.count}</span>
             </button>
           ))}
         </div>

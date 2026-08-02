@@ -29,9 +29,9 @@ const WhatsAppButton = () => {
       </AnimatePresence>
 
       <div className="relative">
-        <div className="absolute inset-0 rounded-full bg-accent animate-pulse-ring" />
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-accent shadow-lg transition-transform hover:scale-110">
-          <MessageCircle className="h-7 w-7 text-accent-foreground" />
+        <div className="absolute inset-0 rounded-full bg-primary animate-pulse-ring" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg transition-transform hover:scale-110">
+          <MessageCircle className="h-7 w-7 text-primary-foreground" />
         </div>
       </div>
     </a>

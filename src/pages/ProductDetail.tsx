@@ -12,14 +12,14 @@ import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/Struc
 
 const industryLabel: Record<string, string> = {
   pharma: "Pharmaceutical",
-  cosmetics: "Personal Care & Cosmetics",
+  cosmetics: "Personal Care",
   food: "Food & Nutrition",
 };
 
 const industryColors: Record<string, string> = {
-  pharma: "bg-accent/10 text-accent border-accent/20",
-  cosmetics: "bg-teal/10 text-teal border-teal/20",
-  food: "bg-surface-dark/10 text-surface-dark border-surface-dark/20",
+  pharma: "bg-primary/10 text-primary border-primary/20",
+  cosmetics: "bg-primary/5 text-primary/70 border-primary/15",
+  food: "bg-primary text-primary-foreground border-primary",
 };
 
 const formatName = (name: string): string => {
@@ -143,7 +143,7 @@ const ProductDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-6"
           >
-            <h1 className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-primary-foreground leading-tight tracking-tight">
+            <h1 className="font-display text-[clamp(2.75rem,5vw,4.25rem)] font-extrabold text-primary-foreground leading-tight tracking-tight">
               {displayTitle}
             </h1>
 
@@ -174,7 +174,7 @@ const ProductDetail = () => {
                 transition={{ delay: 0.1 }}
                 className="rounded-2xl border border-border bg-card p-6 shadow-sm"
               >
-                <h2 className="font-display text-lg font-bold text-foreground mb-2">Product Details</h2>
+                <h2 className="font-display text-lg font-bold mb-2">Product Details</h2>
 
                 {(product.application || product.description) && (
                   <DetailRow
@@ -208,7 +208,7 @@ const ProductDetail = () => {
                   transition={{ delay: 0.2 }}
                   className="rounded-2xl border border-border bg-card p-6 shadow-sm"
                 >
-                  <h2 className="font-display text-lg font-bold text-foreground mb-4">About the Principal</h2>
+                                   <h2 className="font-display text-lg font-bold mb-4">About the Principal</h2>
                   <div className="flex items-start gap-4">
                     {partner.logo && (
                       <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-border bg-background p-2">
@@ -221,7 +221,7 @@ const ProductDetail = () => {
                       </div>
                     )}
                     <div className="min-w-0">
-                      <h3 className="font-display text-base font-bold text-foreground">{partner.name}</h3>
+                      <h3 className="font-display text-base font-bold">{partner.name}</h3>
                       <p className="font-body text-sm text-muted-foreground mt-0.5">{partner.country} · {partner.specialty}</p>
                       {partner.about && (
                         <p className="mt-2 font-body text-base text-muted-foreground leading-relaxed line-clamp-3">
@@ -246,7 +246,7 @@ const ProductDetail = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <h2 className="font-display text-lg font-bold text-foreground mb-4">
+                  <h2 className="font-display text-lg font-bold mb-4">
                     More from {product.principal}
                   </h2>
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -292,13 +292,13 @@ const ProductDetail = () => {
                 className="sticky top-28 space-y-4"
               >
                 {/* Industry tag */}
-                <div className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-widest ${industryColors[product.industry]}`}>
+                <div className={`inline-flex items-center rounded-full border px-3 py-1 text-[15px] font-bold uppercase tracking-widest ${industryColors[product.industry]}`}>
                   {industryLabel[product.industry]}
                 </div>
 
                 {/* Request Sample */}
                 <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                  <h3 className="font-display text-lg font-bold text-foreground">Interested in this product?</h3>
+                  <h3 className="font-display text-lg font-bold">Interested in this product?</h3>
                   <p className="mt-1.5 font-body text-base text-muted-foreground">
                     Request a sample or get in touch with our technical team for specifications and pricing.
                   </p>
@@ -318,7 +318,7 @@ const ProductDetail = () => {
 
                 {/* Quick facts */}
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-sm space-y-3">
-                  <h3 className="font-display text-base font-bold text-foreground">Quick Facts</h3>
+                  <h3 className="font-display text-base font-bold">Quick Facts</h3>
                   <div className="flex items-center gap-3">
                     <Building2 className="h-5 w-5 shrink-0 text-muted-foreground" />
                     <div>

@@ -6,18 +6,18 @@
 
 @layer base {
   :root {
-    /* === SCOPE OFFICIAL BRAND PALETTE — exact hex, stored as RGB channels ===
-       Primary / Brand   #F69A1E  rgb(246 154  30)
-       Accent / Dark     #DB8E00  rgb(219 142   0)
-       Personal Care     #DBA237  rgb(219 162  55)
-       Food              #FCD201  rgb(252 210   1)
-       Body Text         #494949  rgb( 73  73  73)
-       Background        #FFFFFF  rgb(255 255 255)
+    /* === SCOPE STRICT BRAND PALETTE — exactly 4 colors, stored as RGB channels ===
+       This is the single source of truth for color on the site. Every other
+       color below is derived from one of these four via opacity, never a new hue.
+       Primary            #F7A100  rgb(247 161   0)
+       Background         #FCFDF8  rgb(252 253 248)
+       Heading / Title     #000000  rgb(  0   0   0)
+       Body / Paragraph    #494949  rgb( 73  73  73)
     */
 
-    /* Backgrounds: pure white + light grey supporting surface */
     --background: 252 253 248;
     --foreground: 73 73 73;
+    --heading: 0 0 0;
 
     --card: 252 253 248;
     --card-foreground: 73 73 73;
@@ -25,68 +25,54 @@
     --popover: 252 253 248;
     --popover-foreground: 73 73 73;
 
-    /* PRIMARY — Brand Amber #F69A1E */
-    --primary: 246 154 30;
-    --primary-foreground: 255 255 255;
-    --primary-light: 249 188 103;
-    --primary-muted: 254 242 226;
+    /* PRIMARY — Brand Amber #F7A100. "light"/"muted" are primary blended onto
+       --background at ~70%/~10% opacity and flattened — tints of the same hue,
+       not separate colors — kept as named stops for hover/tint convenience. */
+    --primary: 247 161 0;
+    --primary-foreground: 252 253 248;
+    --primary-light: 249 189 74;
+    --primary-muted: 252 244 223;
 
-    /* SECONDARY — Light Grey #F5F5F5 */
-    --secondary: 245 245 245;
-    --secondary-foreground: 73 73 73;
+    /* Structural neutrals below are NOT new colors — each is body text (--foreground)
+       or heading (--heading) blended onto --background at a fixed low opacity, then
+       flattened to a flat RGB so Tailwind's existing `/NN` opacity modifiers (used
+       throughout the codebase, e.g. border-border/50) keep working on top of them. */
 
-    /* DESTRUCTIVE — Red */
+    /* SECONDARY — foreground @ ~4% over background: subtle fill, e.g. chip/pill bg */
+    --secondary: 245 246 241;
+    --secondary-foreground: 0 0 0;
+
+    /* DESTRUCTIVE — functional error-state red (form validation), not a brand color */
     --destructive: 239 68 68;
-    --destructive-foreground: 255 255 255;
+    --destructive-foreground: 252 253 248;
 
-    /* ACCENT — Deep Orange #DB8E00 */
-    --accent: 219 142 0;
-    --accent-foreground: 255 255 255;
-    --accent-light: 246 154 30;
-    --accent-pale: 254 242 226;
+    /* MUTED — same subtle fill as secondary; muted-foreground = foreground @ ~70% over background */
+    --muted: 245 246 241;
+    --muted-foreground: 127 127 126;
 
-    /* BRAND YELLOW — Golden Yellow #FCD201 */
-    --brand-yellow: 252 210 1;
-    --brand-yellow-foreground: 73 73 73;
-    --brand-yellow-light: 254 220 52;
-    --brand-yellow-pale: 255 250 225;
-
-    /* INDUSTRY SPECIFIC BRAND COLORS */
-    --pharma: 219 142 0;
-    --personal-care: 219 162 55;
-    --food: 252 210 1;
-
-    /* REAL TEAL / NAVY for cooler accents */
-    --brand-navy: 15 23 41;
-    --teal: 42 144 157;
-    --teal-foreground: 255 255 255;
-    --teal-light: 52 180 197;
-    --teal-pale: 215 241 244;
-
-    --muted: 245 245 245;
-    --muted-foreground: 115 115 115;
-
-    --border: 230 230 230;
-    --input: 230 230 230;
-    --ring: 246 154 30;
+    /* BORDER / INPUT — heading @ ~8% over background: a light hairline, not a new gray */
+    --border: 232 233 228;
+    --input: 232 233 228;
+    --ring: 247 161 0;
 
     --radius: 1.25rem;
 
-    --text-secondary: 115 115 115;
+    --text-secondary: 127 127 126;
 
-    /* Dark surface used for footer/hero — #1A1A1A */
-    --surface-dark: 26 26 26;
-    --surface-dark-foreground: 255 255 255;
-    --surface-dark-muted: 51 51 51;
+    /* Dark surface (footer, hero bands) — full-opacity heading black, with
+       background/foreground tokens at reduced opacity for text on top of it. */
+    --surface-dark: 0 0 0;
+    --surface-dark-foreground: 252 253 248;
+    --surface-dark-muted: 252 253 248;
 
-    --sidebar-background: 26 26 26;
-    --sidebar-foreground: 255 255 255;
-    --sidebar-primary: 246 154 30;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 46 46 46;
-    --sidebar-accent-foreground: 255 255 255;
-    --sidebar-border: 51 51 51;
-    --sidebar-ring: 246 154 30;
+    --sidebar-background: 0 0 0;
+    --sidebar-foreground: 252 253 248;
+    --sidebar-primary: 247 161 0;
+    --sidebar-primary-foreground: 252 253 248;
+    --sidebar-accent: 252 253 248;
+    --sidebar-accent-foreground: 0 0 0;
+    --sidebar-border: 252 253 248;
+    --sidebar-ring: 247 161 0;
   }
 }
 
@@ -108,6 +94,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Sora', sans-serif;
+    color: rgb(var(--heading));
     @apply tracking-tight;
   }
 }
@@ -123,7 +110,7 @@
      primary CTA : bg-primary text-white rounded-full px-6 py-3
      secondary   : border border-border text-foreground rounded-full
      cards    : rounded-2xl border border-border/60 bg-card
-                hover:border-accent/30 hover:shadow-[0_8px_24px_rgba(219,142,0,0.08)]
+                hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(247,161,0,0.08)]
 
    Template B — Dark  (bg-[hsl(var(--surface-dark))])
      padding  : py-20 lg:py-28
@@ -166,7 +153,7 @@
   }
 
   .section-tag {
-    @apply inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-accent;
+    @apply inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary;
     font-family: 'Sora', sans-serif;
   }
 
@@ -175,7 +162,7 @@
   }
 
   .card-scope:hover {
-    @apply shadow-[0_20px_50px_rgba(246,154,30,0.12)] -translate-y-2 border-primary/20;
+    @apply shadow-[0_20px_50px_rgba(247,161,0,0.12)] -translate-y-2 border-primary/20;
   }
 
   /* Surfaces for warm-dark sections (footer, hero) */

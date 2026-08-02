@@ -11,19 +11,19 @@ type SortOption = "default" | "az" | "za";
 
 const industryCardStyles: Record<string, { hoverBorder: string; hoverShadow: string; bgTint: string }> = {
   pharma: {
-    hoverBorder: "hover:border-neutral-400",
-    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
-    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+    hoverBorder: "hover:border-primary/30",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(247,161,0,0.10)]",
+    bgTint: "bg-gradient-to-br from-card to-primary/[0.01] hover:to-primary/[0.03]",
   },
   cosmetics: {
-    hoverBorder: "hover:border-neutral-400",
-    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
-    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+    hoverBorder: "hover:border-primary/30",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(247,161,0,0.10)]",
+    bgTint: "bg-gradient-to-br from-card to-primary/[0.01] hover:to-primary/[0.03]",
   },
   food: {
-    hoverBorder: "hover:border-neutral-400",
-    hoverShadow: "hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]",
-    bgTint: "bg-gradient-to-br from-card to-neutral-500/[0.005] hover:to-neutral-500/[0.015]",
+    hoverBorder: "hover:border-primary/30",
+    hoverShadow: "hover:shadow-[0_12px_30px_rgba(247,161,0,0.10)]",
+    bgTint: "bg-gradient-to-br from-card to-primary/[0.01] hover:to-primary/[0.03]",
   },
 };
 
@@ -188,18 +188,12 @@ const Products = () => {
     setSort("default");
   };
 
-  const industryColors: Record<string, string> = {
-    pharma: "bg-accent text-accent-foreground",
-    cosmetics: "bg-teal text-teal-foreground",
-    food: "bg-surface-dark text-surface-dark-foreground",
-  };
-
   const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
     <div className="border-b border-border/60 py-4 first:pt-0">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-[13px] font-extrabold uppercase tracking-wider text-foreground">{title}</h4>
+        <h4 className="font-display text-[17px] font-extrabold uppercase tracking-wider">{title}</h4>
         {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">{count}</span>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[14px] font-bold text-primary-foreground">{count}</span>
         )}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -209,10 +203,10 @@ const Products = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[15px] transition-colors ${active ? "bg-accent-pale text-accent font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[19px] transition-colors ${active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
     >
-      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-accent bg-accent" : "border-border bg-background"}`}>
-        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-white" />}
+      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
+        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
       </span>
       <span className="capitalize truncate">{label}</span>
     </button>
@@ -227,7 +221,7 @@ const Products = () => {
           placeholder="Filter options..."
           value={optionsSearch}
           onChange={e => setOptionsSearch(e.target.value)}
-          className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-8 font-body text-xs text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-8 font-body text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
         {optionsSearch && (
           <button onClick={() => setOptionsSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:text-foreground">
@@ -238,7 +232,7 @@ const Products = () => {
 
       <FilterGroup title="Industry" count={selectedIndustry ? 1 : 0}>
         {filteredIndustries.map(ind => (
-          <FilterCheckbox key={ind} label={ind} active={selectedIndustry === ind} onClick={() => setSelectedIndustry(selectedIndustry === ind ? null : ind)} />
+          <FilterCheckbox key={ind} label={ind === "cosmetics" ? "Personal Care" : ind} active={selectedIndustry === ind} onClick={() => setSelectedIndustry(selectedIndustry === ind ? null : ind)} />
         ))}
       </FilterGroup>
 
@@ -271,7 +265,7 @@ const Products = () => {
     <main>
       <SEO
         title={`${selectedPartner ? selectedPartner.name + " " : ""}Products & Ingredients Catalog | Scope India`}
-        description="Search our catalog of pharmaceutical, cosmetic and food ingredients from top global principals. Filter by application, dosage form, principal or industry."
+        description="Search our catalog of pharmaceutical, personal care and food ingredients from top global principals. Filter by application, dosage form, principal or industry."
         canonical="https://www.scope-india.com/products"
       />
       <StructuredData data={breadcrumbSchema} />
@@ -298,7 +292,7 @@ const Products = () => {
               placeholder="Search products by name or compound (INCI)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-12 w-full rounded-full border border-border bg-card pl-12 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="h-12 w-full rounded-full border border-border bg-card pl-12 pr-10 font-body text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
             {search && (
               <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
@@ -314,19 +308,19 @@ const Products = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => setSort(sort === "az" ? "za" : sort === "za" ? "default" : "az")}
-                className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 font-body text-xs font-medium text-foreground hover:border-accent/40"
+                className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 font-body text-xs font-medium text-foreground hover:border-primary/40"
               >
                 {sort === "az" ? <ArrowUpAZ className="h-3.5 w-3.5" /> : sort === "za" ? <ArrowDownAZ className="h-3.5 w-3.5" /> : <ArrowUpDown className="h-3.5 w-3.5" />}
                 <span className="hidden sm:inline">Sort</span>
               </button>
               <button
                 onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 font-body text-xs font-medium text-foreground hover:border-accent/40 lg:hidden"
+                className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 font-body text-xs font-medium text-foreground hover:border-primary/40 lg:hidden"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] text-accent-foreground">{activeFilterCount}</span>
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[14px] text-primary-foreground">{activeFilterCount}</span>
                 )}
               </button>
             </div>
@@ -344,7 +338,7 @@ const Products = () => {
               className="fixed bottom-0 left-0 right-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-card p-6 shadow-xl lg:hidden"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-display text-base font-semibold text-foreground">Filters</h3>
+                <h3 className="font-display text-base font-semibold">Filters</h3>
                 <button onClick={() => setMobileFiltersOpen(false)} className="rounded-full p-1 hover:bg-muted">
                   <X className="h-5 w-5 text-muted-foreground" />
                 </button>
@@ -352,7 +346,7 @@ const Products = () => {
               {filtersContent}
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="sticky bottom-0 mt-6 w-full rounded-full bg-accent py-3 font-display text-sm font-semibold text-accent-foreground shadow-lg"
+                className="sticky bottom-0 mt-6 w-full rounded-full bg-primary py-3 font-display text-sm font-semibold text-primary-foreground shadow-lg"
               >
                 Show {filtered.length} Results
               </button>
@@ -369,8 +363,8 @@ const Products = () => {
             <aside className="hidden w-72 shrink-0 lg:block">
               <div className="sticky top-44 max-h-[calc(100vh-12rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-display text-sm font-extrabold text-foreground uppercase tracking-wider">Filters</h3>
-                  <span className="rounded-full bg-accent-pale px-2 py-0.5 font-body text-xs font-bold text-accent">{filtered.length}</span>
+                  <h3 className="font-display text-sm font-extrabold uppercase tracking-wider">Filters</h3>
+                  <span className="rounded-full bg-primary/10 px-2 py-0.5 font-body text-xs font-bold text-primary">{filtered.length}</span>
                 </div>
                 {filtersContent}
               </div>
@@ -392,10 +386,10 @@ const Products = () => {
                   <p className="font-display text-lg font-semibold text-foreground">No products found</p>
                   <p className="mt-2 font-body text-sm text-muted-foreground">Try adjusting your filters or search terms.</p>
                   <div className="mt-4 flex justify-center gap-3">
-                    <button onClick={clearFilters} className="rounded-full border border-accent px-5 py-2 font-display text-sm font-semibold text-accent hover:bg-accent-pale">
+                    <button onClick={clearFilters} className="rounded-full border border-primary px-5 py-2 font-display text-sm font-semibold text-primary hover:bg-primary/10">
                       Clear Filters
                     </button>
-                    <Link to="/contact" className="rounded-full bg-accent px-5 py-2 font-display text-sm font-semibold text-accent-foreground">
+                    <Link to="/contact" className="rounded-full bg-primary px-5 py-2 font-display text-sm font-semibold text-primary-foreground">
                       Contact Us
                     </Link>
                   </div>
@@ -422,14 +416,14 @@ const Products = () => {
                           className="flex items-center justify-between gap-3 w-full"
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <span className="font-body text-xs text-neutral-900/25 shrink-0 w-6 text-right tabular-nums">
+                            <span className="font-body text-xs text-heading/25 shrink-0 w-6 text-right tabular-nums">
                               {i + 1}
                             </span>
-                            <h3 className="font-display text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-tight leading-snug truncate">
+                            <h3 className="font-display text-sm sm:text-base font-bold text-heading uppercase tracking-tight leading-snug truncate">
                               {titleText}
                             </h3>
                           </div>
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:border-transparent">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-background text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent">
                             <ChevronRight className="h-4 w-4" />
                           </div>
                         </Link>
@@ -446,7 +440,7 @@ const Products = () => {
                   </p>
                   <button
                     onClick={() => setVisibleCount(prev => prev + 120)}
-                    className="rounded-full border border-border bg-card px-8 py-2.5 font-display text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-accent hover:text-accent"
+                    className="rounded-full border border-border bg-card px-8 py-2.5 font-display text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary hover:text-primary"
                   >
                     Load More
                   </button>
@@ -458,10 +452,10 @@ const Products = () => {
       </section>
 
       {/* CTA Band */}
-      <section className="bg-accent py-12">
+      <section className="bg-primary py-12">
         <div className="container-scope text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-accent-foreground">Looking for something specific?</h2>
-          <p className="mt-2 font-body text-accent-foreground/90">We source on demand from our global principal network.</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary-foreground">Looking for something specific?</h2>
+          <p className="mt-2 font-body text-primary-foreground/90">We source on demand from our global principal network.</p>
           <Link to="/contact" className="mt-6 inline-flex rounded-full bg-card px-6 py-3 font-display text-sm font-semibold text-foreground hover:shadow-xl">
             Contact Us →
           </Link>
@@ -472,9 +466,9 @@ const Products = () => {
 };
 
 const Pill = ({ label, onClear }: { label: string; onClear: () => void }) => (
-  <span className="inline-flex items-center gap-1 rounded-full bg-accent-pale px-3 py-1 font-body text-xs font-medium text-accent capitalize">
+  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 font-body text-xs font-medium text-primary capitalize">
     {label}
-    <button onClick={onClear} className="rounded-full hover:bg-accent/20">
+    <button onClick={onClear} className="rounded-full hover:bg-primary/20">
       <X className="h-3 w-3" />
     </button>
   </span>

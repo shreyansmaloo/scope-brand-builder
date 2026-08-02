@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Briefcase, ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,7 +28,7 @@ const branches = [
   { city: "Delhi", state: "Delhi", address: "Gali No-7, E-Block, Azad Place, Burari Road, Swaroop Nagar, Delhi 110042", phone: "+91 44 40 400 400" },
   { city: "Hyderabad", state: "Telangana", address: "48, Madhuvan, Paigah Colony, S.P. Road, Secunderabad 500003", phone: "+91 40 2790 1000" },
   { city: "Ahmedabad", state: "Gujarat", address: "45-1-2-1, Prime Estate, Balva Road, Sarkej, Ahmedabad 382210", phone: "+91 79 26890909" },
-  { city: "Kolkata", state: "West Bengal", address: "Flat No 1A, 1st Floor, 25/I, Phase – II, Destiny Tower, Chinar Park, Kolkata 700059", phone: "+91 44 40 400 400" },
+  { city: "Chandigarh", state: "Punjab", address: "Unit No. 408, 4th Floor, Global Business Park, Chandigarh–Ambala Highway, Opp. Metro Mall, Zirakpur, Punjab 140603", phone: "+91 98722 70812, +91 93561 97973" },
 ];
 
 const Contact = () => {
@@ -68,7 +68,7 @@ const Contact = () => {
     <main>
       <SEO 
         title="Contact Scope Ingredients | Ingredient Suppliers India"
-        description="Get in touch with Scope Ingredients for pharmaceutical, cosmetic, and food raw materials in India. We offer pan-India distribution and support."
+        description="Get in touch with Scope Ingredients for pharmaceutical, personal care, and food raw materials in India. We offer pan-India distribution and support."
         canonical="https://www.scope-india.com/contact"
       />
       <StructuredData data={[breadcrumbSchema, localBusinessSchema]} />
@@ -90,11 +90,11 @@ const Contact = () => {
             
             {/* Form */}
             <div>
-              <h2 className="mb-6 font-display text-h2 font-bold text-foreground">Send us a message</h2>
+              <h2 className="mb-6 font-display text-h2 font-bold">Send us a message</h2>
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center rounded-2xl bg-card p-12 text-center shadow-lg">
-                  <CheckCircle className="h-16 w-16 text-teal" />
-                  <h2 className="mt-4 font-display text-xl font-bold text-foreground">Thank You!</h2>
+                  <CheckCircle className="h-16 w-16 text-primary" />
+                  <h2 className="mt-4 font-display text-xl font-bold">Thank You!</h2>
                   <p className="mt-2 font-body text-text-secondary">We'll respond within 24 hours.</p>
                 </motion.div>
               ) : (
@@ -102,47 +102,47 @@ const Contact = () => {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="name" className="font-body text-sm font-medium text-foreground">Full Name *</label>
-                      <input {...register("name")} id="name" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                      <input {...register("name")} id="name" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                       {errors.name && <p className="mt-1 font-body text-xs text-destructive">{errors.name.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="company" className="font-body text-sm font-medium text-foreground">Company *</label>
-                      <input {...register("company")} id="company" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                      <input {...register("company")} id="company" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                       {errors.company && <p className="mt-1 font-body text-xs text-destructive">{errors.company.message}</p>}
                     </div>
                   </div>
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="email" className="font-body text-sm font-medium text-foreground">Email *</label>
-                      <input {...register("email")} id="email" type="email" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                      <input {...register("email")} id="email" type="email" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                       {errors.email && <p className="mt-1 font-body text-xs text-destructive">{errors.email.message}</p>}
                     </div>
                     <div>
                       <label htmlFor="phone" className="font-body text-sm font-medium text-foreground">Phone</label>
-                      <input {...register("phone")} id="phone" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                      <input {...register("phone")} id="phone" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                   </div>
                   <div>
                     <label htmlFor="industry" className="font-body text-sm font-medium text-foreground">Industry</label>
-                    <select {...register("industry")} id="industry" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent">
+                    <select {...register("industry")} id="industry" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary">
                       <option value="">Select industry</option>
                       <option value="pharma">Pharma</option>
-                      <option value="cosmetics">Cosmetics</option>
+                      <option value="cosmetics">Personal Care</option>
                       <option value="food">Food</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
                   <div>
                     <label htmlFor="subject" className="font-body text-sm font-medium text-foreground">Subject *</label>
-                    <input {...register("subject")} id="subject" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                    <input {...register("subject")} id="subject" className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                     {errors.subject && <p className="mt-1 font-body text-xs text-destructive">{errors.subject.message}</p>}
                   </div>
                   <div>
                     <label htmlFor="message" className="font-body text-sm font-medium text-foreground">Message *</label>
-                    <textarea {...register("message")} id="message" rows={4} className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent" />
+                    <textarea {...register("message")} id="message" rows={4} className="mt-1 w-full rounded-xl border border-border bg-card px-4 py-3 font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary" />
                     {errors.message && <p className="mt-1 font-body text-xs text-destructive">{errors.message.message}</p>}
                   </div>
-                  <button type="submit" className="flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary-light hover:shadow-xl transition-all">
+                  <button type="submit" className="flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 hover:shadow-xl transition-all">
                     <Send className="h-4 w-4" />
                     Send Message
                   </button>
@@ -151,44 +151,57 @@ const Contact = () => {
             </div>
 
             {/* Contact info cards */}
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-1 lg:space-y-0">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:space-y-0">
               <div className="card-scope p-4 lg:p-6">
                 <div className="flex gap-3">
-                  <MapPin className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
+                  <MapPin className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-display text-sm font-semibold text-foreground">Registered Office</h3>
+                    <h3 className="font-display text-sm font-semibold">Registered Office</h3>
                     <p className="mt-1 font-body text-xs lg:text-sm text-text-secondary">No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008</p>
                   </div>
                 </div>
               </div>
               <div className="card-scope p-4 lg:p-6">
                 <div className="flex gap-3">
-                  <Phone className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
+                  <Phone className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-display text-sm font-semibold text-foreground">Phone</h3>
-                    <a href="tel:+914440400400" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-accent">+91 44 40 400 400</a>
-                    <a href="tel:+914440400405" className="block font-body text-xs lg:text-sm text-text-secondary hover:text-accent">+91 44 40 400 405</a>
+                    <h3 className="font-display text-sm font-semibold">Phone</h3>
+                    <a href="tel:+914440400400" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-primary">+91 44 40 400 400</a>
+                    <a href="tel:+914440400405" className="block font-body text-xs lg:text-sm text-text-secondary hover:text-primary">+91 44 40 400 405</a>
                   </div>
                 </div>
               </div>
               <div className="card-scope p-4 lg:p-6">
                 <div className="flex gap-3">
-                  <Mail className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
+                  <Mail className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-display text-sm font-semibold text-foreground">Email</h3>
-                    <a href="mailto:sales@scope-india.com" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-accent break-all">sales@scope-india.com</a>
+                    <h3 className="font-display text-sm font-semibold">Email</h3>
+                    <a href="mailto:sales@scope-india.com" className="mt-1 block font-body text-xs lg:text-sm text-text-secondary hover:text-primary break-all">sales@scope-india.com</a>
                   </div>
                 </div>
               </div>
               <div className="card-scope p-4 lg:p-6">
                 <div className="flex gap-3">
-                  <Clock className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-accent mt-0.5" />
+                  <Clock className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-display text-sm font-semibold text-foreground">Business Hours</h3>
+                    <h3 className="font-display text-sm font-semibold">Business Hours</h3>
                     <p className="mt-1 font-body text-xs lg:text-sm text-text-secondary">Mon–Sat, 9:00 AM – 6:00 PM IST</p>
                   </div>
                 </div>
               </div>
+              <Link
+                to="/careers"
+                className="group sm:col-span-2 lg:col-span-1 flex items-center justify-between gap-3 rounded-3xl bg-primary p-4 lg:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all hover:shadow-[0_20px_50px_rgba(247,161,0,0.25)]"
+              >
+                <div className="flex gap-3">
+                  <Briefcase className="h-4 w-4 lg:h-5 lg:w-5 shrink-0 text-primary-foreground mt-0.5" />
+                  <div>
+                    <h3 className="font-display text-sm font-semibold text-primary-foreground">Looking to join our team?</h3>
+                    <p className="mt-1 font-body text-xs lg:text-sm text-primary-foreground/80">View open roles at Scope Ingredients</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 shrink-0 text-primary-foreground transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
           </div>
         </div>
@@ -213,7 +226,7 @@ const Contact = () => {
       <section className="section-padding bg-secondary overflow-hidden">
         <div className="container-scope">
           <div className="mb-12 text-center lg:text-left">
-            <h2 className="font-display text-h2 font-bold text-foreground">Our Network Across India</h2>
+            <h2 className="font-display text-h2 font-bold">Our Network Across India</h2>
             <p className="mt-4 font-body text-text-secondary max-w-2xl">
               With offices and strategic locations throughout the country, we ensure seamless logistics and support for our customers and principals nationwide.
             </p>
@@ -221,19 +234,19 @@ const Contact = () => {
           
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-start">
             {/* Left: 3x2 Grid of Branch Offices */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {branches.map((branch) => (
-                <div key={branch.city} className="card-scope p-5 border border-border/50 hover:border-accent/30 transition-colors bg-card/50">
+                <div key={branch.city} className="card-scope p-5 border border-border/50 hover:border-primary/30 transition-colors bg-card/50">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-display text-base font-semibold text-foreground">{branch.city}</h3>
-                      <p className="font-body text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{branch.state}</p>
+                      <h3 className="font-display text-base font-semibold">{branch.city}</h3>
+                      <p className="font-body text-[14px] font-bold uppercase tracking-wider text-muted-foreground">{branch.state}</p>
                     </div>
-                    <MapPin className="h-4 w-4 text-accent" />
+                    <MapPin className="h-4 w-4 text-primary" />
                   </div>
                   <p className="mt-3 font-body text-xs text-text-secondary leading-relaxed">{branch.address}</p>
                   <div className="mt-4 flex items-center gap-2 border-t border-border/50 pt-3">
-                    <Phone className="h-3 w-3 text-accent" />
+                    <Phone className="h-3 w-3 text-primary" />
                     <p className="font-body text-xs font-medium text-foreground">{branch.phone}</p>
                   </div>
                 </div>

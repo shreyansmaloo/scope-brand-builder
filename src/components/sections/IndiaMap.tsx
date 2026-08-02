@@ -51,27 +51,6 @@ const markers: Marker[] = [
     "type": "warehouse",
     "x": 28.5,
     "y": 22.0
-  },
-  {
-    "id": "kolkata-sp",
-    "name": "Kolkata",
-    "type": "branch",
-    "x": 68.2,
-    "y": 48.8
-  },
-  {
-    "id": "bangalore-sp",
-    "name": "Bangalore",
-    "type": "branch",
-    "x": 32.0,
-    "y": 80.5
-  },
-  {
-    "id": "indore-sp",
-    "name": "Indore",
-    "type": "branch",
-    "x": 28.0,
-    "y": 50.0
   }
 ];
 
@@ -79,17 +58,12 @@ const legend = [
   {
     "type": "head",
     "label": "Headquarters & Warehouse",
-    "color": "bg-accent"
+    "color": "bg-primary"
   },
   {
     "type": "warehouse",
     "label": "Branch Offices & Warehouses",
-    "color": "bg-primary"
-  },
-  {
-    "type": "branch",
-    "label": "Sales Points",
-    "color": "bg-teal"
+    "color": "bg-primary/50"
   }
 ];
 
@@ -291,7 +265,7 @@ const IndiaMap = () => {
             id={state.id}
             d={state.d}
             aria-label={state.name}
-            className="fill-muted stroke-card stroke-[0.5] transition-colors hover:fill-secondary"
+            className="fill-card stroke-border stroke-[0.75] transition-colors hover:fill-primary/10"
           />
         ))}
       </svg>
@@ -308,19 +282,21 @@ const IndiaMap = () => {
             style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
           >
             <div className="group relative -translate-x-1/2 -translate-y-1/2 cursor-pointer">
-              {/* Pin Circle */}
+              {/* Pin Circle — HQ is full-strength amber and largest so it
+                  visually anchors the map; everything else is a lighter
+                  tint of the same amber. */}
               <div className={`
-                h-2.5 w-2.5 rounded-full shadow-sm ring-2 ring-card sm:h-3 sm:w-3
-                ${marker.type === "head" ? "bg-accent" : ""}
-                ${marker.type === "warehouse" ? "bg-primary" : ""}
-                ${marker.type === "branch" ? "bg-teal" : ""}
-                ${marker.type === "factory" ? "bg-accent" : ""}
-                ${marker.type === "other" ? "bg-primary-light" : ""}
+                rounded-full shadow-sm ring-2 ring-card
+                ${marker.type === "head" ? "h-4 w-4 sm:h-[18px] sm:w-[18px] bg-primary" : ""}
+                ${marker.type === "warehouse" ? "h-2.5 w-2.5 sm:h-3 sm:w-3 bg-primary/50" : ""}
+                ${marker.type === "branch" ? "h-2.5 w-2.5 sm:h-3 sm:w-3 bg-primary/30" : ""}
+                ${marker.type === "factory" ? "h-2.5 w-2.5 sm:h-3 sm:w-3 bg-primary/50" : ""}
+                ${marker.type === "other" ? "h-2.5 w-2.5 sm:h-3 sm:w-3 bg-primary/30" : ""}
               `} />
               
               {/* Tooltip */}
               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 opacity-0 transition-opacity group-hover:opacity-100">
-                <div className="whitespace-nowrap rounded bg-surface-dark px-2 py-1 text-[10px] font-medium text-surface-dark-foreground shadow-lg">
+                <div className="whitespace-nowrap rounded bg-surface-dark px-2 py-1 text-[14px] font-medium text-surface-dark-foreground shadow-lg">
                   {marker.name}
                 </div>
                 <div className="mx-auto h-1.5 w-1.5 -translate-y-[4px] rotate-45 bg-surface-dark" />
@@ -341,7 +317,7 @@ const IndiaMap = () => {
           {legend.map((item) => (
             <div key={item.type} className="flex items-center gap-2">
               <div className={`h-2 w-2 rounded-full ${item.color} ring-1 ring-card shadow-sm`} />
-              <span className="font-body text-[10px] font-medium text-foreground whitespace-nowrap">
+              <span className="font-body text-[14px] font-medium text-foreground whitespace-nowrap">
                 {item.label}
               </span>
             </div>

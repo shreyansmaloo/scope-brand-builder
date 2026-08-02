@@ -18,10 +18,28 @@ export default {
         body: ["'DM Sans'", "sans-serif"],
       },
       fontSize: {
-        hero: ["clamp(2.5rem, 5vw, 4.5rem)", { lineHeight: "1.1" }],
-        h1: ["clamp(2rem, 4vw, 3.25rem)", { lineHeight: "1.1" }],
-        h2: ["clamp(1.5rem, 3vw, 2.25rem)", { lineHeight: "1.2" }],
-        h3: ["clamp(1.125rem, 2vw, 1.5rem)", { lineHeight: "1.3" }],
+        // Base Tailwind scale, shifted up exactly +4px (0.25rem @ 16px root)
+        // across the board so the whole site reads larger while preserving
+        // each step's relative line-height ratio (and therefore the existing
+        // size hierarchy). This is the single place to adjust sitewide type
+        // size going forward — rem is used (not px) so text still respects
+        // a visitor's browser/OS text-size accessibility setting. Each line
+        // has its px-equivalent in a trailing comment (@ 16px root) so you
+        // can edit by pixel without doing the math yourself.
+        xs: ["1rem", { lineHeight: "1.333" }], // 16px
+        sm: ["1.125rem", { lineHeight: "1.429" }], // 18px
+        base: ["1.25rem", { lineHeight: "1.5" }], // 20px
+        lg: ["1.375rem", { lineHeight: "1.556" }], // 22px
+        xl: ["1.5rem", { lineHeight: "1.4" }], // 24px
+        "2xl": ["1.75rem", { lineHeight: "1.333" }], // 28px
+        "3xl": ["2.125rem", { lineHeight: "1.2" }], // 34px
+        "4xl": ["2.5rem", { lineHeight: "1.111" }], // 40px
+        "5xl": ["3.25rem", { lineHeight: "1" }], // 52px
+        "6xl": ["4rem", { lineHeight: "1" }], // 64px
+        hero: ["clamp(2.75rem, 5vw, 4.75rem)", { lineHeight: "1.1" }], // 44px → 76px
+        h1: ["clamp(2.25rem, 4vw, 3.5rem)", { lineHeight: "1.1" }], // 36px → 56px
+        h2: ["clamp(1.75rem, 3vw, 2.5rem)", { lineHeight: "1.2" }], // 28px → 40px
+        h3: ["clamp(1.375rem, 2vw, 1.75rem)", { lineHeight: "1.3" }], // 22px → 28px
       },
       colors: {
         border: "rgb(var(--border) / <alpha-value>)",
@@ -29,6 +47,7 @@ export default {
         ring: "rgb(var(--ring) / <alpha-value>)",
         background: "rgb(var(--background) / <alpha-value>)",
         foreground: "rgb(var(--foreground) / <alpha-value>)",
+        heading: "rgb(var(--heading) / <alpha-value>)",
         primary: {
           DEFAULT: "rgb(var(--primary) / <alpha-value>)",
           foreground: "rgb(var(--primary-foreground) / <alpha-value>)",
@@ -47,21 +66,6 @@ export default {
           DEFAULT: "rgb(var(--muted) / <alpha-value>)",
           foreground: "rgb(var(--muted-foreground) / <alpha-value>)",
         },
-        accent: {
-          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
-          foreground: "rgb(var(--accent-foreground) / <alpha-value>)",
-          light: "rgb(var(--accent-light) / <alpha-value>)",
-          pale: "rgb(var(--accent-pale) / <alpha-value>)",
-        },
-        teal: {
-          DEFAULT: "rgb(var(--teal) / <alpha-value>)",
-          foreground: "rgb(var(--teal-foreground) / <alpha-value>)",
-          light: "rgb(var(--teal-light) / <alpha-value>)",
-          pale: "rgb(var(--teal-pale) / <alpha-value>)",
-        },
-        pharma: "rgb(var(--pharma) / <alpha-value>)",
-        "personal-care": "rgb(var(--personal-care) / <alpha-value>)",
-        food: "rgb(var(--food) / <alpha-value>)",
         popover: {
           DEFAULT: "rgb(var(--popover) / <alpha-value>)",
           foreground: "rgb(var(--popover-foreground) / <alpha-value>)",

@@ -21,7 +21,7 @@ $to = 'shreyansmaloowebsite@gmail.com';
 // ─────────────────────────────────────────────────────────────────────────────
 
 $firstName  = htmlspecialchars($data['firstName']  ?? '');
-$secondName = htmlspecialchars($data['secondName'] ?? '');
+$lastName   = htmlspecialchars($data['lastName']   ?? '');
 $company    = htmlspecialchars($data['company']    ?? '');
 $email      = htmlspecialchars($data['email']      ?? '');
 $phone      = htmlspecialchars($data['phone']      ?? '');
@@ -36,7 +36,7 @@ $country    = htmlspecialchars($data['country']    ?? '');
 $industry   = htmlspecialchars($data['industry']   ?? '');
 $items      = $data['items'] ?? [];
 
-$subject = "New Sample Request from $firstName $secondName – $company";
+$subject = "New Sample Request from $firstName $lastName – $company";
 
 $itemsRows = '';
 foreach ($items as $i => $item) {
@@ -71,7 +71,7 @@ $htmlBody = "
 
     <h3 style='color:#1a2942;border-bottom:2px solid #F69A1E;padding-bottom:6px;'>Contact Details</h3>
     <table style='width:100%;border-collapse:collapse;margin-bottom:24px;font-size:14px;'>
-      <tr><td style='padding:7px 10px;width:160px;font-weight:bold;color:#555;'>Name</td><td style='padding:7px 10px;'>$firstName $secondName</td></tr>
+      <tr><td style='padding:7px 10px;width:160px;font-weight:bold;color:#555;'>Name</td><td style='padding:7px 10px;'>$firstName $lastName</td></tr>
       <tr style='background:#f9f9f9;'><td style='padding:7px 10px;font-weight:bold;color:#555;'>Company</td><td style='padding:7px 10px;'>$company</td></tr>
       <tr><td style='padding:7px 10px;font-weight:bold;color:#555;'>Email</td><td style='padding:7px 10px;'><a href='mailto:$email' style='color:#c77c1a;'>$email</a></td></tr>
       <tr style='background:#f9f9f9;'><td style='padding:7px 10px;font-weight:bold;color:#555;'>Phone</td><td style='padding:7px 10px;'>$phone</td></tr>
