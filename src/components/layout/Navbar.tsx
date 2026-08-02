@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Search } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoWordmark from "@/assets/logo-wordmark.png";
+import logoMark from "@/assets/logo-mark.png";
 
 const searchPlaceholders = [
   "Search products, ingredients, principals...",
@@ -95,15 +96,23 @@ const Navbar = () => {
           {/* Left: Logo */}
           <div className="flex flex-1 items-center justify-start overflow-visible">
             <Link to="/" className="flex flex-col items-center overflow-visible">
-              <img
-                src={logoImg}
-                alt="Scope Ingredients"
-                className="w-auto object-contain transition-all duration-300"
-                style={{
-                  height: scrolled ? 52 : 68,
-                  filter: transparent ? "brightness(0) invert(1)" : "none",
-                }}
-              />
+              <div
+                className="relative transition-all duration-300"
+                style={{ height: scrolled ? 52 : 68, width: (scrolled ? 52 : 68) * (203 / 100) }}
+              >
+                <img
+                  src={logoWordmark}
+                  alt="Scope Ingredients"
+                  className="absolute inset-0 h-full w-full object-contain"
+                  style={{ filter: transparent ? "brightness(0) invert(1)" : "none" }}
+                />
+                <img
+                  src={logoMark}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
+              </div>
             </Link>
           </div>
 
