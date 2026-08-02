@@ -6,6 +6,7 @@ import { ArrowRight, Globe, ArrowLeft, Hexagon, ChevronRight } from "lucide-reac
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+import CTASection from "@/components/sections/CTASection";
 
 const formatProductName = (name: string): string => {
   if (!name) return "";
@@ -192,6 +193,14 @@ const PrincipalDetail = () => {
           )}
         </div>
       </section>
+
+      <CTASection
+        tag="Get in Touch"
+        heading={<>Interested in<br />{partner.name}'s Range?</>}
+        description={`Connect with our technical sales team to discuss ${partner.specialty}, request samples, or get product documentation.`}
+        buttonText="Contact Us"
+        buttonLink="/contact"
+      />
     </main>
   );
 };

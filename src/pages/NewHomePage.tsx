@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight, FlaskConical, Sparkles, Leaf, ClipboardList, Package, Microscope } from "lucide-react";
@@ -162,22 +162,26 @@ const ease2: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const Hero = () => {
   const heroRef = useRef<HTMLElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   return (
     <section
       ref={heroRef}
       className="relative overflow-hidden flex items-center"
-      style={{ height: "100svh" }}
+      style={{ height: "100svh", backgroundColor: "#1a1a1a" }}
     >
-      {/* ── Background video ── */}
+      {/* ── Background video — section's own dark bg shows instead of a grey flash until the first frame paints, then the video fades in ── */}
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className={`absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-700 ${videoLoaded ? "opacity-100" : "opacity-0"}`}
         src={heroVideo}
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
+        // @ts-expect-error fetchPriority is valid in modern browsers/React 19 typings but may not be typed yet
+        fetchPriority="high"
+        onLoadedData={() => setVideoLoaded(true)}
       />
 
       {/* ── Dark scrim for text legibility — left-weighted on desktop, full on mobile ── */}
