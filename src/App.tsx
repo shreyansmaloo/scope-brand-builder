@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { ProductsProvider } from "./context/ProductsContext";
 import { PartnersProvider } from "./context/PartnersContext";
 import { NewsProvider } from "./context/NewsContext";
+import { CareersProvider } from "./context/CareersContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import WhatsAppButton from "./components/layout/WhatsAppButton";
@@ -43,33 +44,35 @@ const App = () => (
         <PartnersProvider>
           <ProductsProvider>
             <NewsProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <ScrollToTop />
-                <Routes>
-                  {/* Admin — standalone, no navbar/footer */}
-                  <Route path="/admin" element={<Admin />} />
+              <CareersProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <ScrollToTop />
+                  <Routes>
+                    {/* Admin — standalone, no navbar/footer */}
+                    <Route path="/admin" element={<Admin />} />
 
-                  {/* Public site — all wrapped with Navbar + Footer */}
-                  <Route element={<PublicLayout />}>
-                    <Route path="/" element={<NewHomePage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/pharma" element={<Navigate to="/products?industry=pharma" replace />} />
-                    <Route path="/cosmetics" element={<Navigate to="/products?industry=cosmetics" replace />} />
-                    <Route path="/food" element={<Navigate to="/products?industry=food" replace />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetail />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/request-sample" element={<RequestSample />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/principals" element={<Principals />} />
-                    <Route path="/principals/:id" element={<PrincipalDetail />} />
-                    <Route path="/careers" element={<Careers />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </BrowserRouter>
+                    {/* Public site — all wrapped with Navbar + Footer */}
+                    <Route element={<PublicLayout />}>
+                      <Route path="/" element={<NewHomePage />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/pharma" element={<Navigate to="/products?industry=pharma" replace />} />
+                      <Route path="/cosmetics" element={<Navigate to="/products?industry=cosmetics" replace />} />
+                      <Route path="/food" element={<Navigate to="/products?industry=food" replace />} />
+                      <Route path="/products" element={<Products />} />
+                      <Route path="/products/:id" element={<ProductDetail />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/request-sample" element={<RequestSample />} />
+                      <Route path="/news" element={<News />} />
+                      <Route path="/principals" element={<Principals />} />
+                      <Route path="/principals/:id" element={<PrincipalDetail />} />
+                      <Route path="/careers" element={<Careers />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </CareersProvider>
             </NewsProvider>
           </ProductsProvider>
         </PartnersProvider>

@@ -410,8 +410,9 @@ const Products = () => {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: Math.min(i * 0.015, 0.2) }}
-                        className="group relative overflow-hidden rounded-[1.25rem] bg-primary-muted/45 px-5 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:bg-primary-muted/65"
+                        className="group relative overflow-hidden rounded-[1.25rem] bg-primary-muted/45 px-5 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border border-primary/10 hover:border-primary hover:ring-2 hover:ring-primary/20 hover:bg-primary-muted/65"
                       >
+                        <div className="absolute left-0 top-0 h-full w-1 bg-primary opacity-0 transition-opacity group-hover:opacity-100" />
                         <Link
                           to={`/products/${product.id}`}
                           className="flex items-center justify-between gap-3 w-full"

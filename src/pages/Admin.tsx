@@ -2,14 +2,16 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Pencil, Trash2, X, Download, RotateCcw, Search,
-  ChevronLeft, ChevronRight, Lock, LogOut, Package, Users, Newspaper,
+  ChevronLeft, ChevronRight, Lock, LogOut, Package, Users, Newspaper, Briefcase,
 } from "lucide-react";
 import { useProducts } from "@/context/ProductsContext";
 import { usePartners } from "@/context/PartnersContext";
 import { useNews } from "@/context/NewsContext";
+import { useCareers } from "@/context/CareersContext";
 import type { Product } from "@/data/products";
 import type { Partner } from "@/data/partners";
 import type { NewsArticle } from "@/data/news";
+import type { JobOpening } from "@/data/careers";
 
 const ADMIN_PASSWORD = "scope@2025";
 const PAGE_SIZE = 25;
@@ -760,9 +762,151 @@ const NewsTab = () => {
 };
 
 // ═══════════════════════════════════════════════════════════════
+// CAREERS TAB
+// ═══════════════════════════════════════════════════════════════
+type OpeningDraft = {
+  id?: string;
+  title: string; location: string; type: string; desc: string;
+  responsibilitiesText: string; requirementsText: string; rules: string;
+};
+const EMPTY_OPENING: OpeningDraft = { title:"", location:"", type:"Full-time", desc:"", responsibilitiesText:"", requirementsText:"", rules:"" };
+
+const toDraft = (o: JobOpening): OpeningDraft => ({
+  id: o.id, title: o.title, location: o.location, type: o.type, desc: o.desc,
+  responsibilitiesText: o.responsibilities.join("\n"), requirementsText: o.requirements.join("\n"), rules: o.rules,
+});
+
+const CareersTab = () => {
+  const { openings, addOpening, updateOpening, deleteOpening, resetToDefault, isCustomized } = useCareers();
+  const [draft, setDraft] = useState<OpeningDraft | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const set = (f: Partial<OpeningDraft>) => setDraft(d => d ? {...d,...f} : d);
+
+  const save = () => {
+    if (!draft) return;
+    const responsibilities = draft.responsibilitiesText.split("\n").map(s=>s.trim()).filter(Boolean);
+    const requirements = draft.requirementsText.split("\n").map(s=>s.trim()).filter(Boolean);
+    const payload = {
+      title: draft.title, location: draft.location, type: draft.type, desc: draft.desc,
+      responsibilities, requirements, rules: draft.rules,
+    };
+    if (draft.id) updateOpening({ ...payload, id: draft.id });
+    else addOpening(payload);
+    setDraft(null);
+  };
+
+  const exportTs = () => {
+    const lines = [
+      "export interface JobOpening {",
+      "  id: string; title: string; location: string; type: string; desc: string;",
+      "  responsibilities: string[]; requirements: string[]; rules: string;",
+      "}","","export const jobOpenings: JobOpening[] = [",
+    ];
+    for (const o of openings) {
+      lines.push(`  { id: ${JSON.stringify(o.id)}, title: ${JSON.stringify(o.title)}, location: ${JSON.stringify(o.location)}, type: ${JSON.stringify(o.type)}, desc: ${JSON.stringify(o.desc)}, responsibilities: ${JSON.stringify(o.responsibilities)}, requirements: ${JSON.stringify(o.requirements)}, rules: ${JSON.stringify(o.rules)} },`);
+    }
+    lines.push("];","");
+    const blob = new Blob([lines.join("\n")], { type:"text/plain" });
+    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "careers.ts" });
+    a.click(); URL.revokeObjectURL(a.href);
+  };
+
+  const valid = !!draft && draft.title.trim() && draft.location.trim() && draft.desc.trim();
+
+  return (
+    <div>
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <span className="font-body text-sm text-muted-foreground">{openings.length} open positions</span>
+        {isCustomized && <button onClick={() => confirm("Reset?") && resetToDefault()} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-2 font-display text-xs font-semibold text-muted-foreground hover:bg-muted transition-all"><RotateCcw className="h-3.5 w-3.5" /> Reset</button>}
+        <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all"><Download className="h-3.5 w-3.5" /> Export .ts</button>
+        <button onClick={() => setDraft({...EMPTY_OPENING})} className="ml-auto flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all"><Plus className="h-4 w-4" /> Add Position</button>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border bg-muted/50">
+              {["Title","Location","Type","Description",""].map(h => (
+                <th key={h} className="px-4 py-3 text-left font-display text-sm font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {openings.map(o => (
+              <tr key={o.id} className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-3 font-display text-sm font-semibold text-foreground max-w-[220px] truncate">{o.title}</td>
+                <td className="px-4 py-3 font-body text-sm text-muted-foreground whitespace-nowrap">{o.location}</td>
+                <td className="px-4 py-3 font-body text-xs text-muted-foreground whitespace-nowrap">{o.type}</td>
+                <td className="px-4 py-3 font-body text-xs text-muted-foreground max-w-[280px]">
+                  <p className="line-clamp-2">{o.desc}</p>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center justify-end gap-1">
+                    <button onClick={() => setDraft(toDraft(o))} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-primary hover:bg-primary/10 transition-all"><Pencil className="h-3 w-3" /> Edit</button>
+                    <button onClick={() => setDeleteId(o.id)} className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 font-display text-xs font-semibold text-destructive hover:bg-destructive/10 transition-all"><Trash2 className="h-3 w-3" /> Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {openings.length === 0 && <tr><td colSpan={5} className="py-12 text-center font-body text-sm text-muted-foreground">No open positions yet.</td></tr>}
+          </tbody>
+        </table>
+      </div>
+
+      <AnimatePresence>
+        {draft && (
+          <SlideOver key="opening-form" title={draft.id ? "Edit Position" : "Add Position"}
+            onClose={() => setDraft(null)} onSave={save} valid={!!valid}>
+            <div>
+              <label className={labelCls}>Title *</label>
+              <input value={draft.title} onChange={e => set({title:e.target.value})} placeholder="e.g. Technical Sales Executive — Pharma" className={inputCls} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className={labelCls}>Location *</label>
+                <input value={draft.location} onChange={e => set({location:e.target.value})} placeholder="e.g. Mumbai / Chennai" className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>Type</label>
+                <select value={draft.type} onChange={e => set({type:e.target.value})} className={inputCls}>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Short Description *</label>
+              <textarea value={draft.desc} onChange={e => set({desc:e.target.value})} rows={2} placeholder="One-line summary shown on the card..." className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Responsibilities (one per line)</label>
+              <textarea value={draft.responsibilitiesText} onChange={e => set({responsibilitiesText:e.target.value})} rows={4} placeholder={"Identify and develop new business opportunities...\nConduct technical presentations..."} className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Requirements (one per line)</label>
+              <textarea value={draft.requirementsText} onChange={e => set({requirementsText:e.target.value})} rows={4} placeholder={"B.Pharm / M.Pharm or degree in Chemistry...\n2-5 years of experience..."} className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Role Guidelines</label>
+              <textarea value={draft.rules} onChange={e => set({rules:e.target.value})} rows={2} placeholder="e.g. Field-based role with regular office reporting." className={inputCls} />
+            </div>
+          </SlideOver>
+        )}
+      </AnimatePresence>
+
+      {deleteId && <DeleteConfirm name={openings.find(o=>o.id===deleteId)?.title??""} onCancel={() => setDeleteId(null)}
+        onConfirm={() => { deleteOpening(deleteId); setDeleteId(null); }} />}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════
 // MAIN ADMIN
 // ═══════════════════════════════════════════════════════════════
-type Tab = "products" | "principals" | "news";
+type Tab = "products" | "principals" | "news" | "careers";
 
 const Admin = () => {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem("scope_admin_auth")==="1");
@@ -770,6 +914,7 @@ const Admin = () => {
   const { products } = useProducts();
   const { partners } = usePartners();
   const { articles } = useNews();
+  const { openings } = useCareers();
 
   if (!authed) return <LoginGate onAuth={() => setAuthed(true)} />;
 
@@ -777,6 +922,7 @@ const Admin = () => {
     { id:"products",   label:"Products",   icon:Package,  count:products.length },
     { id:"principals", label:"Principals", icon:Users,    count:partners.length },
     { id:"news",       label:"News & Events", icon:Newspaper, count:articles.length },
+    { id:"careers",    label:"Careers",    icon:Briefcase, count:openings.length },
   ];
 
   return (
@@ -786,7 +932,7 @@ const Admin = () => {
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
           <div>
             <h1 className="font-display text-xl font-bold">Scope Admin</h1>
-            <p className="font-body text-xs text-muted-foreground mt-0.5">Product, Principal & News Management</p>
+            <p className="font-body text-xs text-muted-foreground mt-0.5">Product, Principal, News & Careers Management</p>
           </div>
           <button onClick={() => { sessionStorage.removeItem("scope_admin_auth"); setAuthed(false); }}
             className="rounded-full p-2 text-muted-foreground hover:bg-muted transition-all" title="Sign out">
@@ -811,6 +957,7 @@ const Admin = () => {
         {tab === "products"   && <ProductsTab />}
         {tab === "principals" && <PrincipalsTab />}
         {tab === "news"       && <NewsTab />}
+        {tab === "careers"    && <CareersTab />}
       </div>
     </div>
   );
