@@ -291,7 +291,7 @@ const ProductsTab = () => {
             <thead>
               <tr className="border-b border-border bg-muted/50">
                 {["#","Name","Grade","Principal","Industry","Category","Application",""].map(h => (
-                  <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                  <th key={h} className="px-4 py-3 text-left font-display text-sm font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -301,12 +301,12 @@ const ProductsTab = () => {
                   <td className="px-4 py-3 font-body text-xs text-muted-foreground tabular-nums">{(page-1)*PAGE_SIZE+i+1}</td>
                   <td className="px-4 py-3 max-w-[200px]">
                     <p className="font-display text-sm font-semibold text-foreground truncate">{p.name}</p>
-                    {p.brand && <p className="font-body text-[15px] text-muted-foreground truncate">{p.brand}</p>}
+                    {p.brand && <p className="font-body text-sm text-muted-foreground truncate">{p.brand}</p>}
                   </td>
                   <td className="px-4 py-3 font-body text-sm">{p.grade || <span className="text-muted-foreground">—</span>}</td>
                   <td className="px-4 py-3 font-body text-sm max-w-[130px] truncate">{p.principal}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[p.industry]}`}>
+                    <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-sm font-bold uppercase tracking-wide ${INDUSTRY_BADGE[p.industry]}`}>
                       {INDUSTRY_LABELS[p.industry]}
                     </span>
                   </td>
@@ -412,7 +412,7 @@ const ProductsTab = () => {
                   ))}
                 </div>
               )}
-              <p className="mt-1 font-body text-[15px] text-muted-foreground">Leave empty if product has no specific grade</p>
+              <p className="mt-1 font-body text-sm text-muted-foreground">Leave empty if product has no specific grade</p>
             </div>
 
             <div>
@@ -520,7 +520,7 @@ const PrincipalsTab = () => {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               {["Logo","Name","Country","Verticals","Specialty",""].map(h => (
-                <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                <th key={h} className="px-4 py-3 text-left font-display text-sm font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
               ))}
             </tr>
           </thead>
@@ -536,7 +536,7 @@ const PrincipalsTab = () => {
                 <td className="px-4 py-3 font-body text-sm text-muted-foreground">{p.country}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1">
-                    {p.verticals.map(v => <span key={v} className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold uppercase tracking-wide ${INDUSTRY_BADGE[v]}`}>{INDUSTRY_LABELS[v]}</span>)}
+                    {p.verticals.map(v => <span key={v} className={`inline-flex rounded-full border px-2 py-0.5 font-display text-sm font-bold uppercase tracking-wide ${INDUSTRY_BADGE[v]}`}>{INDUSTRY_LABELS[v]}</span>)}
                   </div>
                 </td>
                 <td className="px-4 py-3 font-body text-xs text-muted-foreground max-w-[200px] truncate">{p.specialty}</td>
@@ -598,7 +598,7 @@ const PrincipalsTab = () => {
                     }}
                   />
                 </label>
-                <p className="mt-1 font-body text-[15px] text-muted-foreground">
+                <p className="mt-1 font-body text-sm text-muted-foreground">
                   Or type a filename if already in /logos/:{" "}
                   <input value={draft.logo?.startsWith("data:") ? "" : (draft.logo || "")}
                     onChange={e => set({ logo: e.target.value })}
@@ -689,7 +689,7 @@ const NewsTab = () => {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               {["Date","Category","Title","Excerpt",""].map(h => (
-                <th key={h} className="px-4 py-3 text-left font-display text-[15px] font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
+                <th key={h} className="px-4 py-3 text-left font-display text-sm font-extrabold uppercase tracking-wider text-muted-foreground">{h}</th>
               ))}
             </tr>
           </thead>
@@ -698,7 +698,7 @@ const NewsTab = () => {
               <tr key={a.id} className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors">
                 <td className="px-4 py-3 font-body text-xs text-muted-foreground whitespace-nowrap">{a.date}</td>
                 <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-[14px] font-bold ${CATEGORY_BADGE[a.category]}`}>{a.category}</span>
+                  <span className={`inline-flex rounded-full border px-2 py-0.5 font-display text-sm font-bold ${CATEGORY_BADGE[a.category]}`}>{a.category}</span>
                 </td>
                 <td className="px-4 py-3 font-display text-sm font-semibold text-foreground max-w-[220px]">
                   <p className="truncate">{a.title}</p>
@@ -801,7 +801,7 @@ const Admin = () => {
               className={`flex items-center gap-2 px-4 py-3 font-display text-sm font-semibold border-b-2 transition-all ${tab===t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               <t.icon className="h-4 w-4" />
               {t.label}
-              <span className={`rounded-full px-1.5 py-0.5 font-body text-[14px] font-bold ${tab===t.id ? "bg-primary text-background" : "bg-muted text-muted-foreground"}`}>{t.count}</span>
+              <span className={`rounded-full px-1.5 py-0.5 font-body text-sm font-bold ${tab===t.id ? "bg-primary text-background" : "bg-muted text-muted-foreground"}`}>{t.count}</span>
             </button>
           ))}
         </div>

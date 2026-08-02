@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import { usePartners } from "@/context/PartnersContext";
+import CTASection from "@/components/sections/CTASection";
 
 type SortOption = "default" | "az" | "za";
 
@@ -62,9 +63,9 @@ const Principals = () => {
   const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
     <div className="border-b border-border/60 py-4 first:pt-0">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-[17px] font-extrabold uppercase tracking-wider">{title}</h4>
+        <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
         {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[14px] font-bold text-primary-foreground">{count}</span>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
         )}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -74,7 +75,7 @@ const Principals = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[19px] transition-colors ${
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${
         active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
       }`}
     >
@@ -185,7 +186,7 @@ const Principals = () => {
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[14px] text-primary-foreground">{activeFilterCount}</span>
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-sm text-primary-foreground">{activeFilterCount}</span>
                 )}
               </button>
             </div>
@@ -288,6 +289,14 @@ const Principals = () => {
           </div>
         </div>
       </section>
+
+      <CTASection
+        tag="Global Network"
+        heading={<>Want to Partner<br />with Scope?</>}
+        description="Whether you're a principal looking to expand into India or a manufacturer sourcing globally, our team is ready to talk."
+        buttonText="Contact Us"
+        buttonLink="/contact"
+      />
     </main>
   );
 };

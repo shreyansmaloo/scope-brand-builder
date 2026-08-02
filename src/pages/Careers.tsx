@@ -364,7 +364,7 @@ const Careers = () => {
                          <p className="mt-2 font-body text-sm text-foreground/80">
                            Upload your resume
                          </p>
-                         <p className="mt-0.5 font-body text-[15px] text-muted-foreground">PDF, DOC up to 5MB</p>
+                         <p className="mt-0.5 font-body text-sm text-muted-foreground">PDF, DOC up to 5MB</p>
                        </div>
                      </div>
                    </div>

@@ -37,14 +37,14 @@ const ExcipientSearch = () => {
           className="mx-auto max-w-3xl text-center"
         >
           {/* Eyebrow — Template C style */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/15 px-4 py-1.5 font-body text-[15px] font-bold uppercase tracking-widest text-background">
+          <span className="inline-flex items-center gap-2 rounded-full border border-background/25 bg-background/15 px-4 py-1.5 font-body text-sm font-bold uppercase tracking-widest text-background">
             ✦ Product Search
           </span>
 
           <h2 className="mt-5 font-display text-h1 font-bold text-background leading-tight">
             Find the Right Ingredient
           </h2>
-          <p className="mt-4 font-body text-[19px] text-background/70">
+          <p className="mt-4 font-body text-lg text-background/70">
             Search by product name, application, or category across 400+ active ingredients.
           </p>
 

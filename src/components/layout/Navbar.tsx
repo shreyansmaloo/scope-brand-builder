@@ -113,7 +113,7 @@ const Navbar = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-[17px] font-semibold uppercase tracking-widest transition-colors ${
+                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-sm font-semibold uppercase tracking-widest transition-colors ${
                   location.pathname === link.href
                     ? "text-primary"
                     : transparent
@@ -265,7 +265,7 @@ const Navbar = () => {
                     <div key={link.label} className="border-b border-border/50 last:border-0">
                       <Link
                         to={link.href}
-                        className={`block py-4 font-display text-lg font-medium transition-colors ${
+                        className={`block py-4 font-display text-lg font-medium uppercase tracking-wide transition-colors ${
                           location.pathname === link.href ? "text-primary" : "text-foreground/80 hover:text-primary"
                         }`}
                         onClick={() => setMobileOpen(false)}

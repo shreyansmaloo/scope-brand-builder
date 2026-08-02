@@ -296,7 +296,7 @@ const IndiaMap = () => {
               
               {/* Tooltip */}
               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 opacity-0 transition-opacity group-hover:opacity-100">
-                <div className="whitespace-nowrap rounded bg-surface-dark px-2 py-1 text-[14px] font-medium text-surface-dark-foreground shadow-lg">
+                <div className="whitespace-nowrap rounded bg-surface-dark px-2 py-1 text-sm font-medium text-surface-dark-foreground shadow-lg">
                   {marker.name}
                 </div>
                 <div className="mx-auto h-1.5 w-1.5 -translate-y-[4px] rotate-45 bg-surface-dark" />
@@ -317,7 +317,7 @@ const IndiaMap = () => {
           {legend.map((item) => (
             <div key={item.type} className="flex items-center gap-2">
               <div className={`h-2 w-2 rounded-full ${item.color} ring-1 ring-card shadow-sm`} />
-              <span className="font-body text-[14px] font-medium text-foreground whitespace-nowrap">
+              <span className="font-body text-sm font-medium text-foreground whitespace-nowrap">
                 {item.label}
               </span>
             </div>

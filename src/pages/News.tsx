@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useNews } from "@/context/NewsContext";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+import CTASection from "@/components/sections/CTASection";
 
 const tagColors: Record<string, string> = {
   Event: "bg-primary/15 text-primary",
@@ -87,6 +88,14 @@ const News = () => {
           </div>
         </div>
       </section>
+
+      <CTASection
+        tag="Stay Connected"
+        heading={<>Have a Story or<br />Event to Share?</>}
+        description="For press inquiries, event partnerships, or media coverage, get in touch with our communications team."
+        buttonText="Contact Us"
+        buttonLink="/contact"
+      />
     </main>
   );
 };

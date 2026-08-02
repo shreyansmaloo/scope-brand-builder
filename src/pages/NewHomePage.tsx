@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight, FlaskConical, Sparkles, Leaf, ClipboardList, Package, Microscope } from "lucide-react";
 import { usePartners } from "@/context/PartnersContext";
-import ExcipientSearch from "@/components/sections/ExcipientSearch";
+import CTASection from "@/components/sections/CTASection";
 import heroVideo from "@/assets/Hero Section_Homepage.mp4";
 import industryPharma from "@/assets/industry-pharma.jpg";
 import industryCosmetics from "@/assets/industry-cosmetics.jpg";
@@ -114,7 +114,7 @@ const stagger = {
 
 // ─── Tag ─────────────────────────────────────────────────────
 const Tag = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-flex items-center gap-2 font-display text-[17px] font-bold uppercase tracking-[0.25em]"
+  <span className="inline-flex items-center gap-2 font-display text-sm font-bold uppercase tracking-[0.25em]"
     style={{ color: "#F7A100" }}>
     <span className="h-px w-6 bg-[#F7A100] inline-block" />{children}
   </span>
@@ -198,26 +198,6 @@ const Hero = () => {
           {/* Text column — full width on mobile, left 54% on desktop */}
           <div className="lg:max-w-[54%]">
 
-            {/* Eyebrow — glassmorphic pill on dark video */}
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: ease1 }}
-              className="flex justify-start">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[rgba(247,161,0,0.4)] bg-[rgba(0,0,0,0.35)] backdrop-blur-md"
-              >
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F7A100] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#F7A100]"></span>
-                </span>
-                <span
-                  className="font-display text-[15.5px] font-bold uppercase tracking-[0.16em]"
-                  style={{ color: "#F9BD4A" }}
-                >
-                  Est. 1959 · India's Formulation Partner
-                </span>
-              </div>
-            </motion.div>
-
             {/* Headline — line-wipe */}
             <div className="mt-5 sm:mt-6">
               {HEADLINE.map((line, i) => (
@@ -225,10 +205,10 @@ const Hero = () => {
                   <motion.div
                     initial={{ y: "108%" }} animate={{ y: 0 }}
                     transition={{ duration: 1.05, delay: 0.18 + i * 0.18, ease: ease2 }}
+                    className="text-hero"
                     style={{
                       fontFamily: "'Sora', sans-serif",
                       fontWeight: 900,
-                      fontSize: "clamp(2.7rem, 7.5vw, 7.2rem)",
                       lineHeight: 1.05,
                       letterSpacing: "-0.03em",
                       color: line.color === "#F7A100" ? undefined : "#FFFFFF",
@@ -252,8 +232,8 @@ const Hero = () => {
             {/* Body */}
             <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.88, ease: ease1 }}
-              className="font-body leading-relaxed mt-5"
-              style={{ fontSize: "clamp(20px, 1.4vw, 22px)", color: "rgba(255,255,255,0.9)", maxWidth: "46ch", textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}>
+              className="font-body text-xl leading-relaxed mt-5"
+              style={{ color: "rgba(255,255,255,0.9)", maxWidth: "46ch", textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}>
               From the excipient in every tablet to the active behind every skincare glow
               and the fibre in your morning supplement — Scope has been the silent partner
               in India's finest formulations for over 65 years.
@@ -264,7 +244,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 1.02, ease: ease1 }}
               className="mt-7 flex flex-row flex-wrap gap-3">
               <Link to="/products"
-                className="group inline-flex items-center justify-center gap-2 rounded-full font-display text-[19px] font-bold text-[#000000] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_rgba(247,161,0,0.46)] active:scale-[0.97]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full font-display text-lg font-bold text-[#000000] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_rgba(247,161,0,0.46)] active:scale-[0.97]"
                 style={{ padding: "13px 24px", background: "linear-gradient(135deg,#F7A100,#F9BD4A 55%,#F7A100)", backgroundSize: "200% 200%" }}
                 onMouseEnter={e => (e.currentTarget.style.backgroundPosition = "100% 0")}
                 onMouseLeave={e => (e.currentTarget.style.backgroundPosition = "0% 0")}>
@@ -272,7 +252,7 @@ const Hero = () => {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link to="/principals"
-                className="group inline-flex items-center justify-center gap-2 rounded-full font-display text-[19px] font-semibold text-white border border-white/55 bg-white/10 backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black hover:border-white"
+                className="group inline-flex items-center justify-center gap-2 rounded-full font-display text-lg font-semibold text-white border border-white/55 bg-white/10 backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black hover:border-white"
                 style={{ padding: "13px 24px" }}>
                 Our Partners
                 <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -344,7 +324,7 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
       <Link to={ind.href}>
         <div ref={tiltRef}
           className="relative overflow-hidden rounded-3xl cursor-pointer"
-          style={{ height: "clamp(324px, 52vh, 584px)", boxShadow: "0 24px 80px rgba(0,0,0,.14)" }}>
+          style={{ height: "clamp(324px, 52svh, 584px)", boxShadow: "0 24px 80px rgba(0,0,0,.14)" }}>
           <img src={ind.img} alt={ind.label}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
           {/* Gradient only at the bottom for label readability */}
@@ -354,7 +334,7 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
             style={{ background: `radial-gradient(ellipse at center bottom, ${ind.accent}28 0%, transparent 60%)` }} />
           {/* Industry name — bottom left */}
           <div className="absolute bottom-6 left-7">
-            <span className="font-display text-[1.27rem] font-bold tracking-wide" style={{ color: "#FCFDF8" }}>
+            <span className="font-display text-xl font-bold tracking-wide" style={{ color: "#FCFDF8" }}>
               {ind.label}
             </span>
           </div>
@@ -374,14 +354,13 @@ const IndustriesSection = () => (
         <div>
           <motion.div variants={fadeUp}><Tag>What We Supply</Tag></motion.div>
           <motion.h2 variants={fadeUp}
-            className="mt-4 font-display font-bold leading-tight text-surface-dark"
-            style={{ fontSize: "clamp(2.4rem, 4vw, 3.6rem)" }}>
+            className="mt-4 font-display text-h1 font-bold leading-tight text-surface-dark">
             Three Verticals.<br />
             <span className="text-primary">Infinite Possibilities</span>
           </motion.h2>
         </div>
         <motion.p variants={fadeUp}
-          className="mt-4 lg:mt-0 font-body text-[21px] leading-relaxed max-w-[38ch]"
+          className="mt-4 lg:mt-0 font-body text-xl leading-relaxed max-w-[38ch]"
           style={{ color: "#494949" }}>
           Deep technical expertise across pharma, personal care, and food — with dedicated teams,
           application labs, and principal access for each vertical.
@@ -428,14 +407,14 @@ const PartnersSection = () => {
                 onError={e => {
                   e.currentTarget.style.display = "none";
                   const span = document.createElement("span");
-                  span.className = "font-display text-[17px] font-semibold text-center px-3";
+                  span.className = "font-display text-base font-semibold text-center px-3";
                   span.style.color = "#494949";
                   span.textContent = p.name;
                   e.currentTarget.parentElement?.appendChild(span);
                 }}
               />
             ) : (
-              <span className="font-display text-[17px] font-semibold text-center px-3"
+              <span className="font-display text-base font-semibold text-center px-3"
                 style={{ color: "#494949" }}>{p.name}</span>
             )}
           </Link>
@@ -455,12 +434,11 @@ const PartnersSection = () => {
           className="text-center">
           <motion.div variants={fadeUp}><Tag>Our Global Family</Tag></motion.div>
           <motion.h2 variants={fadeUp}
-            className="mt-4 font-display font-bold text-surface-dark"
-            style={{ fontSize: "clamp(2.2rem, 3.5vw, 3.2rem)" }}>
+            className="mt-4 font-display text-h1 font-bold text-surface-dark">
             Backed by the World's Best
           </motion.h2>
           <motion.p variants={fadeUp}
-            className="font-body text-[21px] max-w-[42ch] mx-auto mt-3"
+            className="font-body text-xl max-w-[42ch] mx-auto mt-3"
             style={{ color: "#494949" }}>
             Exclusive Indian representation for 50+ globally renowned ingredient manufacturers —
             each chosen for quality, innovation, and reliability.
@@ -507,14 +485,14 @@ const GALLERY_ROW2 = [
 const GalleryCard = ({ src, caption }: { src: string; caption: string }) => (
   <div
     className="group relative flex-shrink-0 overflow-hidden rounded-2xl cursor-pointer"
-    style={{ width: 280, height: 340, boxShadow: "0 8px 28px rgba(0,0,0,.10)" }}>
+    style={{ width: 280, height: 420, boxShadow: "0 8px 28px rgba(0,0,0,.10)" }}>
     <img src={src} alt={caption}
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
     <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       style={{ background: "linear-gradient(to top, rgba(247,161,0,.28) 0%, transparent 60%)" }} />
     <div className="absolute bottom-4 left-4">
-      <span className="font-display text-[17px] font-bold uppercase tracking-widest"
+      <span className="font-display text-sm font-bold uppercase tracking-widest"
         style={{ color: "rgba(252,253,248,.75)" }}>{caption}</span>
     </div>
   </div>
@@ -529,14 +507,13 @@ const GallerySection = () => (
         <div>
           <motion.div variants={fadeUp}><Tag>Visual Journey</Tag></motion.div>
           <motion.h2 variants={fadeUp}
-            className="mt-4 font-display font-bold text-surface-dark"
-            style={{ fontSize: "clamp(2.4rem, 4vw, 3.6rem)" }}>
+            className="mt-4 font-display text-h1 font-bold text-surface-dark">
             Where Ingredients<br />
             <span className="text-primary">Meet Life</span>
           </motion.h2>
         </div>
         <motion.p variants={fadeUp}
-          className="font-body text-[21px] leading-relaxed max-w-[38ch]"
+          className="font-body text-xl leading-relaxed max-w-[38ch]"
           style={{ color: "#494949" }}>
           Across three industries, one constant — the highest quality ingredients
           that transform what's possible.
@@ -613,9 +590,9 @@ const FeatureSection = () => {
                 border: "1px solid rgba(247,161,0,.2)",
                 boxShadow: "0 16px 56px rgba(247,161,0,.18)",
               }}>
-              <p className="font-display text-[15px] font-bold uppercase tracking-[0.22em] mb-0.5" style={{ color: "#F7A100" }}>Established</p>
+              <p className="font-display text-sm font-bold uppercase tracking-[0.22em] mb-0.5" style={{ color: "#F7A100" }}>Established</p>
               <p className="font-display text-3xl font-black leading-none" style={{ color: "#000000" }}>1959</p>
-              <p className="font-body text-[17px] mt-1" style={{ color: "rgba(73,73,73,0.55)" }}>65+ years of excellence</p>
+              <p className="font-body text-base mt-1" style={{ color: "rgba(73,73,73,0.55)" }}>65+ years of excellence</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -16 }}
@@ -628,7 +605,7 @@ const FeatureSection = () => {
                 boxShadow: "0 12px 40px rgba(247,161,0,.4)",
               }}>
               <p className="font-display text-2xl font-black leading-none" style={{ color: "#000000" }}>400+</p>
-              <p className="font-body text-[17px] mt-0.5" style={{ color: "rgba(0,0,0,.65)" }}>Active Products</p>
+              <p className="font-body text-base mt-0.5" style={{ color: "rgba(0,0,0,.65)" }}>Active Products</p>
             </motion.div>
           </motion.div>
 
@@ -638,13 +615,12 @@ const FeatureSection = () => {
             className="order-2 lg:order-2">
             <motion.div variants={fadeUp}><Tag>Our Legacy</Tag></motion.div>
             <motion.h2 variants={fadeUp}
-              className="mt-4 font-display font-bold leading-tight text-surface-dark"
-              style={{ fontSize: "clamp(2.4rem, 4vw, 3.4rem)" }}>
+              className="mt-4 font-display text-h1 font-bold leading-tight text-surface-dark">
               Six Decades of<br />
               <span className="text-primary">Ingredient Excellence</span>
             </motion.h2>
             <motion.p variants={fadeUp}
-              className="mt-5 font-body text-[21px] leading-relaxed max-w-[46ch]"
+              className="mt-5 font-body text-lg leading-relaxed max-w-[46ch]"
               style={{ color: "#494949" }}>
               Since 1959, Scope has been the bridge between the world's finest ingredient
               manufacturers and India's most ambitious product makers. We don't just distribute —
@@ -652,7 +628,7 @@ const FeatureSection = () => {
             </motion.p>
             <motion.ul variants={fadeUp} className="mt-8 space-y-3">
               {PILLARS.map((p, i) => (
-                <li key={i} className="flex items-start gap-3 font-body text-[20px]" style={{ color: "#494949" }}>
+                <li key={i} className="flex items-start gap-3 font-body text-lg" style={{ color: "#494949" }}>
                   <span className="shrink-0 mt-1 w-5 h-5 rounded-full flex items-center justify-center"
                     style={{ background: "rgba(247,161,0,.15)", color: "#F7A100" }}>
                     <svg viewBox="0 0 10 10" className="w-3 h-3" fill="currentColor">
@@ -718,26 +694,25 @@ const RequestSampleSection = () => (
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
           <motion.div variants={fadeUp}><Tag>Try Before You Buy</Tag></motion.div>
           <motion.h2 variants={fadeUp}
-            className="mt-4 font-display font-bold leading-tight text-surface-dark"
-            style={{ fontSize: "clamp(2.4rem, 4vw, 3.6rem)" }}>
+            className="mt-4 font-display text-h1 font-bold leading-tight text-surface-dark">
             Request an Ingredient<br />
             <span className="text-primary">Sample</span>
           </motion.h2>
           <motion.p variants={fadeUp}
-            className="mt-5 font-body text-[21px] leading-relaxed max-w-[44ch]"
+            className="mt-5 font-body text-lg leading-relaxed max-w-[44ch]"
             style={{ color: "#494949" }}>
             Evaluate any ingredient from our portfolio before committing to a bulk order.
             We ship samples to R&amp;D labs across India — typically within 48 hours.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4 items-center">
             <Link to="/request-sample"
-              className="group inline-flex items-center gap-2.5 rounded-full font-display text-[19px] font-bold text-[#000000] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(247,161,0,.42)] active:scale-[0.97]"
+              className="group inline-flex items-center gap-2.5 rounded-full font-display text-base font-bold text-[#000000] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(247,161,0,.42)] active:scale-[0.97]"
               style={{ padding: "14px 28px", background: "linear-gradient(135deg,#F7A100,#F9BD4A 55%,#F7A100)", backgroundSize: "200% 200%" }}>
               Request a Sample
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link to="/products"
-              className="inline-flex items-center gap-1.5 font-body text-sm transition-colors"
+              className="inline-flex items-center gap-1.5 font-body text-xs transition-colors"
               style={{ color: "#494949" }}>
               Browse catalogue <ChevronRight className="h-4 w-4" />
             </Link>
@@ -748,7 +723,7 @@ const RequestSampleSection = () => (
             className="mt-10 flex flex-wrap gap-5 pt-8"
             style={{ borderTop: "1px solid rgba(247,161,0,.18)" }}>
             {["48-hr dispatch", "No minimum quantity", "Pharma-grade packaging", "Pan-India delivery"].map(t => (
-              <span key={t} className="inline-flex items-center gap-1.5 font-body text-[18px] font-medium"
+              <span key={t} className="inline-flex items-center gap-1.5 font-body text-base font-medium"
                 style={{ color: "#494949" }}>
                 <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: "#F7A100" }} />
                 {t}
@@ -774,14 +749,14 @@ const RequestSampleSection = () => (
                   style={{ background: "rgba(247,161,0,.12)", border: "1px solid rgba(247,161,0,.25)" }}>
                   <Icon className="h-5 w-5" style={{ color: "#F7A100" }} />
                 </div>
-                <span className="font-display text-[16px] font-black tracking-widest" style={{ color: "rgba(247,161,0,.45)" }}>
+                <span className="font-display text-sm font-black tracking-widest" style={{ color: "rgba(247,161,0,.45)" }}>
                   {step}
                 </span>
               </div>
               {/* Text */}
               <div>
-                <h3 className="font-display text-[21px] font-bold mb-1.5" style={{ color: "#000000" }}>{label}</h3>
-                <p className="font-body text-[19px] leading-relaxed" style={{ color: "#494949" }}>{desc}</p>
+                <h3 className="font-display text-lg font-bold mb-1.5" style={{ color: "#000000" }}>{label}</h3>
+                <p className="font-body text-base leading-relaxed" style={{ color: "#494949" }}>{desc}</p>
               </div>
             </motion.div>
           ))}
@@ -791,45 +766,14 @@ const RequestSampleSection = () => (
   </section>
 );
 
-const CTASection = () => (
-  <section className="relative overflow-hidden py-20 lg:py-44">
-    <div className="nh-grad absolute inset-0"
-      style={{ background: "linear-gradient(135deg,#F7A100 0%,#F9BD4A 50%,#F7A100 100%)", backgroundSize: "200% 200%" }} />
-    <div className="absolute inset-0 opacity-[0.05]"
-      style={{
-        backgroundImage: "linear-gradient(rgba(0,0,0,1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,1) 1px,transparent 1px)",
-        backgroundSize: "36px 36px",
-      }} />
-    <div className="absolute -top-24 -right-24 w-[400px] h-[400px] rounded-full pointer-events-none"
-      style={{ background: "radial-gradient(circle,rgba(252,253,248,.2) 0%,transparent 70%)", filter: "blur(60px)" }} />
-    <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
-        <motion.span variants={fadeUp}
-          className="inline-flex items-center gap-2 font-display text-[17px] font-bold uppercase tracking-[0.25em] mb-6"
-          style={{ color: "rgba(0,0,0,.55)" }}>
-          <span className="h-px w-6 inline-block bg-current" />Get Started Today
-        </motion.span>
-        <motion.h2 variants={fadeUp}
-          className="font-display font-bold leading-tight mb-5 text-surface-dark"
-          style={{ fontSize: "clamp(2.8rem, 5vw, 4.4rem)" }}>
-          Ready to Source<br />with Confidence?
-        </motion.h2>
-        <motion.p variants={fadeUp}
-          className="font-body text-base leading-relaxed max-w-[44ch] mx-auto mb-10"
-          style={{ color: "rgba(0,0,0,.6)" }}>
-          Connect with our technical sales team for product catalogues, samples,
-          and formulation guidance — we respond within 24 hours.
-        </motion.p>
-        <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4">
-          <Link to="/contact"
-            className="group flex items-center gap-2 px-9 py-4 rounded-full font-display text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(0,0,0,.25)] active:scale-[0.97]"
-            style={{ background: "#FCFDF8", color: "#F7A100" }}>
-            Contact Us <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
-      </motion.div>
-    </div>
-  </section>
+const HomeCTASection = () => (
+  <CTASection
+    tag="Get Started Today"
+    heading={<>Ready to Source<br />with Confidence?</>}
+    description="Connect with our technical sales team for product catalogues, samples, and formulation guidance — we respond within 24 hours."
+    buttonText="Contact Us"
+    buttonLink="/contact"
+  />
 );
 
 // ═══════════════════════════════════════════════════════════════
@@ -844,11 +788,10 @@ const NewHomePage = () => (
       <Ticker />
       <IndustriesSection />
       <PartnersSection />
-      <ExcipientSearch />
       <FeatureSection />
       <GallerySection />
       <RequestSampleSection />
-      <CTASection />
+      <HomeCTASection />
     </main>
   </>
 );

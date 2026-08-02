@@ -9,6 +9,7 @@ import { partners } from "@/data/partners";
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+import CTASection from "@/components/sections/CTASection";
 
 const industryLabel: Record<string, string> = {
   pharma: "Pharmaceutical",
@@ -292,7 +293,7 @@ const ProductDetail = () => {
                 className="sticky top-28 space-y-4"
               >
                 {/* Industry tag */}
-                <div className={`inline-flex items-center rounded-full border px-3 py-1 text-[15px] font-bold uppercase tracking-widest ${industryColors[product.industry]}`}>
+                <div className={`inline-flex items-center rounded-full border px-3 py-1 text-sm font-bold uppercase tracking-widest ${industryColors[product.industry]}`}>
                   {industryLabel[product.industry]}
                 </div>
 
@@ -357,6 +358,14 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      <CTASection
+        tag="Interested in This Product?"
+        heading={<>Request a Sample of<br />{displayTitle}</>}
+        description="Evaluate this ingredient in your own formulation. We ship samples to R&D labs across India — typically within 48 hours."
+        buttonText="Request a Sample"
+        buttonLink={`/request-sample?product=${encodeURIComponent(sampleParam)}`}
+      />
     </main>
   );
 };

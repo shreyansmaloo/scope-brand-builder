@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema, generateLocalBusinessSchema } from "@/components/seo/StructuredData";
 import IndiaMap from "@/components/sections/IndiaMap";
+import CTASection from "@/components/sections/CTASection";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -240,7 +241,7 @@ const Contact = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-display text-base font-semibold">{branch.city}</h3>
-                      <p className="font-body text-[14px] font-bold uppercase tracking-wider text-muted-foreground">{branch.state}</p>
+                      <p className="font-body text-sm font-bold uppercase tracking-wider text-muted-foreground">{branch.state}</p>
                     </div>
                     <MapPin className="h-4 w-4 text-primary" />
                   </div>
@@ -260,6 +261,14 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
+      <CTASection
+        tag="Try Before You Buy"
+        heading={<>Ready to Evaluate<br />an Ingredient?</>}
+        description="Request a free sample from our portfolio and see the quality for yourself — we dispatch to R&D labs across India within 48 hours."
+        buttonText="Request a Sample"
+        buttonLink="/request-sample"
+      />
     </main>
   );
 };

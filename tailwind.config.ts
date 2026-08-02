@@ -18,7 +18,7 @@ export default {
         body: ["'DM Sans'", "sans-serif"],
       },
       fontSize: {
-        // Base Tailwind scale, shifted up exactly +4px (0.25rem @ 16px root)
+        // Base Tailwind scale, shifted up exactly +2px (0.125rem @ 16px root)
         // across the board so the whole site reads larger while preserving
         // each step's relative line-height ratio (and therefore the existing
         // size hierarchy). This is the single place to adjust sitewide type
@@ -26,20 +26,20 @@ export default {
         // a visitor's browser/OS text-size accessibility setting. Each line
         // has its px-equivalent in a trailing comment (@ 16px root) so you
         // can edit by pixel without doing the math yourself.
-        xs: ["1rem", { lineHeight: "1.333" }], // 16px
-        sm: ["1.125rem", { lineHeight: "1.429" }], // 18px
-        base: ["1.25rem", { lineHeight: "1.5" }], // 20px
-        lg: ["1.375rem", { lineHeight: "1.556" }], // 22px
-        xl: ["1.5rem", { lineHeight: "1.4" }], // 24px
-        "2xl": ["1.75rem", { lineHeight: "1.333" }], // 28px
-        "3xl": ["2.125rem", { lineHeight: "1.2" }], // 34px
-        "4xl": ["2.5rem", { lineHeight: "1.111" }], // 40px
-        "5xl": ["3.25rem", { lineHeight: "1" }], // 52px
-        "6xl": ["4rem", { lineHeight: "1" }], // 64px
-        hero: ["clamp(2.75rem, 5vw, 4.75rem)", { lineHeight: "1.1" }], // 44px → 76px
-        h1: ["clamp(2.25rem, 4vw, 3.5rem)", { lineHeight: "1.1" }], // 36px → 56px
-        h2: ["clamp(1.75rem, 3vw, 2.5rem)", { lineHeight: "1.2" }], // 28px → 40px
-        h3: ["clamp(1.375rem, 2vw, 1.75rem)", { lineHeight: "1.3" }], // 22px → 28px
+        xs: ["0.875rem", { lineHeight: "1.333" }], // 14px
+        sm: ["1rem", { lineHeight: "1.429" }], // 16px
+        base: ["1.125rem", { lineHeight: "1.5" }], // 18px
+        lg: ["1.25rem", { lineHeight: "1.556" }], // 20px
+        xl: ["1.375rem", { lineHeight: "1.4" }], // 22px
+        "2xl": ["1.625rem", { lineHeight: "1.333" }], // 26px
+        "3xl": ["2rem", { lineHeight: "1.2" }], // 32px
+        "4xl": ["2.375rem", { lineHeight: "1.111" }], // 38px
+        "5xl": ["3.125rem", { lineHeight: "1" }], // 50px
+        "6xl": ["3.875rem", { lineHeight: "1" }], // 62px
+        hero: ["clamp(2.625rem, 5vw, 4.625rem)", { lineHeight: "1.1" }], // 42px → 74px
+        h1: ["clamp(2.125rem, 4vw, 3.375rem)", { lineHeight: "1.1" }], // 34px → 54px
+        h2: ["clamp(1.625rem, 3vw, 2.375rem)", { lineHeight: "1.2" }], // 26px → 38px
+        h3: ["clamp(1.25rem, 2vw, 1.625rem)", { lineHeight: "1.3" }], // 20px → 26px
       },
       colors: {
         border: "rgb(var(--border) / <alpha-value>)",

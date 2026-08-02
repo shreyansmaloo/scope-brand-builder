@@ -1,5 +1,6 @@
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+import CTASection from "@/components/sections/CTASection";
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -57,9 +58,9 @@ const LeaderCard = ({ member, i, imageOnRight }: { member: (typeof team)[number]
       transition={{ duration: 0.5, delay: i * 0.05 }}
       className="overflow-hidden rounded-3xl border border-border/40 bg-card p-5 shadow-sm sm:p-6"
     >
-      <div className={`flex flex-col gap-6 sm:items-start sm:gap-8 ${imageOnRight ? "sm:flex-row" : "sm:flex-row-reverse"}`}>
-        <div className="order-2 min-w-0 flex-1 sm:order-none">
-          <div className="flex items-center justify-center gap-3 sm:justify-start">
+      <div className={`flex flex-col gap-6 lg:items-start lg:gap-8 ${imageOnRight ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
+        <div className="order-2 min-w-0 flex-1 lg:order-none">
+          <div className="flex items-center justify-center gap-3 lg:justify-start">
             <h3 className="font-display text-xl font-bold sm:text-2xl">{member.name}</h3>
             <a
               href={member.linkedin}
@@ -69,12 +70,12 @@ const LeaderCard = ({ member, i, imageOnRight }: { member: (typeof team)[number]
               <Linkedin className="h-3.5 w-3.5" />
             </a>
           </div>
-          <p className="mt-1 text-center font-body text-xs font-bold uppercase tracking-widest text-primary sm:text-left">{member.title}</p>
+          <p className="mt-1 text-center font-body text-xs font-bold uppercase tracking-widest text-primary lg:text-left">{member.title}</p>
           <div className="mt-3 border-t border-border/60 pt-3">
             {member.bio.split("\n\n").map((para, pi) => (
               <p
                 key={pi}
-                className={`mt-2 font-body text-base leading-relaxed text-muted-foreground first:mt-0 sm:line-clamp-none ${expanded ? "" : "line-clamp-3"}`}
+                className={`mt-2 font-body text-base leading-relaxed text-muted-foreground first:mt-0 lg:line-clamp-none ${expanded ? "" : "line-clamp-3"}`}
               >
                 {para}
               </p>
@@ -83,13 +84,13 @@ const LeaderCard = ({ member, i, imageOnRight }: { member: (typeof team)[number]
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="mt-2 flex items-center gap-1 font-body text-sm font-semibold text-primary sm:hidden"
+            className="mt-2 flex items-center gap-1 font-body text-sm font-semibold text-primary lg:hidden"
           >
             {expanded ? "Read less" : "Read more"}
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-180" : ""}`} />
           </button>
         </div>
-        <div className="order-1 relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-2xl shadow-md sm:order-none sm:mx-0">
+        <div className="order-1 relative mx-auto aspect-[4/5] w-full max-w-[220px] shrink-0 overflow-hidden rounded-2xl shadow-md lg:order-none lg:mx-0">
           <img
             src={member.photo}
             alt={member.name}
@@ -162,7 +163,7 @@ const About = () => {
                   <span className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
                     {stat.value}
                   </span>
-                  <span className="mt-2 font-body text-[14px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                  <span className="mt-2 font-body text-sm sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -440,7 +441,13 @@ const About = () => {
         </div>
       </section>
 
-
+      <CTASection
+        tag="Get Started Today"
+        heading={<>Ready to Partner<br />with Us?</>}
+        description="Talk to our team about how Scope's 65+ years of sourcing expertise can support your next formulation."
+        buttonText="Contact Us"
+        buttonLink="/contact"
+      />
     </main>
   );
 };

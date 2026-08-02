@@ -6,6 +6,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ, ChevronRight } from "lucide-react";
 import { useProducts } from "@/context/ProductsContext";
 import { partners } from "@/data/partners";
+import CTASection from "@/components/sections/CTASection";
 
 type SortOption = "default" | "az" | "za";
 
@@ -191,9 +192,9 @@ const Products = () => {
   const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
     <div className="border-b border-border/60 py-4 first:pt-0">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-[17px] font-extrabold uppercase tracking-wider">{title}</h4>
+        <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
         {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[14px] font-bold text-primary-foreground">{count}</span>
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
         )}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -203,7 +204,7 @@ const Products = () => {
   const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-[19px] transition-colors ${active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
+      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
     >
       <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
         {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
@@ -320,7 +321,7 @@ const Products = () => {
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[14px] text-primary-foreground">{activeFilterCount}</span>
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-sm text-primary-foreground">{activeFilterCount}</span>
                 )}
               </button>
             </div>
@@ -395,7 +396,7 @@ const Products = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filtered.slice(0, visibleCount).map((product, i) => {
                     let titleText = product.name.trim();
                     if (product.grade && product.grade !== "-") {
@@ -451,16 +452,13 @@ const Products = () => {
         </div>
       </section>
 
-      {/* CTA Band */}
-      <section className="bg-primary py-12">
-        <div className="container-scope text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-primary-foreground">Looking for something specific?</h2>
-          <p className="mt-2 font-body text-primary-foreground/90">We source on demand from our global principal network.</p>
-          <Link to="/contact" className="mt-6 inline-flex rounded-full bg-card px-6 py-3 font-display text-sm font-semibold text-foreground hover:shadow-xl">
-            Contact Us →
-          </Link>
-        </div>
-      </section>
+      <CTASection
+        tag="Looking for Something Specific?"
+        heading={<>Can't Find What<br />You Need?</>}
+        description="We source on demand from our global principal network. Request a sample or talk to our technical team about your requirement."
+        buttonText="Request a Sample"
+        buttonLink="/request-sample"
+      />
     </main>
   );
 };
