@@ -6,40 +6,7 @@ import { ArrowRight, Globe, ArrowLeft, Hexagon, ChevronRight } from "lucide-reac
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
-import CTASection from "@/components/sections/CTASection";
-
-const formatProductName = (name: string): string => {
-  if (!name) return "";
-  const hasLowercase = /[a-z]/.test(name);
-  if (hasLowercase) {
-    return name.trim();
-  }
-  const minorWords = ["and", "or", "of", "with", "for", "in", "by", "to", "at", "on", "a", "an", "the"];
-  return name
-    .split(/\s+/)
-    .map((word, index) => {
-      if (!word) return "";
-      const slashParts = word.split('/');
-      const formattedSlash = slashParts.map(part => {
-        const hyphenParts = part.split('-');
-        const formattedHyphen = hyphenParts.map(subWord => {
-          if (!subWord) return "";
-          if (/^C\d+/i.test(subWord)) {
-            return "C" + subWord.slice(1).toUpperCase();
-          }
-          return subWord.charAt(0).toUpperCase() + subWord.slice(1).toLowerCase();
-        });
-        return formattedHyphen.join('-');
-      });
-      const resultWord = formattedSlash.join('/');
-      const lower = word.toLowerCase();
-      if (minorWords.includes(lower) && index !== 0) {
-        return lower;
-      }
-      return resultWord;
-    })
-    .join(' ');
-};
+import { formatChemicalName } from "@/lib/utils";
 
 const PrincipalDetail = () => {
   const { partners } = usePartners();
@@ -106,12 +73,12 @@ const PrincipalDetail = () => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="rounded-2xl border border-border bg-background p-8 shadow-sm flex items-center justify-center min-h-[200px]"
+                className="rounded-2xl border border-border bg-background p-6 shadow-sm flex items-center justify-center min-h-[260px]"
               >
-                <img 
+                <img
                   src={partner.logo ? (partner.logo.startsWith("data:") ? partner.logo : `/logos/${partner.logo}`) : `/logos/${partner.id}.png`}
                   alt={partner.name}
-                  className="w-full max-w-[200px] object-contain"
+                  className="w-full max-w-[320px] object-contain"
                   onError={(e) => {
                     const target = e.currentTarget;
                     target.style.display = "none";
@@ -145,11 +112,14 @@ const PrincipalDetail = () => {
           {partnerProducts.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {partnerProducts.map((product, i) => {
-                let titleText = product.name.trim();
+                const hasBrand = !!(product.brand && product.brand !== "-" && product.brand.trim());
+                const chemicalName = formatChemicalName(product.name.trim());
+                let titleText = hasBrand ? product.brand.trim() : chemicalName;
                 if (product.grade && product.grade !== "-") {
                   titleText = `${titleText} (${product.grade})`;
                 }
                 titleText = titleText.replace(/\s+/g, " ").trim().toUpperCase();
+                const showInci = hasBrand && chemicalName.toLowerCase() !== product.brand.trim().toLowerCase();
 
                 return (
                   <motion.div
@@ -165,9 +135,16 @@ const PrincipalDetail = () => {
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <span className="font-body text-xs text-heading/25 shrink-0 w-6 text-right tabular-nums">{i + 1}</span>
-                        <h3 className="font-display text-sm font-bold text-heading uppercase tracking-tight leading-snug truncate">
-                          {titleText}
-                        </h3>
+                        <div className="min-w-0">
+                          <h3 className="font-display text-sm font-bold text-heading uppercase tracking-tight leading-snug truncate">
+                            {titleText}
+                          </h3>
+                          {showInci && (
+                            <p className="font-body text-xs text-heading/50 leading-snug truncate">
+                              {chemicalName}
+                            </p>
+                          )}
+                        </div>
                       </div>
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-background text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent">
                         <ChevronRight className="h-4 w-4" />

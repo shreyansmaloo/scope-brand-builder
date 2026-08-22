@@ -11,6 +11,33 @@ type SortOption = "default" | "az" | "za";
 
 const industries = ["pharma", "cosmetics", "food"] as const;
 
+const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
+  <div className="border-b border-border/60 py-4 first:pt-0">
+    <div className="mb-3 flex items-center justify-between">
+      <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
+      {count !== undefined && count > 0 && (
+        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
+      )}
+    </div>
+    <div className="flex flex-col gap-0.5">{children}</div>
+  </div>
+);
+
+const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${
+      active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
+    }`}
+  >
+    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
+      {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
+    </span>
+    <span className="capitalize truncate">{label}</span>
+  </button>
+);
+
 const Principals = () => {
   const { partners } = usePartners();
   const [search, setSearch] = useState("");
@@ -59,32 +86,6 @@ const Principals = () => {
     setSelectedCountry(null);
     setSort("default");
   };
-
-  const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
-    <div className="border-b border-border/60 py-4 first:pt-0">
-      <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
-        {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
-        )}
-      </div>
-      <div className="flex flex-col gap-0.5">{children}</div>
-    </div>
-  );
-
-  const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${
-        active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"
-      }`}
-    >
-      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
-        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
-      </span>
-      <span className="capitalize truncate">{label}</span>
-    </button>
-  );
 
   const filtersContent = (
     <div className="flex flex-col">

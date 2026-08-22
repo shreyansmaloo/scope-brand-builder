@@ -117,12 +117,12 @@ const Navbar = () => {
           </div>
 
           {/* Center: Desktop nav */}
-          <div className="hidden shrink-0 items-center justify-center gap-2 lg:flex">
+          <div className="hidden shrink-0 items-center justify-center gap-1 lg:flex xl:gap-2">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.href}
-                className={`flex items-center gap-1 rounded-lg px-4 py-2 font-display text-sm font-semibold uppercase tracking-widest transition-colors ${
+                className={`flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 font-display text-sm font-semibold uppercase tracking-widest transition-colors xl:px-4 ${
                   location.pathname === link.href
                     ? "text-primary"
                     : transparent
@@ -136,10 +136,22 @@ const Navbar = () => {
           </div>
 
           {/* Right: Actions */}
-          <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
-            <form 
-              onSubmit={handleSearch} 
-              className="relative flex items-center w-full max-w-[240px] xl:max-w-[300px]"
+          <div className="hidden flex-1 items-center justify-end gap-3 lg:flex xl:gap-4">
+            {/* Below xl there isn't room for a full inline search field alongside 6 nav links —
+                show a compact trigger instead so nothing gets pushed off/behind other elements. */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search"
+              className={`flex shrink-0 items-center justify-center rounded-full p-2.5 transition-colors xl:hidden ${
+                transparent ? "text-white/90 hover:bg-white/10" : "text-foreground/70 hover:bg-muted"
+              }`}
+            >
+              <Search className="h-5 w-5" />
+            </button>
+            <form
+              onSubmit={handleSearch}
+              className="relative hidden items-center w-full max-w-[260px] xl:flex 2xl:max-w-[300px]"
             >
               <div className="relative w-full">
                 <Search className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${transparent ? "text-white/60" : "text-foreground/40"}`} />
@@ -158,7 +170,7 @@ const Navbar = () => {
             </form>
             <Link
               to="/request-sample"
-              className="shrink-0 rounded-full bg-primary px-5 py-2.5 font-display text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-light hover:shadow-md"
+              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-4 py-2 font-display text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-light hover:shadow-md xl:px-5 xl:py-2.5"
             >
               Request Sample
             </Link>

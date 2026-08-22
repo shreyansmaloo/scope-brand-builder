@@ -10,6 +10,7 @@ import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 import CTASection from "@/components/sections/CTASection";
+import { formatChemicalName } from "@/lib/utils";
 
 const industryLabel: Record<string, string> = {
   pharma: "Pharmaceutical",
@@ -21,23 +22,6 @@ const industryColors: Record<string, string> = {
   pharma: "bg-primary/10 text-primary border-primary/20",
   cosmetics: "bg-primary/5 text-primary/70 border-primary/15",
   food: "bg-primary text-primary-foreground border-primary",
-};
-
-const formatName = (name: string): string => {
-  if (!name) return "";
-  if (/[a-z]/.test(name)) return name.trim();
-  const minorWords = ["and", "or", "of", "with", "for", "in", "by", "to", "at", "on", "a", "an", "the"];
-  return name.split(/\s+/).map((word, idx) => {
-    if (!word) return "";
-    const parts = word.split('/').map(p =>
-      p.split('-').map(sub => {
-        if (!sub) return "";
-        if (/^C\d+/i.test(sub)) return "C" + sub.slice(1).toUpperCase();
-        return sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase();
-      }).join('-')
-    ).join('/');
-    return minorWords.includes(word.toLowerCase()) && idx !== 0 ? word.toLowerCase() : parts;
-  }).join(' ');
 };
 
 const parsePoints = (text: string): string[] | null => {
@@ -111,10 +95,10 @@ const ProductDetail = () => {
 
   const displayTitle = (product.brand && product.brand !== "-" && product.brand.trim())
     ? product.brand.replace(/®/g, "®").replace(/™/g, "™").trim()
-    : formatName(product.name);
+    : formatChemicalName(product.name);
 
   const genericName = (product.brand && product.brand !== "-" && product.brand.trim().toLowerCase() !== product.name.trim().toLowerCase())
-    ? formatName(product.name)
+    ? formatChemicalName(product.name)
     : "";
 
   const sampleParam = product.brand && product.brand !== "-"
@@ -254,7 +238,7 @@ const ProductDetail = () => {
                     {relatedProducts.map((rp) => {
                       const rtitle = (rp.brand && rp.brand !== "-" && rp.brand.trim())
                         ? rp.brand.replace(/®/g, "®").replace(/™/g, "™").trim()
-                        : formatName(rp.name);
+                        : formatChemicalName(rp.name);
                       return (
                         <Link
                           key={rp.id}
@@ -362,7 +346,7 @@ const ProductDetail = () => {
       <CTASection
         tag="Interested in This Product?"
         heading={<>Request a Sample of<br />{displayTitle}</>}
-        description="Evaluate this ingredient in your own formulation. We ship samples to R&D labs across India — typically within 48 hours."
+        description="Evaluate this ingredient in your own formulation. We ship samples to R&D labs across India — typically within 24 hours."
         buttonText="Request a Sample"
         buttonLink={`/request-sample?product=${encodeURIComponent(sampleParam)}`}
       />

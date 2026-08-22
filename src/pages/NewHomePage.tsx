@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight, FlaskConical, Sparkles, Leaf, ClipboardList, Package, Microscope } from "lucide-react";
 import { usePartners } from "@/context/PartnersContext";
+import { PRODUCT_CATALOGUE_PDF_URL } from "@/lib/siteConfig";
 import CTASection from "@/components/sections/CTASection";
 import heroVideo from "@/assets/Hero Section_Homepage.mp4";
 import industryPharma from "@/assets/industry-pharma.jpg";
@@ -12,7 +13,6 @@ import appDairyAlternatives from "@/assets/applications/dairy-alternatives.jpg";
 import appBakeryConfectionery from "@/assets/applications/bakery-confectionery.jpg";
 import appBeverages from "@/assets/applications/beverages.jpg";
 import appSnacksCereals from "@/assets/applications/snacks-cereals.jpg";
-import appNutraTablets from "@/assets/applications/nutra-tablets.jpg";
 import appNutraCapsules from "@/assets/applications/nutra-capsules.jpg";
 import appGummies from "@/assets/applications/gummies.jpg";
 import appProteinSportsNutrition from "@/assets/applications/protein-sports-nutrition.jpg";
@@ -152,7 +152,7 @@ const GlowCursor = () => {
 // HERO
 // ═══════════════════════════════════════════════════════════════
 const HEADLINE = [
-  { text: "India's Premier", color: "#000000" },
+  { text: "India's Trusted", color: "#000000" },
   { text: "Ingredient", color: "#000000" },
   { text: "Partner.", color: "#F7A100" },
 ];
@@ -239,7 +239,7 @@ const Hero = () => {
               className="font-body text-xl leading-relaxed mt-5"
               style={{ color: "rgba(255,255,255,0.9)", maxWidth: "46ch", textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}>
               From the excipient in every tablet to the active behind every skincare glow
-              and the fibre in your morning supplement — Scope has been the silent partner
+              and the fibre in your morning supplement — Scope has been the trusted partner
               in India's finest formulations for over 65 years.
             </motion.p>
 
@@ -298,19 +298,19 @@ const INDUSTRIES = [
     id: "pharma", Icon: FlaskConical, label: "Pharmaceutical",
     headline: "Powering India's Medicines",
     desc: "The science that makes every tablet dissolve at exactly the right moment, every capsule hold its potency, every syrup pour perfectly smooth — that starts with us.",
-    href: "/products?industry=pharma", img: industryPharma, accent: "#F7A100",
+    href: "/products?industry=pharma", img: industryPharma, accent: "#F7A100", objectPosition: "center 80%",
   },
   {
     id: "cosmetics", Icon: Sparkles, label: "Personal Care",
     headline: "Behind Every Glow",
     desc: "The radiant skin, the luxurious lather, the colour that stays — behind every beauty moment is a world-class active ingredient. We bring those ingredients to India.",
-    href: "/products?industry=cosmetics", img: industryCosmetics, accent: "#F9BD4A",
+    href: "/products?industry=cosmetics", img: industryCosmetics, accent: "#F9BD4A", objectPosition: "center",
   },
   {
     id: "food", Icon: Leaf, label: "Food & Nutraceuticals",
     headline: "Nourishing Every Body",
     desc: "From the prebiotic fibre in your morning smoothie to the plant protein in your health bar — functional food ingredients that make wellness delicious.",
-    href: "/products?industry=food", img: industryFood, accent: "#BA821A",
+    href: "/products?industry=food", img: industryFood, accent: "#BA821A", objectPosition: "center 15%",
   },
 ];
 
@@ -330,7 +330,8 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
           className="relative overflow-hidden rounded-3xl cursor-pointer"
           style={{ height: "clamp(324px, 52svh, 584px)", boxShadow: "0 24px 80px rgba(0,0,0,.14)" }}>
           <img src={ind.img} alt={ind.label}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            style={{ objectPosition: ind.objectPosition }} />
           {/* Gradient only at the bottom for label readability */}
           <div className="absolute inset-0"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 35%, transparent 60%)" }} />
@@ -471,7 +472,7 @@ const PartnersSection = () => {
 // ═══════════════════════════════════════════════════════════════
 const GALLERY_ROW1 = [
   { src: appDairyAlternatives, caption: "Dairy & Dairy Alternatives" },
-  { src: appNutraTablets, caption: "Nutraceutical Tablets" },
+  { src: industryCosmetics, caption: "Skincare & Personal Care" },
   { src: appPharmaTablets, caption: "Pharma Tablets" },
   { src: appBakeryConfectionery, caption: "Bakery & Confectionery" },
   { src: appNutraCapsules, caption: "Softgel Capsules" },
@@ -483,7 +484,7 @@ const GALLERY_ROW2 = [
   { src: appPharmaCapsules, caption: "Pharma Capsules" },
   { src: appSnacksCereals, caption: "Snacks & Cereals" },
   { src: appProteinSportsNutrition, caption: "Protein & Sports Nutrition" },
-  { src: appTopicalFormulations, caption: "Topical Formulations" },
+  { src: appTopicalFormulations, caption: "Topical Skincare" },
 ];
 
 const GalleryCard = ({ src, caption }: { src: string; caption: string }) => (
@@ -706,7 +707,7 @@ const RequestSampleSection = () => (
             className="mt-5 font-body text-lg leading-relaxed max-w-[44ch]"
             style={{ color: "#494949" }}>
             Evaluate any ingredient from our portfolio before committing to a bulk order.
-            We ship samples to R&amp;D labs across India — typically within 48 hours.
+            We ship samples to R&amp;D labs across India — typically within 24 hours.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4 items-center">
             <Link to="/request-sample"
@@ -715,24 +716,11 @@ const RequestSampleSection = () => (
               Request a Sample
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link to="/products"
+            <a href={PRODUCT_CATALOGUE_PDF_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-body text-xs transition-colors"
               style={{ color: "#494949" }}>
               Browse catalogue <ChevronRight className="h-4 w-4" />
-            </Link>
-          </motion.div>
-
-          {/* Trust signals */}
-          <motion.div variants={fadeUp}
-            className="mt-10 flex flex-wrap gap-5 pt-8"
-            style={{ borderTop: "1px solid rgba(247,161,0,.18)" }}>
-            {["48-hr dispatch", "No minimum quantity", "Pharma-grade packaging", "Pan-India delivery"].map(t => (
-              <span key={t} className="inline-flex items-center gap-1.5 font-body text-base font-medium"
-                style={{ color: "#494949" }}>
-                <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: "#F7A100" }} />
-                {t}
-              </span>
-            ))}
+            </a>
           </motion.div>
         </motion.div>
 

@@ -7,6 +7,7 @@ import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ, Chev
 import { useProducts } from "@/context/ProductsContext";
 import { partners } from "@/data/partners";
 import CTASection from "@/components/sections/CTASection";
+import { formatChemicalName } from "@/lib/utils";
 
 type SortOption = "default" | "az" | "za";
 
@@ -28,6 +29,31 @@ const industryCardStyles: Record<string, { hoverBorder: string; hoverShadow: str
   },
 };
 
+const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
+  <div className="border-b border-border/60 py-4 first:pt-0">
+    <div className="mb-3 flex items-center justify-between">
+      <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
+      {count !== undefined && count > 0 && (
+        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
+      )}
+    </div>
+    <div className="flex flex-col gap-0.5">{children}</div>
+  </div>
+);
+
+const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
+  >
+    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
+      {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
+    </span>
+    <span className="capitalize truncate">{label}</span>
+  </button>
+);
+
 const formatPrincipalName = (name: string): string =>
   name.trim().split(/\s+/).map(word => {
     const core = word.replace(/[^a-zA-Z0-9]/g, "");
@@ -35,39 +61,6 @@ const formatPrincipalName = (name: string): string =>
     if (core.length <= 4 && core === core.toUpperCase() && /^[A-Z]+$/.test(core)) return word;
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }).join(" ");
-
-const formatProductName = (name: string): string => {
-  if (!name) return "";
-  const hasLowercase = /[a-z]/.test(name);
-  if (hasLowercase) {
-    return name.trim();
-  }
-  const minorWords = ["and", "or", "of", "with", "for", "in", "by", "to", "at", "on", "a", "an", "the"];
-  return name
-    .split(/\s+/)
-    .map((word, index) => {
-      if (!word) return "";
-      const slashParts = word.split('/');
-      const formattedSlash = slashParts.map(part => {
-        const hyphenParts = part.split('-');
-        const formattedHyphen = hyphenParts.map(subWord => {
-          if (!subWord) return "";
-          if (/^C\d+/i.test(subWord)) {
-            return "C" + subWord.slice(1).toUpperCase();
-          }
-          return subWord.charAt(0).toUpperCase() + subWord.slice(1).toLowerCase();
-        });
-        return formattedHyphen.join('-');
-      });
-      const resultWord = formattedSlash.join('/');
-      const lower = word.toLowerCase();
-      if (minorWords.includes(lower) && index !== 0) {
-        return lower;
-      }
-      return resultWord;
-    })
-    .join(' ');
-};
 
 const Products = () => {
   const { products } = useProducts();
@@ -159,7 +152,6 @@ const Products = () => {
       const matchesSearch =
         !q ||
         p.name.toLowerCase().includes(q) ||
-        (p.inci && p.inci.toLowerCase().includes(q)) ||
         (p.brand && p.brand.toLowerCase().includes(q)) ||
         (p.grade && p.grade.toLowerCase().includes(q)) ||
         p.principal.toLowerCase().includes(q) ||
@@ -188,30 +180,6 @@ const Products = () => {
     setSelectedPrincipal(null);
     setSort("default");
   };
-
-  const FilterGroup = ({ title, count, children }: { title: string; count?: number; children: React.ReactNode }) => (
-    <div className="border-b border-border/60 py-4 first:pt-0">
-      <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-display text-base font-extrabold uppercase tracking-wider">{title}</h4>
-        {count !== undefined && count > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-sm font-bold text-primary-foreground">{count}</span>
-        )}
-      </div>
-      <div className="flex flex-col gap-0.5">{children}</div>
-    </div>
-  );
-
-  const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-md px-2 py-2 text-left font-body text-lg transition-colors ${active ? "bg-primary/10 text-primary font-medium" : "text-foreground/75 hover:bg-muted hover:text-foreground font-normal"}`}
-    >
-      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border transition-colors ${active ? "border-primary bg-primary" : "border-border bg-background"}`}>
-        {active && <span className="block h-2 w-2 rounded-[1.5px] bg-background" />}
-      </span>
-      <span className="capitalize truncate">{label}</span>
-    </button>
-  );
 
   const filtersContent = (
     <div className="flex flex-col">
@@ -398,11 +366,14 @@ const Products = () => {
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filtered.slice(0, visibleCount).map((product, i) => {
-                    let titleText = product.name.trim();
+                    const hasBrand = !!(product.brand && product.brand !== "-" && product.brand.trim());
+                    const chemicalName = formatChemicalName(product.name.trim());
+                    let titleText = hasBrand ? product.brand.trim() : chemicalName;
                     if (product.grade && product.grade !== "-") {
                       titleText = `${titleText} (${product.grade})`;
                     }
                     titleText = titleText.replace(/\s+/g, " ").trim().toUpperCase();
+                    const showInci = hasBrand && chemicalName.toLowerCase() !== product.brand.trim().toLowerCase();
 
                     return (
                       <motion.div
@@ -421,9 +392,16 @@ const Products = () => {
                             <span className="font-body text-xs text-heading/25 shrink-0 w-6 text-right tabular-nums">
                               {i + 1}
                             </span>
-                            <h3 className="font-display text-sm sm:text-base font-bold text-heading uppercase tracking-tight leading-snug truncate">
-                              {titleText}
-                            </h3>
+                            <div className="min-w-0">
+                              <h3 className="font-display text-sm sm:text-base font-bold text-heading uppercase tracking-tight leading-snug truncate">
+                                {titleText}
+                              </h3>
+                              {showInci && (
+                                <p className="font-body text-xs text-heading/50 leading-snug truncate">
+                                  {chemicalName}
+                                </p>
+                              )}
+                            </div>
                           </div>
                           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-background text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-background group-hover:border-transparent">
                             <ChevronRight className="h-4 w-4" />
