@@ -6,6 +6,7 @@ import { ArrowRight, Globe, ArrowLeft, Hexagon, ChevronRight } from "lucide-reac
 import NotFound from "./NotFound";
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
+import CTASection from "@/components/sections/CTASection";
 import { formatChemicalName } from "@/lib/utils";
 
 const PrincipalDetail = () => {

@@ -254,14 +254,16 @@ const About = () => {
 
       {/* Scrolljacked Zigzag Timeline */}
       <section ref={scrollRef} className="relative h-[200vh] sm:h-[300vh] bg-secondary">
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-gradient-to-b from-secondary to-background">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col bg-gradient-to-b from-secondary to-background">
           {/* Decorative ambient blobs */}
           <div className="absolute left-1/4 top-0 -z-10 h-64 w-64 -translate-y-1/2 rounded-full bg-primary/10 blur-[100px]" />
           <div className="absolute right-1/4 bottom-0 -z-10 h-64 w-64 translate-y-1/2 rounded-full bg-primary/10 blur-[100px]" />
 
-          {/* Fixed Header Content */}
-          <div className="absolute top-20 left-0 w-full px-5 sm:px-8 lg:px-12 xl:px-16 pointer-events-none z-20">
-            <div className="max-w-2xl pointer-events-auto">
+          {/* Header Content — normal flow so it always reserves its own space;
+              previously an absolute overlay, which let the centered track
+              below drift up into it on shorter/zoomed-in viewports. */}
+          <div className="relative z-20 shrink-0 pt-20 px-5 sm:px-8 lg:px-12 xl:px-16">
+            <div className="max-w-2xl">
               <span className="section-tag bg-background shadow-sm">Our History</span>
               <h2 className="mt-6 font-display text-h1 font-bold tracking-tight">
                 A Journey of <span className="text-primary">Excellence</span>
@@ -272,8 +274,8 @@ const About = () => {
             </div>
           </div>
 
-          {/* The Scrollable Track */}
-          <div className="relative mt-48 sm:mt-32 h-[400px] sm:h-[600px] w-full flex items-center">
+          {/* The Scrollable Track — centers within the space left after the header */}
+          <div className="relative mt-6 sm:mt-8 min-h-[400px] sm:min-h-[600px] w-full flex-1 flex items-center">
             {/* Horizontal Scrolling Items */}
             <motion.div
               className="relative flex gap-6 sm:gap-12 px-[5vw] sm:px-[10vw] pt-[80px] pb-[80px] sm:pt-[150px] sm:pb-[150px] w-max"

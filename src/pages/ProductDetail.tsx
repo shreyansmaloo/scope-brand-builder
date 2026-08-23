@@ -174,9 +174,6 @@ const ProductDetail = () => {
                 {product.grade && (
                   <DetailRow icon={Package} label="Grade" value={product.grade} />
                 )}
-                {product.inci && (
-                  <DetailRow icon={FlaskConical} label="INCI Name" value={product.inci} />
-                )}
                 {product.manufacturer && product.manufacturer !== "-" && (
                   <DetailRow icon={Factory} label="Manufacturer" value={product.manufacturer} />
                 )}
