@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,8 +23,10 @@ import NotFound from "./pages/NotFound";
 import PrincipalDetail from "./pages/PrincipalDetail";
 import Careers from "./pages/Careers";
 import ProductDetail from "./pages/ProductDetail";
-import NewHomePage from "./pages/NewHomePage";
-import Admin from "./pages/Admin";
+import Home from "./pages/Home";
+
+// Lazy-loaded so the Admin panel's code never ships in the bundle public visitors download.
+const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient();
 
@@ -50,12 +53,12 @@ const App = () => (
                 <BrowserRouter>
                   <ScrollToTop />
                   <Routes>
-                    {/* Admin — standalone, no navbar/footer */}
-                    <Route path="/admin" element={<Admin />} />
+                    {/* Admin — standalone, no navbar/footer, lazy-loaded */}
+                    <Route path="/admin" element={<Suspense fallback={null}><Admin /></Suspense>} />
 
                     {/* Public site — all wrapped with Navbar + Footer */}
                     <Route element={<PublicLayout />}>
-                      <Route path="/" element={<NewHomePage />} />
+                      <Route path="/" element={<Home />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/pharma" element={<Navigate to="/products?industry=pharma" replace />} />
                       <Route path="/cosmetics" element={<Navigate to="/products?industry=cosmetics" replace />} />

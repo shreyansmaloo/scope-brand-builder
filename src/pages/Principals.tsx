@@ -1,10 +1,11 @@
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import { usePartners } from "@/context/PartnersContext";
+import type { Partner } from "@/data/partners";
 import CTASection from "@/components/sections/CTASection";
 
 type SortOption = "default" | "az" | "za";
@@ -47,12 +48,21 @@ const Principals = () => {
   const [sort, setSort] = useState<SortOption>("default");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchSticky, setSearchSticky] = useState(false);
+  const isFirstFilterRun = useRef(true);
 
   useEffect(() => {
     const onScroll = () => setSearchSticky(window.scrollY > 240);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (isFirstFilterRun.current) {
+      isFirstFilterRun.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [search, selectedIndustry, selectedCountry, sort]);
 
   const countries = useMemo(() => [...new Set(partners.map((p) => p.country))].filter(Boolean).sort(), [partners]);
 
@@ -68,7 +78,7 @@ const Principals = () => {
         p.specialty.toLowerCase().includes(q) ||
         p.country.toLowerCase().includes(q) ||
         (p.about && p.about.toLowerCase().includes(q));
-      const matchesIndustry = !selectedIndustry || p.verticals.includes(selectedIndustry as any);
+      const matchesIndustry = !selectedIndustry || p.verticals.includes(selectedIndustry as Partner["verticals"][number]);
       const matchesCountry = !selectedCountry || p.country === selectedCountry;
       return matchesSearch && matchesIndustry && matchesCountry;
     });

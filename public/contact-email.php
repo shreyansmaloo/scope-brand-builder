@@ -17,7 +17,7 @@ if (!$data) {
 }
 
 // ── Set recipient email here ──────────────────────────────────────────────────
-$to = 'contact@scope-india.com';
+$to = 'sales@scope-india.com';
 // ─────────────────────────────────────────────────────────────────────────────
 
 $name     = htmlspecialchars($data['name']     ?? '');

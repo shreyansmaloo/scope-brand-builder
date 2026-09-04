@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { jobOpenings as defaultOpenings, type JobOpening } from "@/data/careers";
-
-const STORAGE_KEY = "scope_careers_v1";
+import { fetchServerData, saveServerData, resetServerData } from "@/lib/serverStore";
 
 interface CareersCtx {
   openings: JobOpening[];
@@ -17,21 +17,24 @@ const CareersContext = createContext<CareersCtx>(null!);
 export const useCareers = () => useContext(CareersContext);
 
 export const CareersProvider = ({ children }: { children: React.ReactNode }) => {
-  const [openings, setOpenings] = useState<JobOpening[]>(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : defaultOpenings;
-    } catch {
-      return defaultOpenings;
-    }
-  });
+  const [openings, setOpenings] = useState<JobOpening[]>(defaultOpenings);
+  const [isCustomized, setIsCustomized] = useState(false);
 
-  const [isCustomized, setIsCustomized] = useState(() => !!localStorage.getItem(STORAGE_KEY));
+  useEffect(() => {
+    fetchServerData<JobOpening[]>("careers").then(data => {
+      if (data && data.length) {
+        setOpenings(data);
+        setIsCustomized(true);
+      }
+    });
+  }, []);
 
   const persist = (next: JobOpening[]) => {
     setOpenings(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     setIsCustomized(true);
+    saveServerData("careers", next).then(ok => {
+      if (!ok) toast.error("Failed to save — changes may not persist.");
+    });
   };
 
   const addOpening = (o: Omit<JobOpening, "id">) => {
@@ -46,9 +49,11 @@ export const CareersProvider = ({ children }: { children: React.ReactNode }) => 
     persist(openings.filter(x => x.id !== id));
 
   const resetToDefault = () => {
-    localStorage.removeItem(STORAGE_KEY);
     setOpenings(defaultOpenings);
     setIsCustomized(false);
+    resetServerData("careers").then(ok => {
+      if (!ok) toast.error("Failed to reset — please try again.");
+    });
   };
 
   return (

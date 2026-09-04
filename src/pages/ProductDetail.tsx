@@ -30,10 +30,10 @@ const parsePoints = (text: string): string[] | null => {
   // Newline-separated bullets/numbers
   const rawLines = text.split(/\n/).map(l => l.trim()).filter(Boolean);
   if (rawLines.length > 1) {
-    const hasBullet = rawLines.some(l => /^[•\-\*\t]/.test(l));
-    const hasNumber = rawLines.some(l => /^\d+[\.\)]/.test(l));
+    const hasBullet = rawLines.some(l => /^[•\-*\t]/.test(l));
+    const hasNumber = rawLines.some(l => /^\d+[.)]/.test(l));
     if (hasBullet || hasNumber) {
-      return rawLines.map(l => l.replace(/^[\s\t•\-\*]+/, '').replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+      return rawLines.map(l => l.replace(/^[\s\t•\-*]+/, '').replace(/^\d+[.)]\s*/, '').trim()).filter(Boolean);
     }
     // Plain newline-separated items (more than 1 line = treat as list)
     if (rawLines.length > 1) return rawLines;

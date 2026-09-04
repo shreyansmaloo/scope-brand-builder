@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle, ClipboardList, Package, Microscope, Plus, Trash2, ArrowRight, ArrowLeft } from "lucide-react";
-import { useForm, useFieldArray, useWatch } from "react-hook-form";
+import { useForm, useFieldArray, useWatch, type UseFormRegister, type Control } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProducts } from "@/context/ProductsContext";
@@ -56,8 +56,8 @@ const GradeField = ({
 }: {
   index: number;
   industry: string;
-  register: any;
-  control: any;
+  register: UseFormRegister<SampleForm>;
+  control: Control<SampleForm>;
 }) => {
   const { products } = useProducts();
   const productName = useWatch({ control, name: `items.${index}.product` });
@@ -125,7 +125,7 @@ const RequestSample = () => {
         .filter(p => p.industry === selectedIndustry)
         .map(p => p.name)
     )].sort();
-  }, [selectedIndustry]);
+  }, [products, selectedIndustry]);
 
   const onSubmit = async (data: SampleForm) => {
     const payload = {

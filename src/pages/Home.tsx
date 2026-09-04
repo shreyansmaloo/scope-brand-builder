@@ -1,3 +1,5 @@
+import SEO from "@/components/seo/SEO";
+import StructuredData, { generateOrganizationSchema } from "@/components/seo/StructuredData";
 import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -20,6 +22,10 @@ import appPharmaTablets from "@/assets/applications/pharma-tablets.jpg";
 import appPharmaCapsules from "@/assets/applications/pharma-capsules.jpg";
 import appInjectableFormulations from "@/assets/applications/injectable-formulations.jpg";
 import appTopicalFormulations from "@/assets/applications/topical-formulations.jpg";
+import appHairCare from "@/assets/applications/hair-care.jpg";
+import appOralCare from "@/assets/applications/oral-care.jpg";
+import appBabyCare from "@/assets/applications/baby-care.jpg";
+import appColorCosmetics from "@/assets/applications/color-cosmetics.jpg";
 
 // ─── Image helpers ────────────────────────────────────────────
 const u = (id: string, w = 900) =>
@@ -203,7 +209,7 @@ const Hero = () => {
           <div className="lg:max-w-[54%]">
 
             {/* Headline — line-wipe */}
-            <div className="mt-5 sm:mt-6">
+            <h1 className="mt-5 sm:mt-6">
               {HEADLINE.map((line, i) => (
                 <div key={i} style={{ overflow: "hidden" }}>
                   <motion.div
@@ -226,7 +232,7 @@ const Hero = () => {
                   </motion.div>
                 </div>
               ))}
-            </div>
+            </h1>
 
             {/* Amber divider */}
             <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
@@ -296,55 +302,82 @@ const Ticker = () => (
 const INDUSTRIES = [
   {
     id: "pharma", Icon: FlaskConical, label: "Pharmaceutical",
-    headline: "Powering India's Medicines",
     desc: "The science that makes every tablet dissolve at exactly the right moment, every capsule hold its potency, every syrup pour perfectly smooth — that starts with us.",
-    href: "/products?industry=pharma", img: industryPharma, accent: "#F7A100", objectPosition: "center 80%",
+    href: "/products?industry=pharma", img: industryPharma, objectPosition: "center 80%",
   },
   {
     id: "cosmetics", Icon: Sparkles, label: "Personal Care",
-    headline: "Behind Every Glow",
     desc: "The radiant skin, the luxurious lather, the colour that stays — behind every beauty moment is a world-class active ingredient. We bring those ingredients to India.",
-    href: "/products?industry=cosmetics", img: industryCosmetics, accent: "#F9BD4A", objectPosition: "center",
+    href: "/products?industry=cosmetics", img: industryCosmetics, objectPosition: "center",
   },
   {
     id: "food", Icon: Leaf, label: "Food & Nutraceuticals",
-    headline: "Nourishing Every Body",
     desc: "From the prebiotic fibre in your morning smoothie to the plant protein in your health bar — functional food ingredients that make wellness delicious.",
-    href: "/products?industry=food", img: industryFood, accent: "#BA821A", objectPosition: "center 15%",
+    href: "/products?industry=food", img: industryFood, objectPosition: "center 15%",
   },
 ];
 
 const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
   const tiltRef = useTilt(6);
+  const reversed = i % 2 === 1;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group"
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className={`group flex flex-col md:items-center gap-8 md:gap-16 ${reversed ? "md:flex-row-reverse" : "md:flex-row"}`}
       style={{ willChange: "transform" }}
     >
-      <Link to={ind.href}>
+      {/* Image */}
+      <Link to={ind.href} className="w-full md:w-1/2">
         <div ref={tiltRef}
           className="relative overflow-hidden rounded-3xl cursor-pointer"
-          style={{ height: "clamp(324px, 52svh, 584px)", boxShadow: "0 24px 80px rgba(0,0,0,.14)" }}>
+          style={{ height: "clamp(280px, 46svh, 480px)", boxShadow: "0 24px 80px rgba(0,0,0,.14)" }}>
           <img src={ind.img} alt={ind.label}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             style={{ objectPosition: ind.objectPosition }} />
-          {/* Gradient only at the bottom for label readability */}
           <div className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 35%, transparent 60%)" }} />
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.08) 40%, transparent 60%)" }} />
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            style={{ background: `radial-gradient(ellipse at center bottom, ${ind.accent}28 0%, transparent 60%)` }} />
-          {/* Industry name — bottom left */}
-          <div className="absolute bottom-6 left-7">
+            style={{ background: "radial-gradient(ellipse at center bottom, #F7A10028 0%, transparent 60%)" }} />
+          {/* Icon badge */}
+          <div className="absolute top-6 left-7 flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-md"
+            style={{ backgroundColor: "rgba(252,253,248,0.9)", boxShadow: "0 8px 24px rgba(0,0,0,.18)" }}>
+            <ind.Icon className="h-5 w-5 text-primary" />
+          </div>
+          <div className="absolute bottom-6 left-7 md:hidden">
             <span className="font-display text-xl font-bold tracking-wide" style={{ color: "#FCFDF8" }}>
               {ind.label}
             </span>
           </div>
         </div>
       </Link>
+
+      {/* Text */}
+      <div className="w-full md:w-1/2">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="font-display text-sm font-bold tracking-widest text-primary">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <span className="h-px w-10 bg-primary" />
+        </div>
+        <h3 className="font-display text-h2 md:text-h1 font-bold leading-tight text-surface-dark mb-4">
+          {ind.label}
+        </h3>
+        <p className="font-body text-lg leading-relaxed max-w-[46ch] mb-7" style={{ color: "#494949" }}>
+          {ind.desc}
+        </p>
+        <Link to={ind.href}
+          className="group/link inline-flex items-center justify-center gap-2 rounded-full font-display font-bold text-surface-dark border border-surface-dark/15 transition-all duration-300 hover:border-transparent hover:text-[#000000]"
+          style={{ padding: "12px 22px" }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#F7A1001F")}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "transparent")}>
+          Explore products
+          <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+        </Link>
+      </div>
     </motion.div>
   );
 };
@@ -364,20 +397,11 @@ const IndustriesSection = () => (
             <span className="text-primary">Infinite Possibilities</span>
           </motion.h2>
         </div>
-        <motion.p variants={fadeUp}
-          className="mt-4 lg:mt-0 font-body text-xl leading-relaxed max-w-[38ch]"
-          style={{ color: "#494949" }}>
-          Deep technical expertise across pharma, personal care, and food — with dedicated teams,
-          application labs, and principal access for each vertical.
-        </motion.p>
       </motion.div>
 
-      {/* Mobile: horizontal swipe; md+: 3-column grid */}
-      <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 md:grid md:grid-cols-3 md:overflow-visible md:snap-none md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="flex flex-col gap-16 md:gap-24">
         {INDUSTRIES.map((ind, i) => (
-          <div key={ind.id} className="flex-shrink-0 w-[80vw] max-w-sm md:w-auto md:max-w-none snap-start">
-            <IndustryCard ind={ind} i={i} />
-          </div>
+          <IndustryCard key={ind.id} ind={ind} i={i} />
         ))}
       </div>
     </div>
@@ -440,7 +464,7 @@ const PartnersSection = () => {
           <motion.div variants={fadeUp}><Tag>Our Global Family</Tag></motion.div>
           <motion.h2 variants={fadeUp}
             className="mt-4 font-display text-h1 font-bold text-surface-dark">
-            Backed by the World's Best
+            Backed by the World's <span className="text-primary">Best</span>
           </motion.h2>
           <motion.p variants={fadeUp}
             className="font-body text-xl max-w-[42ch] mx-auto mt-3"
@@ -474,15 +498,19 @@ const GALLERY_ROW1 = [
   { src: appDairyAlternatives, caption: "Dairy & Dairy Alternatives" },
   { src: industryCosmetics, caption: "Skincare & Personal Care" },
   { src: appPharmaTablets, caption: "Pharma Tablets" },
+  { src: appHairCare, caption: "Hair Care" },
   { src: appBakeryConfectionery, caption: "Bakery & Confectionery" },
   { src: appNutraCapsules, caption: "Softgel Capsules" },
+  { src: appBabyCare, caption: "Baby Care" },
   { src: appInjectableFormulations, caption: "Injectable Formulations" },
 ];
 const GALLERY_ROW2 = [
   { src: appBeverages, caption: "Functional Beverages" },
   { src: appGummies, caption: "Gummies" },
+  { src: appOralCare, caption: "Oral Care" },
   { src: appPharmaCapsules, caption: "Pharma Capsules" },
   { src: appSnacksCereals, caption: "Snacks & Cereals" },
+  { src: appColorCosmetics, caption: "Color Cosmetics" },
   { src: appProteinSportsNutrition, caption: "Protein & Sports Nutrition" },
   { src: appTopicalFormulations, caption: "Topical Skincare" },
 ];
@@ -771,8 +799,14 @@ const HomeCTASection = () => (
 // ═══════════════════════════════════════════════════════════════
 // PAGE ROOT
 // ═══════════════════════════════════════════════════════════════
-const NewHomePage = () => (
+const Home = () => (
   <>
+    <SEO
+      title="Scope India | Pharma, Personal Care & Food Ingredient Distributor"
+      description="Scope India has been the trusted excipient, active ingredient and raw material partner for pharmaceutical, personal care and food manufacturers for over 65 years, with global principal representation and pan-India distribution."
+      canonical="https://www.scope-india.com/"
+    />
+    <StructuredData data={generateOrganizationSchema()} />
     <GlowCursor />
     <style>{KEYFRAMES}</style>
     <main style={{ background: "#FCFDF8" }}>
@@ -788,4 +822,4 @@ const NewHomePage = () => (
   </>
 );
 
-export default NewHomePage;
+export default Home;

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Pencil, Trash2, X, Download, RotateCcw, Search,
   ChevronLeft, ChevronRight, Lock, LogOut, Package, Users, Newspaper, Briefcase,
+  type LucideIcon,
 } from "lucide-react";
 import { useProducts } from "@/context/ProductsContext";
 import { usePartners } from "@/context/PartnersContext";
@@ -13,8 +14,14 @@ import type { Partner } from "@/data/partners";
 import type { NewsArticle } from "@/data/news";
 import type { JobOpening } from "@/data/careers";
 
-const ADMIN_PASSWORD = "scope@2025";
+// SHA-256 hash of the admin password — the plaintext password is never present in the shipped code.
+const ADMIN_PASSWORD_HASH = "3797054a712620c7e65f6dedc44bafa22ee01daa960d9e656128757b3c88d25b";
 const PAGE_SIZE = 25;
+
+async function sha256Hex(text: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
 
 const INDUSTRIES = ["pharma", "cosmetics", "food"] as const;
 const INDUSTRY_LABELS: Record<string, string> = { pharma: "Pharma", cosmetics: "Personal Care", food: "Food" };
@@ -34,8 +41,13 @@ const labelCls = "font-body text-xs font-semibold uppercase tracking-wider text-
 // ─── Login ────────────────────────────────────────────────────
 const LoginGate = ({ onAuth }: { onAuth: () => void }) => {
   const [pw, setPw] = useState(""), [err, setErr] = useState(false);
-  const attempt = () => {
-    if (pw === ADMIN_PASSWORD) { sessionStorage.setItem("scope_admin_auth","1"); onAuth(); }
+  const attempt = async () => {
+    const hash = await sha256Hex(pw);
+    if (hash === ADMIN_PASSWORD_HASH) {
+      sessionStorage.setItem("scope_admin_auth","1");
+      sessionStorage.setItem("scope_admin_pw", pw);
+      onAuth();
+    }
     else { setErr(true); setPw(""); }
   };
   return (
@@ -732,7 +744,7 @@ const NewsTab = () => {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className={labelCls}>Category *</label>
-                <select value={draft.category} onChange={e => set({category:e.target.value as any})} className={inputCls}>
+                <select value={draft.category} onChange={e => set({category:e.target.value as NewsArticle["category"]})} className={inputCls}>
                   <option value="Event">Event</option>
                   <option value="News">News</option>
                   <option value="Press">Press</option>
@@ -918,7 +930,7 @@ const Admin = () => {
 
   if (!authed) return <LoginGate onAuth={() => setAuthed(true)} />;
 
-  const TABS: { id: Tab; label: string; icon: any; count: number }[] = [
+  const TABS: { id: Tab; label: string; icon: LucideIcon; count: number }[] = [
     { id:"products",   label:"Products",   icon:Package,  count:products.length },
     { id:"principals", label:"Principals", icon:Users,    count:partners.length },
     { id:"news",       label:"News & Events", icon:Newspaper, count:articles.length },
@@ -934,7 +946,7 @@ const Admin = () => {
             <h1 className="font-display text-xl font-bold">Scope Admin</h1>
             <p className="font-body text-xs text-muted-foreground mt-0.5">Product, Principal, News & Careers Management</p>
           </div>
-          <button onClick={() => { sessionStorage.removeItem("scope_admin_auth"); setAuthed(false); }}
+          <button onClick={() => { sessionStorage.removeItem("scope_admin_auth"); sessionStorage.removeItem("scope_admin_pw"); setAuthed(false); }}
             className="rounded-full p-2 text-muted-foreground hover:bg-muted transition-all" title="Sign out">
             <LogOut className="h-4 w-4" />
           </button>

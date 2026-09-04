@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Admin panel data — generated at runtime on the server, not part of source
+public/data/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

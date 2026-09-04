@@ -17,7 +17,7 @@ if (!$data) {
 }
 
 // ── Set recipient email here once you have it ─────────────────────────────────
-$to = 'shreyansmaloowebsite@gmail.com';
+$to = 'sales@scope-india.com';
 // ─────────────────────────────────────────────────────────────────────────────
 
 $firstName  = htmlspecialchars($data['firstName']  ?? '');

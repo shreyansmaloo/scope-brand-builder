@@ -1,11 +1,10 @@
 import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ, ChevronRight } from "lucide-react";
 import { useProducts } from "@/context/ProductsContext";
-import { partners } from "@/data/partners";
 import CTASection from "@/components/sections/CTASection";
 import { formatChemicalName } from "@/lib/utils";
 
@@ -66,23 +65,30 @@ const Products = () => {
   const { products } = useProducts();
   const [searchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
-  const initialPrincipal = searchParams.get("principal") || null;
+  const initialPrincipalParam = searchParams.get("principal");
+  const initialPrincipals = initialPrincipalParam ? initialPrincipalParam.split(",").filter(Boolean) : [];
   const initialIndustry = searchParams.get("industry") || null;
   const initialCategory = searchParams.get("category") || null;
 
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(initialIndustry);
-  const [selectedPrincipal, setSelectedPrincipal] = useState<string | null>(initialPrincipal);
+  const [selectedPrincipals, setSelectedPrincipals] = useState<string[]>(initialPrincipals);
   const [optionsSearch, setOptionsSearch] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sort, setSort] = useState<SortOption>("az");
   const [searchSticky, setSearchSticky] = useState(false);
   const [visibleCount, setVisibleCount] = useState(120);
+  const isFirstFilterRun = useRef(true);
 
   useEffect(() => {
     setVisibleCount(120);
-  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, sort]);
+    if (isFirstFilterRun.current) {
+      isFirstFilterRun.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [search, selectedCategory, selectedIndustry, selectedPrincipals, sort]);
 
   useEffect(() => {
     const onScroll = () => setSearchSticky(window.scrollY > 240);
@@ -91,16 +97,12 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    setSelectedPrincipal(searchParams.get("principal"));
+    const principalParam = searchParams.get("principal");
+    setSelectedPrincipals(principalParam ? principalParam.split(",").filter(Boolean) : []);
     setSearch(searchParams.get("search") || "");
     setSelectedIndustry(searchParams.get("industry"));
     setSelectedCategory(searchParams.get("category"));
   }, [searchParams]);
-
-  const selectedPartner = useMemo(() => {
-    if (!selectedPrincipal) return null;
-    return partners.find((p) => p.name === selectedPrincipal) || null;
-  }, [selectedPrincipal]);
 
   // Base pool filtered by search text only (no industry/category/principal filters)
   // Each filter group shows options available given the OTHER two filters + search
@@ -115,23 +117,23 @@ const Products = () => {
       p.category.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q)
     );
-  }, [search]);
+  }, [search, products]);
 
   const availableIndustries = useMemo(() => {
     const pool = baseSearch.filter((p) =>
       (!selectedCategory || p.category === selectedCategory) &&
-      (!selectedPrincipal || p.principal === selectedPrincipal)
+      (selectedPrincipals.length === 0 || selectedPrincipals.includes(p.principal))
     );
     return [...new Set(pool.map((p) => p.industry))].sort();
-  }, [baseSearch, selectedCategory, selectedPrincipal]);
+  }, [baseSearch, selectedCategory, selectedPrincipals]);
 
   const availableCategories = useMemo(() => {
     const pool = baseSearch.filter((p) =>
       (!selectedIndustry || p.industry === selectedIndustry) &&
-      (!selectedPrincipal || p.principal === selectedPrincipal)
+      (selectedPrincipals.length === 0 || selectedPrincipals.includes(p.principal))
     );
     return [...new Set(pool.map((p) => p.category))].sort();
-  }, [baseSearch, selectedIndustry, selectedPrincipal]);
+  }, [baseSearch, selectedIndustry, selectedPrincipals]);
 
   const availablePrincipals = useMemo(() => {
     const pool = baseSearch.filter((p) =>
@@ -159,7 +161,7 @@ const Products = () => {
         p.description.toLowerCase().includes(q);
       const matchesCategory = !selectedCategory || p.category === selectedCategory;
       const matchesIndustry = !selectedIndustry || p.industry === selectedIndustry;
-      const matchesPrincipal = !selectedPrincipal || p.principal === selectedPrincipal;
+      const matchesPrincipal = selectedPrincipals.length === 0 || selectedPrincipals.includes(p.principal);
       return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal;
     });
 
@@ -168,16 +170,16 @@ const Products = () => {
     if (sort === "za") result = [...result].sort((a, b) => displayName(b).localeCompare(displayName(a)));
 
     return result;
-  }, [search, selectedCategory, selectedIndustry, selectedPrincipal, sort]);
+  }, [products, search, selectedCategory, selectedIndustry, selectedPrincipals, sort]);
 
-  const activeFilterCount = [selectedCategory, selectedIndustry, selectedPrincipal].filter(Boolean).length;
+  const activeFilterCount = (selectedCategory ? 1 : 0) + (selectedIndustry ? 1 : 0) + selectedPrincipals.length;
 
   const clearFilters = () => {
     setSearch("");
     setOptionsSearch("");
     setSelectedCategory(null);
     setSelectedIndustry(null);
-    setSelectedPrincipal(null);
+    setSelectedPrincipals([]);
     setSort("default");
   };
 
@@ -211,9 +213,14 @@ const Products = () => {
         ))}
       </FilterGroup>
 
-      <FilterGroup title="Principal" count={selectedPrincipal ? 1 : 0}>
+      <FilterGroup title="Principal" count={selectedPrincipals.length}>
         {filteredPrincipals.map(p => (
-          <FilterCheckbox key={p} label={formatPrincipalName(p)} active={selectedPrincipal === p} onClick={() => setSelectedPrincipal(selectedPrincipal === p ? null : p)} />
+          <FilterCheckbox
+            key={p}
+            label={formatPrincipalName(p)}
+            active={selectedPrincipals.includes(p)}
+            onClick={() => setSelectedPrincipals(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p])}
+          />
         ))}
       </FilterGroup>
 
@@ -233,7 +240,7 @@ const Products = () => {
   return (
     <main>
       <SEO
-        title={`${selectedPartner ? selectedPartner.name + " " : ""}Products & Ingredients Catalog | Scope India`}
+        title="Products & Ingredients Catalog | Scope India"
         description="Search our catalog of pharmaceutical, personal care and food ingredients from top global principals. Filter by application, dosage form, principal or industry."
         canonical="https://www.scope-india.com/products"
       />
@@ -243,10 +250,10 @@ const Products = () => {
       <section className="bg-primary pt-32 pb-20">
         <div className="container-scope">
           <h1 className="mt-4 font-display text-h1 font-bold text-primary-foreground">
-            {selectedPartner ? `${selectedPartner.name} Products` : "Product Catalog"}
+            Product Catalog
           </h1>
           <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
-            {selectedPartner?.about ? selectedPartner.about : "Search by product name, compound name (INCI), brand, principal or application."}
+            Search by product name, compound name (INCI), brand, principal or application.
           </p>
         </div>
       </section>
@@ -346,7 +353,9 @@ const Products = () => {
                 <div className="mb-4 hidden flex-wrap gap-2 lg:flex">
                   {selectedIndustry && <Pill label={selectedIndustry} onClear={() => setSelectedIndustry(null)} />}
                   {selectedCategory && <Pill label={selectedCategory} onClear={() => setSelectedCategory(null)} />}
-                  {selectedPrincipal && <Pill label={formatPrincipalName(selectedPrincipal)} onClear={() => setSelectedPrincipal(null)} />}
+                  {selectedPrincipals.map(p => (
+                    <Pill key={p} label={formatPrincipalName(p)} onClear={() => setSelectedPrincipals(prev => prev.filter(x => x !== p))} />
+                  ))}
                 </div>
               )}
 

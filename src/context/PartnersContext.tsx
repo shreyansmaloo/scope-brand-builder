@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { partners as defaultPartners, type Partner } from "@/data/partners";
-
-const STORAGE_KEY = "scope_partners_v1";
+import { fetchServerData, saveServerData, resetServerData } from "@/lib/serverStore";
 
 interface PartnersCtx {
   partners: Partner[];
@@ -17,21 +17,24 @@ const PartnersContext = createContext<PartnersCtx>(null!);
 export const usePartners = () => useContext(PartnersContext);
 
 export const PartnersProvider = ({ children }: { children: React.ReactNode }) => {
-  const [partners, setPartners] = useState<Partner[]>(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : defaultPartners;
-    } catch {
-      return defaultPartners;
-    }
-  });
+  const [partners, setPartners] = useState<Partner[]>(defaultPartners);
+  const [isCustomized, setIsCustomized] = useState(false);
 
-  const [isCustomized, setIsCustomized] = useState(() => !!localStorage.getItem(STORAGE_KEY));
+  useEffect(() => {
+    fetchServerData<Partner[]>("partners").then(data => {
+      if (data && data.length) {
+        setPartners(data);
+        setIsCustomized(true);
+      }
+    });
+  }, []);
 
   const persist = (next: Partner[]) => {
     setPartners(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     setIsCustomized(true);
+    saveServerData("partners", next).then(ok => {
+      if (!ok) toast.error("Failed to save — changes may not persist.");
+    });
   };
 
   const addPartner = (p: Omit<Partner, "id">) => {
@@ -46,9 +49,11 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
     persist(partners.filter(x => x.id !== id));
 
   const resetToDefault = () => {
-    localStorage.removeItem(STORAGE_KEY);
     setPartners(defaultPartners);
     setIsCustomized(false);
+    resetServerData("partners").then(ok => {
+      if (!ok) toast.error("Failed to reset — please try again.");
+    });
   };
 
   return (

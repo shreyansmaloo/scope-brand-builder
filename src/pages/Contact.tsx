@@ -26,7 +26,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
 const branches = [
   { city: "Chennai (HQ & Warehouse)", state: "Tamil Nadu", address: "No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore, Chennai 600008", phone: "+91 44 40 400 400" },
   { city: "Mumbai", state: "Maharashtra", address: "No. 22/86, Scope House, Yeshwant Nagar CHSL., Goregaon (West), Mumbai 400062", phone: "+91 22 2871 1323" },
-  { city: "Delhi", state: "Delhi", address: "Gali No-7, E-Block, Azad Place, Burari Road, Swaroop Nagar, Delhi 110042", phone: "+91 11 2871 1211, +91 11 2871 1214" },
+  { city: "Delhi", state: "Delhi", address: "Gali No-7, E-Block, Azad Place, Burari Road, Swaroop Nagar, Delhi 110042", phone: "011-2871 1211 / 1214" },
   { city: "Hyderabad", state: "Telangana", address: "48, Madhuvan, Paigah Colony, S.P. Road, Secunderabad 500003", phone: "+91 40 2790 1000" },
   { city: "Ahmedabad", state: "Gujarat", address: "45-1-2-1, Prime Estate, Balva Road, Sarkej, Ahmedabad 382210", phone: "+91 79 26890909" },
   { city: "Chandigarh", state: "Punjab", address: "Unit No. 408, 4th Floor, Global Business Park, Chandigarh–Ambala Highway, Opp. Metro Mall, Zirakpur, Punjab 140603", phone: "+91 98722 70812, +91 93561 97973" },

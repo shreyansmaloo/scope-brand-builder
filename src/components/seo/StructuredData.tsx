@@ -1,5 +1,5 @@
 interface StructuredDataProps {
-  data: Record<string, any>;
+  data: Record<string, unknown>;
 }
 
 export default function StructuredData({ data }: StructuredDataProps) {
@@ -23,8 +23,9 @@ export const generateOrganizationSchema = () => {
     ],
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "", // To be filled based on actual details
+      "telephone": "+91-44-40-400-400",
       "contactType": "customer service",
+      "areaServed": "IN",
       "availableLanguage": ["English"]
     }
   };
@@ -37,11 +38,13 @@ export const generateLocalBusinessSchema = () => {
     "name": "Scope India",
     "image": "https://www.scope-india.com/logo.png",
     "url": "https://www.scope-india.com",
-    "telephone": "",
+    "telephone": "+91-44-40-400-400",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Mumbai", // Approximate or add an actual city if available
-      "addressRegion": "Maharashtra",
+      "streetAddress": "No. 19, Marshalls Road, S-10, Raja Annamalai Bldg. Egmore",
+      "addressLocality": "Chennai",
+      "addressRegion": "Tamil Nadu",
+      "postalCode": "600008",
       "addressCountry": "IN"
     },
     "description": "Pharmaceutical raw material suppliers India, offering Global principal representation, excipient distributors, and personal care, food, and nutra ingredient sourcing."
