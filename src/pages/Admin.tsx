@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import {
-  Plus, Pencil, Trash2, X, Download, RotateCcw, Search,
+  Plus, Pencil, Trash2, X, Download, UploadCloud, RotateCcw, Search,
   ChevronLeft, ChevronRight, Lock, LogOut, Package, Users, Newspaper, Briefcase,
+  AlertTriangle, CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 import { useProducts } from "@/context/ProductsContext";
@@ -13,6 +15,8 @@ import type { Product } from "@/data/products";
 import type { Partner } from "@/data/partners";
 import type { NewsArticle } from "@/data/news";
 import type { JobOpening } from "@/data/careers";
+import { PHARMA_CATS, COSMETICS_CATS, FOOD_CATS } from "@/data/categories";
+import { parseProductsWorkbook, summarizeImport, type ImportSummary } from "@/lib/excelImport";
 
 // SHA-256 hash of the admin password — the plaintext password is never present in the shipped code.
 const ADMIN_PASSWORD_HASH = "3797054a712620c7e65f6dedc44bafa22ee01daa960d9e656128757b3c88d25b";
@@ -30,10 +34,6 @@ const INDUSTRY_BADGE: Record<string, string> = {
   cosmetics: "bg-primary/5 text-primary/70 border-primary/15",
   food: "bg-primary text-primary-foreground border-primary",
 };
-
-const PHARMA_CATS = ["Polymers & Cellulosics","Film Coating Polymers","Enteric Polymers","Fillers & Diluents","Disintegrants","Disintegrants & Binders","Binders","Lubricants & Glidants","Solubilizers & Surfactants","Plasticizers & Humectants","Colorants","Coating & Polishing","Capsule & Gel Formers","Pharmaceutical Excipients"];
-const COSMETICS_CATS = ["Active Ingredients","Antioxidants & Vitamins","Brightening Agents","Anti-Aging Actives","Peptides","Humectants & Fillers","Humectants & Polyols","Protein Actives","Lipids & Ceramides","UV Filters & Sunscreens","Preservatives","Silicones & Emollients","Botanical Extracts","Exfoliants","Emollients & Oils"];
-const FOOD_CATS = ["Sweeteners","Emulsifiers","Stabilizers & Hydrocolloids","Starches & Thickeners","Vitamins & Nutrients","Minerals & Nutrients","Fatty Acids & Lipids","Proteins & Amino Acids","Probiotics & Prebiotics","Colors & Pigments","Flavors & Seasonings","Antioxidants & Preservatives","Food Ingredients"];
 
 const inputCls = "mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary";
 const labelCls = "font-body text-xs font-semibold uppercase tracking-wider text-muted-foreground";
@@ -135,8 +135,8 @@ const EMPTY_PRODUCT: ProductDraft = {
 };
 
 const ProductsTab = () => {
-  const { products, addProduct, updateProduct, deleteProduct, resetToDefault, isCustomized } = useProducts();
-  const { partners } = usePartners();
+  const { products, addProduct, updateProduct, deleteProduct, importAll: importProducts, resetToDefault, isCustomized } = useProducts();
+  const { partners, importAll: importPartners } = usePartners();
 
   const [search, setSearch] = useState("");
   const [filterIndustry, setFilterIndustry] = useState("");
@@ -144,6 +144,7 @@ const ProductsTab = () => {
   const [page, setPage] = useState(1);
   const [draft, setDraft] = useState<ProductDraft | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [importSummary, setImportSummary] = useState<ImportSummary | null>(null);
   const [gradeInput, setGradeInput] = useState("");
 
   const principalOptions = useMemo(() => [...new Set(partners.map(p => p.name))].sort(), [partners]);
@@ -262,6 +263,23 @@ const ProductsTab = () => {
   const draftValid = !!draft && draft.name.trim() && draft.principal.trim() && draft.selectedIndustries.length > 0;
   const set = (f: Partial<ProductDraft>) => setDraft(d => d ? {...d,...f} : d);
 
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const buffer = await file.arrayBuffer();
+    const { rows, errors, warnings } = parseProductsWorkbook(buffer);
+    setImportSummary(summarizeImport(rows, errors, warnings, products, partners));
+  };
+
+  const confirmImport = () => {
+    if (!importSummary || importSummary.errors.length > 0) return;
+    importProducts(importSummary.products);
+    importPartners(importSummary.principals);
+    setImportSummary(null);
+    toast.success(`Imported ${importSummary.products.length} products.`);
+  };
+
   return (
     <div>
       {/* Toolbar */}
@@ -289,6 +307,10 @@ const ProductsTab = () => {
             <RotateCcw className="h-3.5 w-3.5" /> Reset
           </button>
         )}
+        <label className="flex cursor-pointer items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all">
+          <UploadCloud className="h-3.5 w-3.5" /> Import from Excel
+          <input type="file" accept=".xlsx" className="hidden" onChange={handleImportFile} />
+        </label>
         <button onClick={exportTs} className="flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 font-display text-xs font-semibold text-primary hover:bg-primary/20 transition-all">
           <Download className="h-3.5 w-3.5" /> Export .ts
         </button>
@@ -465,6 +487,78 @@ const ProductsTab = () => {
         <DeleteConfirm name={products.find(p=>p.id===deleteId)?.name??""} onCancel={() => setDeleteId(null)}
           onConfirm={() => { deleteProduct(deleteId); setDeleteId(null); }} />
       )}
+
+      <AnimatePresence>
+        {importSummary && (
+          <SlideOver key="import-preview" title="Import from Excel — Preview"
+            onClose={() => setImportSummary(null)} onSave={confirmImport}
+            saveLabel={`Replace catalog (${importSummary.products.length} products)`}
+            valid={importSummary.errors.length === 0}>
+            {importSummary.errors.length > 0 && (
+              <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
+                <p className="flex items-center gap-1.5 font-display text-sm font-bold text-destructive">
+                  <AlertTriangle className="h-4 w-4" /> {importSummary.errors.length} error{importSummary.errors.length !== 1 ? "s" : ""} — fix these in the Excel and re-upload
+                </p>
+                <ul className="mt-2 space-y-1 font-body text-xs text-destructive/90 max-h-48 overflow-y-auto">
+                  {importSummary.errors.map((e, i) => (
+                    <li key={i}>{e.sheet}{e.row ? ` row ${e.row}` : ""}: {e.message}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {importSummary.warnings.length > 0 && (
+              <div className="rounded-xl border border-border bg-muted/50 p-4">
+                <p className="font-display text-sm font-bold text-foreground">{importSummary.warnings.length} row{importSummary.warnings.length !== 1 ? "s" : ""} skipped</p>
+                <ul className="mt-2 space-y-1 font-body text-xs text-muted-foreground max-h-32 overflow-y-auto">
+                  {importSummary.warnings.map((w, i) => (
+                    <li key={i}>{w.sheet}{w.row ? ` row ${w.row}` : ""}: {w.message}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {importSummary.errors.length === 0 && (
+              <div className="rounded-xl border border-primary/30 bg-primary/5 p-4">
+                <p className="flex items-center gap-1.5 font-display text-sm font-bold text-primary">
+                  <CheckCircle2 className="h-4 w-4" /> Ready to import
+                </p>
+              </div>
+            )}
+
+            <div>
+              <p className={labelCls}>Products by industry</p>
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {(["pharma","cosmetics","food"] as const).map(ind => (
+                  <div key={ind} className="rounded-xl border border-border bg-card p-3 text-center">
+                    <p className="font-display text-xs font-bold uppercase text-muted-foreground">{INDUSTRY_LABELS[ind]}</p>
+                    <p className="mt-1 font-display text-lg font-extrabold text-foreground">{importSummary.countsByIndustry[ind].after}</p>
+                    <p className="font-body text-xs text-muted-foreground">was {importSummary.countsByIndustry[ind].before}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className={labelCls}>Principals</p>
+              <div className="mt-2 flex gap-2 font-body text-xs">
+                <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">{importSummary.principalDiff.added.length} added</span>
+                <span className="rounded-full bg-muted px-3 py-1 font-semibold text-muted-foreground">{importSummary.principalDiff.updated.length} updated</span>
+                <span className="rounded-full bg-destructive/10 px-3 py-1 font-semibold text-destructive">{importSummary.principalDiff.removed.length} removed</span>
+              </div>
+              {importSummary.principalDiff.removed.length > 0 && (
+                <p className="mt-2 font-body text-xs text-muted-foreground">
+                  Removed: {importSummary.principalDiff.removed.join(", ")}
+                </p>
+              )}
+            </div>
+
+            <p className="font-body text-xs text-muted-foreground">
+              This replaces the entire product catalog to exactly match the uploaded file. This cannot be undone except by re-uploading a previous version of the Excel.
+            </p>
+          </SlideOver>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

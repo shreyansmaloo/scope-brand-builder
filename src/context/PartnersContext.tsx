@@ -2,12 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { partners as defaultPartners, type Partner } from "@/data/partners";
 import { fetchServerData, saveServerData, resetServerData } from "@/lib/serverStore";
+import { slugify } from "@/lib/utils";
 
 interface PartnersCtx {
   partners: Partner[];
   addPartner: (p: Omit<Partner, "id">) => void;
   updatePartner: (p: Partner) => void;
   deletePartner: (id: string) => void;
+  importAll: (partners: Partner[]) => void;
   resetToDefault: () => void;
   isCustomized: boolean;
 }
@@ -38,7 +40,7 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const addPartner = (p: Omit<Partner, "id">) => {
-    const id = p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const id = slugify(p.name);
     persist([...partners, { ...p, id }]);
   };
 
@@ -47,6 +49,8 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
 
   const deletePartner = (id: string) =>
     persist(partners.filter(x => x.id !== id));
+
+  const importAll = (next: Partner[]) => persist(next);
 
   const resetToDefault = () => {
     setPartners(defaultPartners);
@@ -57,7 +61,7 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   return (
-    <PartnersContext.Provider value={{ partners, addPartner, updatePartner, deletePartner, resetToDefault, isCustomized }}>
+    <PartnersContext.Provider value={{ partners, addPartner, updatePartner, deletePartner, importAll, resetToDefault, isCustomized }}>
       {children}
     </PartnersContext.Provider>
   );

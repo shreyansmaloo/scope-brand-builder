@@ -8,6 +8,7 @@ interface ProductsCtx {
   addProduct: (p: Omit<Product, "id">) => void;
   updateProduct: (p: Product) => void;
   deleteProduct: (id: string) => void;
+  importAll: (products: Product[]) => void;
   resetToDefault: () => void;
   isCustomized: boolean;
 }
@@ -46,6 +47,8 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
   const deleteProduct = (id: string) =>
     persist(products.filter(x => x.id !== id));
 
+  const importAll = (next: Product[]) => persist(next);
+
   const resetToDefault = () => {
     setProducts(defaultProducts);
     setIsCustomized(false);
@@ -55,7 +58,7 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   return (
-    <ProductsContext.Provider value={{ products, addProduct, updateProduct, deleteProduct, resetToDefault, isCustomized }}>
+    <ProductsContext.Provider value={{ products, addProduct, updateProduct, deleteProduct, importAll, resetToDefault, isCustomized }}>
       {children}
     </ProductsContext.Provider>
   );
