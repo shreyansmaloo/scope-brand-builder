@@ -101,7 +101,8 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 border-t border-border pt-8 text-center font-body text-xs text-foreground/50">
-          © 2025 Scope Ingredients Pvt. Ltd. All Rights Reserved. Developed by{" "}
+          © 2026 Scope Ingredients Pvt. Ltd. All Rights Reserved.
+          <br className="md:hidden" /> Developed by{" "}
           <a
             href="https://www.linkedin.com/in/shreyans-maloo/"
             target="_blank"

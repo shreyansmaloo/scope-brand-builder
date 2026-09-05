@@ -173,8 +173,8 @@ const Hero = () => {
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden flex items-center"
-      style={{ height: "100svh", backgroundColor: "#1a1a1a" }}
+      className="relative overflow-hidden flex items-center pt-28 pb-10 lg:pt-0 lg:pb-0"
+      style={{ minHeight: "100svh", backgroundColor: "#1a1a1a" }}
     >
       {/* ── Background video — section's own dark bg shows instead of a grey flash until the first frame paints, then the video fades in ── */}
       <video
@@ -279,12 +279,12 @@ const Hero = () => {
 // ═══════════════════════════════════════════════════════════════
 // TICKER
 // ═══════════════════════════════════════════════════════════════
-const TICKER = ["Since 1959", "·", "Pharmaceutical", "·", "Personal Care", "·", "Food & Nutra", "·",
+const TICKER = ["·", "Pharmaceutical", "·", "Personal Care", "·", "Food & Nutra", "·",
   "50+ Global Partners", "·", "400+ Products", "·", "Pan-India Network", "·", "Three Industries One Partner"];
 
 const Ticker = () => (
   <div className="overflow-hidden py-4 flex items-center" style={{ background: "#F7A100" }}>
-    <div className="animate-marquee-left flex gap-10 whitespace-nowrap" style={{ width: "max-content" }}>
+    <div className="animate-marquee-left flex gap-10 whitespace-nowrap" style={{ width: "max-content", animationDuration: "20s" }}>
       {[...TICKER, ...TICKER].map((w, i) => (
         <span key={i}
           className="font-display text-sm font-bold uppercase tracking-wider shrink-0"
@@ -326,7 +326,7 @@ const SplitLabel = ({ parts, baseColor = "#000000" }: { parts: string[]; baseCol
 );
 
 const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
-  const tiltRef = useTilt(6);
+  const tiltRef = useTilt(0);
   const reversed = i % 2 === 1;
 
   return (
@@ -394,7 +394,7 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
 
 const IndustriesSection = () => (
   <section className="py-16 lg:py-36 bg-background">
-    <div className="container-narrow">
+    <div className="container-scope">
       <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}
         className="mb-12 lg:flex items-end justify-between gap-8">
         <div>
@@ -407,7 +407,7 @@ const IndustriesSection = () => (
         </div>
       </motion.div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-16 md:gap-8">
         {INDUSTRIES.map((ind, i) => (
           <IndustryCard key={ind.id} ind={ind} i={i} />
         ))}
@@ -472,10 +472,10 @@ const PartnersSection = () => {
           <motion.div variants={fadeUp}><Tag>Our Global Family</Tag></motion.div>
           <motion.h2 variants={fadeUp}
             className="mt-4 font-display text-h1 font-bold text-surface-dark">
-            Backed by the World's <span className="text-primary">Best</span>
+            Backed by the  <span className="text-primary">World's Best</span>
           </motion.h2>
           <motion.p variants={fadeUp}
-            className="font-body text-xl max-w-[42ch] mx-auto mt-3"
+            className="font-body text-xl max-w-[48ch] mx-auto mt-3"
             style={{ color: "#494949" }}>
             Exclusive Indian representation for 50+ globally renowned ingredient manufacturers,
             each chosen for quality, innovation, and reliability.
@@ -753,9 +753,10 @@ const RequestSampleSection = () => (
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a href={PRODUCT_CATALOGUE_PDF_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-body text-xs transition-colors"
-              style={{ color: "#494949" }}>
-              Browse catalogue <ChevronRight className="h-4 w-4" />
+              className="group inline-flex items-center gap-2.5 rounded-full font-display text-base font-bold text-[#000000] border border-[#00000026] transition-all duration-300 hover:-translate-y-0.5 hover:border-transparent hover:bg-[#F7A1001F]"
+              style={{ padding: "14px 28px" }}>
+              Browse Catalogue
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </motion.div>
         </motion.div>

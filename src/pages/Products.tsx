@@ -165,7 +165,10 @@ const Products = () => {
       return matchesSearch && matchesCategory && matchesIndustry && matchesPrincipal;
     });
 
-    const displayName = (p: typeof products[0]) => p.name.trim();
+    const displayName = (p: typeof products[0]) => {
+      const hasBrand = !!(p.brand && p.brand !== "-" && p.brand.trim());
+      return hasBrand ? p.brand!.trim() : formatChemicalName(p.name.trim());
+    };
     if (sort === "az") result = [...result].sort((a, b) => displayName(a).localeCompare(displayName(b)));
     if (sort === "za") result = [...result].sort((a, b) => displayName(b).localeCompare(displayName(a)));
 
