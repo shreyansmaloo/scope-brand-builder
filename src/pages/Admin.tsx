@@ -60,7 +60,7 @@ const LoginGate = ({ onAuth }: { onAuth: () => void }) => {
           </div>
         </div>
         <h1 className="text-center font-display text-xl font-bold mb-1">Admin Panel</h1>
-        <p className="text-center font-body text-sm text-muted-foreground mb-6">Scope Ingredients — CRM</p>
+        <p className="text-center font-body text-sm text-muted-foreground mb-6">Scope Ingredients · CRM</p>
         <input type="password" placeholder="Password" value={pw}
           onChange={e => { setPw(e.target.value); setErr(false); }}
           onKeyDown={e => e.key==="Enter" && attempt()}
@@ -428,7 +428,7 @@ const ProductsTab = () => {
 
             {/* Grades — multi-entry */}
             <div>
-              <label className={labelCls}>Grades {draft.id ? "" : "(add multiple — one product per grade)"}</label>
+              <label className={labelCls}>Grades {draft.id ? "" : "(add multiple, one product per grade)"}</label>
               <div className="mt-2 flex gap-2">
                 <input value={gradeInput} onChange={e => setGradeInput(e.target.value)}
                   onKeyDown={e => e.key==="Enter" && (e.preventDefault(), addGrade())}
@@ -490,14 +490,14 @@ const ProductsTab = () => {
 
       <AnimatePresence>
         {importSummary && (
-          <SlideOver key="import-preview" title="Import from Excel — Preview"
+          <SlideOver key="import-preview" title="Import from Excel: Preview"
             onClose={() => setImportSummary(null)} onSave={confirmImport}
             saveLabel={`Replace catalog (${importSummary.products.length} products)`}
             valid={importSummary.errors.length === 0}>
             {importSummary.errors.length > 0 && (
               <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
                 <p className="flex items-center gap-1.5 font-display text-sm font-bold text-destructive">
-                  <AlertTriangle className="h-4 w-4" /> {importSummary.errors.length} error{importSummary.errors.length !== 1 ? "s" : ""} — fix these in the Excel and re-upload
+                  <AlertTriangle className="h-4 w-4" /> {importSummary.errors.length} error{importSummary.errors.length !== 1 ? "s" : ""}: fix these in the Excel and re-upload
                 </p>
                 <ul className="mt-2 space-y-1 font-body text-xs text-destructive/90 max-h-48 overflow-y-auto">
                   {importSummary.errors.map((e, i) => (
@@ -966,7 +966,7 @@ const CareersTab = () => {
             onClose={() => setDraft(null)} onSave={save} valid={!!valid}>
             <div>
               <label className={labelCls}>Title *</label>
-              <input value={draft.title} onChange={e => set({title:e.target.value})} placeholder="e.g. Technical Sales Executive — Pharma" className={inputCls} />
+              <input value={draft.title} onChange={e => set({title:e.target.value})} placeholder="e.g. Technical Sales Executive (Pharma)" className={inputCls} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>

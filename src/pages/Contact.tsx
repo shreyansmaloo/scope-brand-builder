@@ -264,7 +264,7 @@ const Contact = () => {
       <CTASection
         tag="Try Before You Buy"
         heading={<>Ready to Evaluate<br />an Ingredient?</>}
-        description="Request a free sample from our portfolio and see the quality for yourself — we dispatch to R&D labs across India within 24 hours."
+        description="Request a free sample from our portfolio and see the quality for yourself. We dispatch to R&D labs across India within 24 hours."
         buttonText="Request a Sample"
         buttonLink="/request-sample"
       />

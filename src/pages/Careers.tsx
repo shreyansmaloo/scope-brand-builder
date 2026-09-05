@@ -132,7 +132,7 @@ const Careers = () => {
                 {openRoles.length === 0 && (
                   <div className="rounded-2xl border border-dashed border-border/60 bg-card/50 p-8 text-center">
                     <p className="font-body text-sm text-muted-foreground">
-                      No open positions right now — check back soon, or send us a general application.
+                      No open positions right now. Check back soon, or send us a general application.
                     </p>
                   </div>
                 )}

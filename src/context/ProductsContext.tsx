@@ -34,7 +34,7 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
     setProducts(next);
     setIsCustomized(true);
     saveServerData("products", next).then(ok => {
-      if (!ok) toast.error("Failed to save — changes may not persist.");
+      if (!ok) toast.error("Failed to save. Changes may not persist.");
     });
   };
 
@@ -53,7 +53,7 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
     setProducts(defaultProducts);
     setIsCustomized(false);
     resetServerData("products").then(ok => {
-      if (!ok) toast.error("Failed to reset — please try again.");
+      if (!ok) toast.error("Failed to reset. Please try again.");
     });
   };
 

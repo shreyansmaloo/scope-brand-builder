@@ -245,7 +245,7 @@ const Hero = () => {
               className="font-body text-xl leading-relaxed mt-5"
               style={{ color: "rgba(255,255,255,0.9)", maxWidth: "46ch", textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}>
               From the excipient in every tablet to the active behind every skincare glow
-              and the fibre in your morning supplement — Scope has been the trusted partner
+              and the fibre in your morning supplement, Scope has been the trusted partner
               in India's finest formulations for over 65 years.
             </motion.p>
 
@@ -301,21 +301,29 @@ const Ticker = () => (
 // ═══════════════════════════════════════════════════════════════
 const INDUSTRIES = [
   {
-    id: "pharma", Icon: FlaskConical, label: "Pharmaceutical",
-    desc: "The science that makes every tablet dissolve at exactly the right moment, every capsule hold its potency, every syrup pour perfectly smooth — that starts with us.",
+    id: "pharma", Icon: FlaskConical, label: "Pharmaceutical", labelParts: ["Pharma", "ceutical"],
+    desc: "The science that makes every tablet dissolve at exactly the right moment, every capsule hold its potency, every syrup pour perfectly smooth. That starts with us.",
     href: "/products?industry=pharma", img: industryPharma, objectPosition: "center 80%",
   },
   {
-    id: "cosmetics", Icon: Sparkles, label: "Personal Care",
-    desc: "The radiant skin, the luxurious lather, the colour that stays — behind every beauty moment is a world-class active ingredient. We bring those ingredients to India.",
+    id: "cosmetics", Icon: Sparkles, label: "Personal Care", labelParts: ["Personal ", "Care"],
+    desc: "The radiant skin, the luxurious lather, the colour that stays. Behind every beauty moment is a world-class active ingredient. We bring those ingredients to India.",
     href: "/products?industry=cosmetics", img: industryCosmetics, objectPosition: "center",
   },
   {
-    id: "food", Icon: Leaf, label: "Food & Nutraceuticals",
-    desc: "From the prebiotic fibre in your morning smoothie to the plant protein in your health bar — functional food ingredients that make wellness delicious.",
+    id: "food", Icon: Leaf, label: "Food & Nutraceuticals", labelParts: ["Food & ", "Nutraceuticals"],
+    desc: "From the prebiotic fibre in your morning smoothie to the plant protein in your health bar: functional food ingredients that make wellness delicious.",
     href: "/products?industry=food", img: industryFood, objectPosition: "center 15%",
   },
 ];
+
+// Renders a label as [base color][orange part] with no gap between them.
+const SplitLabel = ({ parts, baseColor = "#000000" }: { parts: string[]; baseColor?: string }) => (
+  <>
+    <span style={{ color: baseColor }}>{parts[0]}</span>
+    <span style={{ color: "#F7A100" }}>{parts[1]}</span>
+  </>
+);
 
 const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
   const tiltRef = useTilt(6);
@@ -348,8 +356,8 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
             <ind.Icon className="h-5 w-5 text-primary" />
           </div>
           <div className="absolute bottom-6 left-7 md:hidden">
-            <span className="font-display text-xl font-bold tracking-wide" style={{ color: "#FCFDF8" }}>
-              {ind.label}
+            <span className="font-display text-xl font-bold tracking-wide">
+              <SplitLabel parts={ind.labelParts} baseColor="#FCFDF8" />
             </span>
           </div>
         </div>
@@ -363,8 +371,8 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
           </span>
           <span className="h-px w-10 bg-primary" />
         </div>
-        <h3 className="font-display text-h2 md:text-h1 font-bold leading-tight text-surface-dark mb-4">
-          {ind.label}
+        <h3 className="font-display text-h2 md:text-h1 font-bold leading-tight mb-4">
+          <SplitLabel parts={ind.labelParts} />
         </h3>
         <p className="font-body text-lg leading-relaxed max-w-[46ch] mb-7" style={{ color: "#494949" }}>
           {ind.desc}
@@ -386,7 +394,7 @@ const IndustryCard = ({ ind, i }: { ind: typeof INDUSTRIES[0]; i: number }) => {
 
 const IndustriesSection = () => (
   <section className="py-16 lg:py-36 bg-background">
-    <div className="container-scope">
+    <div className="container-narrow">
       <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}
         className="mb-12 lg:flex items-end justify-between gap-8">
         <div>
@@ -399,7 +407,7 @@ const IndustriesSection = () => (
         </div>
       </motion.div>
 
-      <div className="flex flex-col gap-16 md:gap-24">
+      <div className="flex flex-col">
         {INDUSTRIES.map((ind, i) => (
           <IndustryCard key={ind.id} ind={ind} i={i} />
         ))}
@@ -469,7 +477,7 @@ const PartnersSection = () => {
           <motion.p variants={fadeUp}
             className="font-body text-xl max-w-[42ch] mx-auto mt-3"
             style={{ color: "#494949" }}>
-            Exclusive Indian representation for 50+ globally renowned ingredient manufacturers —
+            Exclusive Indian representation for 50+ globally renowned ingredient manufacturers,
             each chosen for quality, innovation, and reliability.
           </motion.p>
         </motion.div>
@@ -548,7 +556,7 @@ const GallerySection = () => (
         <motion.p variants={fadeUp}
           className="font-body text-xl leading-relaxed max-w-[38ch]"
           style={{ color: "#494949" }}>
-          Across three industries, one constant — the highest quality ingredients
+          Across three industries, one constant: the highest quality ingredients
           that transform what's possible.
         </motion.p>
       </motion.div>
@@ -656,8 +664,8 @@ const FeatureSection = () => {
               className="mt-5 font-body text-lg leading-relaxed max-w-[46ch]"
               style={{ color: "#494949" }}>
               Since 1959, Scope has been the bridge between the world's finest ingredient
-              manufacturers and India's most ambitious product makers. We don't just distribute —
-              we partner, advise, and grow together.
+              manufacturers and India's most ambitious product makers. We partner, advise,
+              and grow together with every customer.
             </motion.p>
             <motion.ul variants={fadeUp} className="mt-8 space-y-3">
               {PILLARS.map((p, i) => (
@@ -704,7 +712,7 @@ const SAMPLE_STEPS = [
     Icon: Package,
     step: "02",
     label: "Sample dispatched",
-    desc: "Samples are shipped from our nearest warehouse — pharma-grade packaging, traceable delivery.",
+    desc: "Samples are shipped from our nearest warehouse: pharma-grade packaging, traceable delivery.",
   },
   {
     Icon: Microscope,
@@ -735,7 +743,7 @@ const RequestSampleSection = () => (
             className="mt-5 font-body text-lg leading-relaxed max-w-[44ch]"
             style={{ color: "#494949" }}>
             Evaluate any ingredient from our portfolio before committing to a bulk order.
-            We ship samples to R&amp;D labs across India — typically within 24 hours.
+            We ship samples to R&amp;D labs across India, typically within 24 hours.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4 items-center">
             <Link to="/request-sample"
@@ -790,7 +798,7 @@ const HomeCTASection = () => (
   <CTASection
     tag="Get Started Today"
     heading={<>Ready to Source<br />with Confidence?</>}
-    description="Connect with our technical sales team for product catalogues, samples, and formulation guidance — we respond within 24 hours."
+    description="Connect with our technical sales team for product catalogues, samples, and formulation guidance. We respond within 24 hours."
     buttonText="Contact Us"
     buttonLink="/contact"
   />

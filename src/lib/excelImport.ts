@@ -152,11 +152,11 @@ function parseSheet(sheetName: string, industry: Industry, rows: unknown[][], er
     if (!brand && !product && !grade && !application) continue;
 
     if (!product) {
-      warnings.push({ sheet: sheetName, row: rowNum, message: "Row skipped — no product name (after inheriting from rows above)." });
+      warnings.push({ sheet: sheetName, row: rowNum, message: "Row skipped: no product name (after inheriting from rows above)." });
       continue;
     }
     if (!supplier) {
-      warnings.push({ sheet: sheetName, row: rowNum, message: "Row skipped — no supplier name (after inheriting from rows above)." });
+      warnings.push({ sheet: sheetName, row: rowNum, message: "Row skipped: no supplier name (after inheriting from rows above)." });
       continue;
     }
 

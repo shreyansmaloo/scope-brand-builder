@@ -35,7 +35,7 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
     setPartners(next);
     setIsCustomized(true);
     saveServerData("partners", next).then(ok => {
-      if (!ok) toast.error("Failed to save — changes may not persist.");
+      if (!ok) toast.error("Failed to save. Changes may not persist.");
     });
   };
 
@@ -56,7 +56,7 @@ export const PartnersProvider = ({ children }: { children: React.ReactNode }) =>
     setPartners(defaultPartners);
     setIsCustomized(false);
     resetServerData("partners").then(ok => {
-      if (!ok) toast.error("Failed to reset — please try again.");
+      if (!ok) toast.error("Failed to reset. Please try again.");
     });
   };
 

@@ -12,7 +12,7 @@ export interface JobOpening {
 export const jobOpenings: JobOpening[] = [
   {
     id: "technical-sales-executive-pharma",
-    title: "Technical Sales Executive — Pharma",
+    title: "Technical Sales Executive (Pharma)",
     location: "Mumbai / Chennai",
     type: "Full-time",
     desc: "Drive sales of pharmaceutical excipients to formulators across India.",
@@ -32,7 +32,7 @@ export const jobOpenings: JobOpening[] = [
   },
   {
     id: "business-development-manager-personal-care",
-    title: "Business Development Manager — Personal Care",
+    title: "Business Development Manager (Personal Care)",
     location: "Mumbai",
     type: "Full-time",
     desc: "Expand our personal care ingredient portfolio across key accounts.",

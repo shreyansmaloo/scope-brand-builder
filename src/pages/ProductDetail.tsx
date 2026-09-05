@@ -343,7 +343,7 @@ const ProductDetail = () => {
       <CTASection
         tag="Interested in This Product?"
         heading={<>Request a Sample of<br />{displayTitle}</>}
-        description="Evaluate this ingredient in your own formulation. We ship samples to R&D labs across India — typically within 24 hours."
+        description="Evaluate this ingredient in your own formulation. We ship samples to R&D labs across India, typically within 24 hours."
         buttonText="Request a Sample"
         buttonLink={`/request-sample?product=${encodeURIComponent(sampleParam)}`}
       />

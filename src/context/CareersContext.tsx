@@ -33,7 +33,7 @@ export const CareersProvider = ({ children }: { children: React.ReactNode }) => 
     setOpenings(next);
     setIsCustomized(true);
     saveServerData("careers", next).then(ok => {
-      if (!ok) toast.error("Failed to save — changes may not persist.");
+      if (!ok) toast.error("Failed to save. Changes may not persist.");
     });
   };
 
@@ -52,7 +52,7 @@ export const CareersProvider = ({ children }: { children: React.ReactNode }) => 
     setOpenings(defaultOpenings);
     setIsCustomized(false);
     resetServerData("careers").then(ok => {
-      if (!ok) toast.error("Failed to reset — please try again.");
+      if (!ok) toast.error("Failed to reset. Please try again.");
     });
   };
 

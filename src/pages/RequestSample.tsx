@@ -197,7 +197,7 @@ const RequestSample = () => {
             Sample Request
           </motion.h1>
           <p className="mt-4 max-w-xl font-body text-lg text-primary-foreground/60">
-            Select products, specify quantities, and submit — our team handles the rest.
+            Select products, specify quantities, and submit. Our team handles the rest.
           </p>
         </div>
       </section>

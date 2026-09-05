@@ -33,7 +33,7 @@ export const NewsProvider = ({ children }: { children: React.ReactNode }) => {
     setArticles(next);
     setIsCustomized(true);
     saveServerData("news", next).then(ok => {
-      if (!ok) toast.error("Failed to save — changes may not persist.");
+      if (!ok) toast.error("Failed to save. Changes may not persist.");
     });
   };
 
@@ -55,7 +55,7 @@ export const NewsProvider = ({ children }: { children: React.ReactNode }) => {
     setArticles(defaultArticles);
     setIsCustomized(false);
     resetServerData("news").then(ok => {
-      if (!ok) toast.error("Failed to reset — please try again.");
+      if (!ok) toast.error("Failed to reset. Please try again.");
     });
   };
 
