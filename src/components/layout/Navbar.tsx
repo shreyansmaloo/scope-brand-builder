@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Search } from "lucide-react";
-import logoWordmark from "@/assets/logo-wordmark.png";
-import logoMark from "@/assets/logo-mark.png";
+import logoBlack from "@/assets/logo-black.png";
+import logoWhite from "@/assets/logo-white.png";
 
 const searchPlaceholders = [
   "Search products, ingredients, principals...",
@@ -98,18 +98,11 @@ const Navbar = () => {
             <Link to="/" className="flex flex-col items-center overflow-visible">
               <div
                 className="relative transition-all duration-300"
-                style={{ height: scrolled ? 52 : 68, width: (scrolled ? 52 : 68) * (203 / 100) }}
+                style={{ height: scrolled ? 52 : 68, width: (scrolled ? 52 : 68) * (1834 / 858) }}
               >
                 <img
-                  src={logoWordmark}
+                  src={transparent ? logoWhite : logoBlack}
                   alt="Scope Ingredients"
-                  className="absolute inset-0 h-full w-full object-contain"
-                  style={{ filter: transparent ? "brightness(0) invert(1)" : "none" }}
-                />
-                <img
-                  src={logoMark}
-                  alt=""
-                  aria-hidden="true"
                   className="absolute inset-0 h-full w-full object-contain"
                 />
               </div>
