@@ -45,6 +45,7 @@ const team = [
   { name: "Ritesh Jain", title: "Executive Director - Personal Care", linkedin: "https://www.linkedin.com/in/ritesh-jain-03131430b/", photo: "/members/ritesh-jain.jpeg", bio: "Leads the Personal Care vertical, which the company entered in 2010 and has since grown into a significant part of its business. Has been closely involved with the personal care application lab set up in Mumbai in 2016, supporting formulation and technical work for customers. Works to build and maintain relationships with global principals in the personal care ingredients space. Focused on bringing new ingredient technologies and formulation trends to the Indian market. Spends considerable time with customers' R&D teams to understand where the market is heading and how the portfolio should evolve. Sees the application lab as central to how the division adds value beyond simply supplying ingredients." },
   { name: "Rohit Jain", title: "Executive Director - Personal Care", linkedin: "https://www.linkedin.com/in/rohit-jain-27a197156/", photo: "/members/rohit-jain.jpeg", bio: "Shares leadership of the Personal Care vertical, working on the commercial and business development side of the division. Supports the expansion of the company's personal care ingredient portfolio and its network of global supplier partnerships. Works closely with customers to understand formulation needs and match them with the right ingredient solutions. Focused on growing the division's presence across India's personal care manufacturing base. Regularly travels to meet principals and manufacturers to strengthen the division's supplier and customer network. Believes that close, consistent engagement with both sides of the business is what keeps the division competitive." },
   { name: "Hriday Jain", title: "Executive Director - Food", linkedin: "https://www.linkedin.com/in/hriday-jain-648359178/", photo: "/members/hriday-jain.jpeg", bio: "Heads the Food ingredients vertical, which the company launched as a dedicated division in 2006. Works with global partners to bring food and nutraceutical ingredient solutions to customers across India. Focused on expanding the division's product categories and supplier network as demand for quality food ingredients grows. Committed to maintaining the same standards of quality and customer trust that define the company's other verticals. Keeps a close watch on shifting consumer trends in food and nutrition to ensure the division's offerings stay relevant. Works to build the same kind of long-term principal partnerships in food that have defined the company's pharma business for decades." },
+  { name: "Varish Jain", title: "Pharma", photo: "/members/varish-jain.jpeg", bio: "Represents the newest generation stepping into the family business, bringing a young and dynamic energy to the company. Is in the early stages of learning the business, spending time across departments to understand how the pharma vertical operates from the ground up. Carries forward the legacy of the pharma business that the company has built since entering pharmaceutical excipients distribution in 1971. Is guided closely by the senior leadership team while gradually taking on more hands-on involvement in day-to-day operations. Focused on absorbing the values of trust and long-term relationships that have defined the company for over six decades. Sees this stage as the foundation for the larger role he will grow into within the pharma business." },
 ];
 
 const LeaderCard = ({ member, i, imageOnRight }: { member: (typeof team)[number]; i: number; imageOnRight: boolean }) => {
@@ -152,7 +153,7 @@ const About = () => {
                 { value: "1959", label: "Year Founded" },
                 { value: "400+", label: "Products" },
                 { value: "50+", label: "Global Brands" },
-                { value: "175+", label: "Years Collective Experience" },
+                { value: "175+", label: "Team Experience" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -165,7 +166,7 @@ const About = () => {
                   <span className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
                     {stat.value}
                   </span>
-                  <span className="mt-2 font-body text-sm sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                  <span className="mt-2 whitespace-nowrap font-body text-sm sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                     {stat.label}
                   </span>
                 </motion.div>

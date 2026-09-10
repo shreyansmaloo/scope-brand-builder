@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, FlaskConical, Tag, Globe, Factory,
@@ -83,6 +83,7 @@ const DetailRow = ({ icon: Icon, label, value }: { icon: React.ElementType; labe
 const ProductDetail = () => {
   const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const product = products.find((p) => p.id === id);
 
   if (!product) return <NotFound />;
@@ -128,12 +129,12 @@ const ProductDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-6"
           >
-            <h1 className="font-display text-[clamp(2.75rem,5vw,4.25rem)] font-extrabold text-primary-foreground leading-tight tracking-tight">
+            <h1 className="font-display text-[clamp(2.75rem,5vw,4.25rem)] font-extrabold text-primary-foreground leading-tight tracking-tight break-words">
               {displayTitle}
             </h1>
 
             {genericName && (
-              <p className="mt-2 font-body text-lg text-primary-foreground/60">{genericName}</p>
+              <p className="mt-2 font-body text-lg text-primary-foreground/90">{genericName}</p>
             )}
 
             {product.grade && (
@@ -327,12 +328,13 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Back link */}
-                <Link
-                  to="/products"
+                <button
+                  type="button"
+                  onClick={() => navigate(-1)}
                   className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4" /> Back to all products
-                </Link>
+                </button>
               </motion.div>
             </div>
 

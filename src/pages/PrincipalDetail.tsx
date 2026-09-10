@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { usePartners } from "@/context/PartnersContext";
 import { useProducts } from "@/context/ProductsContext";
 import { motion } from "framer-motion";
@@ -13,6 +13,7 @@ const PrincipalDetail = () => {
   const { partners } = usePartners();
   const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const partner = partners.find((p) => p.id === id);
 
   if (!partner) {
@@ -38,10 +39,14 @@ const PrincipalDetail = () => {
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 bg-card border-b border-border/50">
         <div className="container-scope">
-          <Link to="/principals" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-8">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-8"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to All Principals
-          </Link>
+          </button>
 
           <div className="grid md:grid-cols-12 gap-12 items-center">
             <div className="md:col-span-8">

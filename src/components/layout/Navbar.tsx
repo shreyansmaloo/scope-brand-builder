@@ -279,7 +279,7 @@ const Navbar = () => {
                     <div key={link.label} className="border-b border-border/50 last:border-0">
                       <Link
                         to={link.href}
-                        className={`block py-4 font-display text-lg font-medium uppercase tracking-wide transition-colors ${
+                        className={`block py-3 font-display text-base font-medium uppercase tracking-wide transition-colors ${
                           location.pathname === link.href ? "text-primary" : "text-foreground/80 hover:text-primary"
                         }`}
                         onClick={() => setMobileOpen(false)}

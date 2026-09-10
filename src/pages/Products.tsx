@@ -63,7 +63,7 @@ const formatPrincipalName = (name: string): string =>
 
 const Products = () => {
   const { products } = useProducts();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   const initialPrincipalParam = searchParams.get("principal");
   const initialPrincipals = initialPrincipalParam ? initialPrincipalParam.split(",").filter(Boolean) : [];
@@ -81,6 +81,8 @@ const Products = () => {
   const [visibleCount, setVisibleCount] = useState(120);
   const isFirstFilterRun = useRef(true);
 
+  const selectedPrincipalsKey = selectedPrincipals.join(",");
+
   useEffect(() => {
     setVisibleCount(120);
     if (isFirstFilterRun.current) {
@@ -88,7 +90,7 @@ const Products = () => {
       return;
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [search, selectedCategory, selectedIndustry, selectedPrincipals, sort]);
+  }, [search, selectedCategory, selectedIndustry, selectedPrincipalsKey, sort]);
 
   useEffect(() => {
     const onScroll = () => setSearchSticky(window.scrollY > 240);
@@ -103,6 +105,21 @@ const Products = () => {
     setSelectedIndustry(searchParams.get("industry"));
     setSelectedCategory(searchParams.get("category"));
   }, [searchParams]);
+
+  // Keep the URL in sync with the active filters (replacing, not pushing) so
+  // that navigating to a product and back restores the exact filtered view
+  // instead of resetting to an unfiltered /products.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (selectedIndustry) params.set("industry", selectedIndustry);
+    if (selectedCategory) params.set("category", selectedCategory);
+    if (selectedPrincipalsKey) params.set("principal", selectedPrincipalsKey);
+
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [search, selectedIndustry, selectedCategory, selectedPrincipalsKey, searchParams, setSearchParams]);
 
   // Base pool filtered by search text only (no industry/category/principal filters)
   // Each filter group shows options available given the OTHER two filters + search

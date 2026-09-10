@@ -2,7 +2,7 @@ import SEO from "@/components/seo/SEO";
 import StructuredData, { generateBreadcrumbSchema } from "@/components/seo/StructuredData";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import { usePartners } from "@/context/PartnersContext";
 import type { Partner } from "@/data/partners";
@@ -41,10 +41,15 @@ const FilterCheckbox = ({ label, active, onClick }: { label: string; active: boo
 
 const Principals = () => {
   const { partners } = usePartners();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get("search") || "";
+  const initialIndustry = searchParams.get("industry") || null;
+  const initialCountry = searchParams.get("country") || null;
+
+  const [search, setSearch] = useState(initialSearch);
   const [optionsSearch, setOptionsSearch] = useState("");
-  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(initialIndustry);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(initialCountry);
   const [sort, setSort] = useState<SortOption>("default");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchSticky, setSearchSticky] = useState(false);
@@ -63,6 +68,26 @@ const Principals = () => {
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [search, selectedIndustry, selectedCountry, sort]);
+
+  useEffect(() => {
+    setSearch(searchParams.get("search") || "");
+    setSelectedIndustry(searchParams.get("industry"));
+    setSelectedCountry(searchParams.get("country"));
+  }, [searchParams]);
+
+  // Keep the URL in sync with the active filters (replacing, not pushing) so
+  // that navigating to a principal and back restores the exact filtered view
+  // instead of resetting to an unfiltered /principals.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (selectedIndustry) params.set("industry", selectedIndustry);
+    if (selectedCountry) params.set("country", selectedCountry);
+
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [search, selectedIndustry, selectedCountry, searchParams, setSearchParams]);
 
   const countries = useMemo(() => [...new Set(partners.map((p) => p.country))].filter(Boolean).sort(), [partners]);
 

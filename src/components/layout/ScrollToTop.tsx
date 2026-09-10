@@ -23,14 +23,18 @@ const ScrollToTop = () => {
   }, [key]);
 
   useLayoutEffect(() => {
+    // behavior: "auto" is explicit here because the site sets `scroll-behavior:
+    // smooth` globally in CSS, which browsers apply to scrollTo() calls that
+    // don't specify a behavior — turning this route-change jump into a visible
+    // animated scroll otherwise.
     if (navigationType === "POP") {
       const saved = scrollPositions.get(key);
       if (saved !== undefined) {
-        window.scrollTo(0, saved);
+        window.scrollTo({ top: saved, left: 0, behavior: "auto" });
         return;
       }
     }
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname, key, navigationType]);
 
   return null;
